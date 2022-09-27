@@ -1,8 +1,9 @@
-package espacoaberto.backend;
+package espacoaberto.backend.entidades;
 
+
+import espacoaberto.backend.abstrato.Usuario;
 
 import javax.persistence.Entity;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

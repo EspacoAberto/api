@@ -1,7 +1,7 @@
-package espacoaberto.backend;
+package espacoaberto.backend.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import espacoaberto.backend.entidades.Imovel;
+import espacoaberto.backend.entidades.Cliente;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;

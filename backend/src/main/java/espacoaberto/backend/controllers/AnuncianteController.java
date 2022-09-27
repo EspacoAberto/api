@@ -1,5 +1,10 @@
-package espacoaberto.backend;
+package espacoaberto.backend.controllers;
 
+import espacoaberto.backend.abstrato.Usuario;
+import espacoaberto.backend.entidades.Anunciante;
+import espacoaberto.backend.entidades.Imovel;
+import espacoaberto.backend.repository.AnuncianteRepository;
+import espacoaberto.backend.repository.ImovelRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +45,7 @@ public class AnuncianteController {
     }
 
     @PostMapping("{idUsuario}/cadastrarImovel")
-    public ResponseEntity<Imovel> cadastrarImovel( @PathVariable Integer idUsuario,@RequestBody Imovel imovel){
+    public ResponseEntity<Imovel> cadastrarImovel(@PathVariable Integer idUsuario, @RequestBody Imovel imovel){
         List<Anunciante> anunciantes = anuncianteRepository.findAll();
         for (Anunciante anum: anunciantes) {
             if(anum.getId() == idUsuario ){

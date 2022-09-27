@@ -1,4 +1,4 @@
-package espacoaberto.backend;
+package espacoaberto.backend.abstrato;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,15 +7,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 
 public abstract class Usuario {
     @Id // Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotBlank
     private String nome;
+    @Past
     private String dataNascimento;
     private String cpf;
     private Boolean isPremium;
+    @Email
     private String email;
 
     private String senha;

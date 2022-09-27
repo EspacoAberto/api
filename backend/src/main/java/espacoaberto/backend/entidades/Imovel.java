@@ -1,4 +1,4 @@
-package espacoaberto.backend;
+package espacoaberto.backend.entidades;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
