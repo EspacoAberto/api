@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import java.util.List;
 @Entity
 public class Cliente extends Usuario {
-    private List<Imovel> favoritos;
+//    private List<Imovel> favoritos;
 
     //constructor
 
@@ -14,7 +14,7 @@ public class Cliente extends Usuario {
     public Cliente(Integer id, String nome, String dataNascimento, String cpf,
                    Boolean isPremium, String email, String senha, List<Imovel> favoritos) {
         super(id, nome, dataNascimento, cpf, isPremium, email, senha);
-        this.favoritos = favoritos;
+//        this.favoritos = favoritos;
     }
 
     //methods
@@ -24,24 +24,24 @@ public class Cliente extends Usuario {
     }
 
 
-    public void addFavoritos(Imovel i){
-        favoritos.add(i);
-    }
+//    public void addFavoritos(Imovel i){
+//        favoritos.add(i);
+//    }
 
     //get and set
-    public List<Imovel> getFavoritos() {
-        return favoritos;
-    }
+//    public List<Imovel> getFavoritos() {
+//        return favoritos;
+//    }
 
-    public void setFavoritos(List<Imovel> favoritos) {
-        this.favoritos = favoritos;
-    }
+//    public void setFavoritos(List<Imovel> favoritos) {
+//        this.favoritos = favoritos; //** Comentado pois não é possivel fazer a criação do banco com lista como atributos **
+//    }
 
     //toString
     @Override
     public String toString() {
         return "Cliente{" +
-                "favoritos=" + favoritos +
+//                "favoritos=" + favoritos +
                 '}';
     }
 }

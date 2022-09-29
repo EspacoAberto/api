@@ -44,18 +44,19 @@ public class AnuncianteController {
         return ResponseEntity.status(400).build();
     }
 
-    @PostMapping("{idUsuario}/cadastrarImovel")
-    public ResponseEntity<Imovel> cadastrarImovel(@PathVariable Integer idUsuario, @RequestBody Imovel imovel){
-        List<Anunciante> anunciantes = anuncianteRepository.findAll();
-        for (Anunciante anum: anunciantes) {
-            if(anum.getId() == idUsuario ){
-                anum.cadastrarImovel(imovel);
-                this.imovelRepository.save(imovel);
-                return ResponseEntity.status(201).body(imovel);
-            }
-        }
-        return ResponseEntity.status(400).build();
-    }
+//    @PostMapping("{idUsuario}/cadastrarImovel")
+//    public ResponseEntity<Imovel> cadastrarImovel(@PathVariable Integer idUsuario, @RequestBody Imovel imovel){
+//        List<Anunciante> anunciantes = anuncianteRepository.findAll();
+//        for (Anunciante anum: anunciantes) {
+//            if(anum.getId() == idUsuario ){
+//                anum.cadastrarImovel(imovel);
+//                this.imovelRepository.save(imovel);
+//                return ResponseEntity.status(201).body(imovel);
+//            }
+//        }
+//        return ResponseEntity.status(400).build();
+//    }
+    //** Comentado pois não é possivel fazer a criação do banco com lista como atributos **
 
 }
 

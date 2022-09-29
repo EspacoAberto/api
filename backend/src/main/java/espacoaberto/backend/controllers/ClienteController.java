@@ -55,29 +55,29 @@ public class ClienteController {
         return "HI";
     }
 
-    @PostMapping("{nome}/favoritar/{nomeImovel}")
-    public String favoritar( @PathVariable String nome,@PathVariable String nomeImovel ){
-        for (Cliente cliente: clientes) {
-            if (cliente.getNome().equals(nome)){
-                for (Imovel imovel: imoveis) {
-                    if (imovel.getNome().equals(nomeImovel)){
-                        cliente.addFavoritos(imovel);
-                        return String.format("O Imovel %s foi para lista de favoritos", imovel.getNome());
-                    }
-                }
-            }
-        }
-        return "Impossivel favoritar";
-    }
+//    @PostMapping("{nome}/favoritar/{nomeImovel}")
+//    public String favoritar( @PathVariable String nome,@PathVariable String nomeImovel ){
+//        for (Cliente cliente: clientes) {
+//            if (cliente.getNome().equals(nome)){
+//                for (Imovel imovel: imoveis) {
+//                    if (imovel.getNome().equals(nomeImovel)){
+////                        cliente.addFavoritos(imovel);
+//                        return String.format("O Imovel %s foi para lista de favoritos", imovel.getNome());
+//                    }
+//                }
+//            }
+//        }
+//        return "Impossivel favoritar";
+//    }
 
-    @GetMapping("{nomeCliente}/favoritos")
-    public String listarFavoritos(@PathVariable Cliente nomeCliente){
-        for (Cliente cliente: clientes) {
-            if (cliente.getNome().equals(nomeCliente)){
-                return cliente.getFavoritos().toString();
-            }
-        }
-        return "Impossivel efeturar requisição";
-    }
+//    @GetMapping("{nomeCliente}/favoritos")
+//    public String listarFavoritos(@PathVariable Cliente nomeCliente){
+//        for (Cliente cliente: clientes) {
+//            if (cliente.getNome().equals(nomeCliente)){
+//                return cliente.getFavoritos().toString();
+//            }
+//        }
+//        return "Impossivel efeturar requisição"; //** Comentado pois não é possivel fazer a criação do banco com lista como atributos **
+//    }
 }
 
