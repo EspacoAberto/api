@@ -10,7 +10,7 @@ Projeto de Pesquisa e Inovação da faculdade SPTech
 
 ## ✒️ Autores
 
-Mencione todos aqueles que ajudaram a levantar o projeto desde o seu início
+
 
 * **Juan Santiago** - [juansantiago58](https://github.com/juansantiago58)
 * **Kaũa Silva** - [kaua010203](https://github.com/kaua010203)
