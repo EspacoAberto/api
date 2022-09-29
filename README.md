@@ -12,10 +12,10 @@ Projeto de Pesquisa e Inovação da faculdade SPTech
 
 Mencione todos aqueles que ajudaram a levantar o projeto desde o seu início
 
-* **Juan Santiago** - *Trabalho Inicial* - [juansantiago58](https://github.com/juansantiago58)
-* **Kaũa Silva** - *Trabalho Inicial* - [kaua010203](https://github.com/kaua010203)
-* **Nickolas Junior** - *Trabalho Inicial* - [nickjng](https://github.com/nickjng)
-* **Paulo Ricardo** - *Trabalho Inicial* - [pauloricso](https://github.com/pauloricso)
-* **Rogerio Filho** - *Trabalho Inicial* - [rogerio-alvesf](https://github.com/rogerio-alvesf)
-* **Vinicios Oliveira** - *Trabalho Inicial* - [Vinifd1234](https://github.com/Vinifd1234)
+* **Juan Santiago** - [juansantiago58](https://github.com/juansantiago58)
+* **Kaũa Silva** - [kaua010203](https://github.com/kaua010203)
+* **Nickolas Junior** - [nickjng](https://github.com/nickjng)
+* **Paulo Ricardo** - [pauloricso](https://github.com/pauloricso)
+* **Rogerio Filho** - [rogerio-alvesf](https://github.com/rogerio-alvesf)
+* **Vinicios Oliveira** - [Vinifd1234](https://github.com/Vinifd1234)
 
