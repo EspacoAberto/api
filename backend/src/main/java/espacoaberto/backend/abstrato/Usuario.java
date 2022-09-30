@@ -8,7 +8,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="TYPE")
 public abstract class Usuario {
     @Id // Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
