@@ -13,9 +13,9 @@ Projeto de Pesquisa e Inovação da faculdade SPTech
 
 
 * **Juan Santiago** - [juansantiago58](https://github.com/juansantiago58)
-* **Kaũa Silva** - [kaua010203](https://github.com/kaua010203)
+* **Kauã Silva** - [kaua010203](https://github.com/kaua010203)
 * **Nickolas Junior** - [nickjng](https://github.com/nickjng)
 * **Paulo Ricardo** - [pauloricso](https://github.com/pauloricso)
 * **Rogerio Filho** - [rogerio-alvesf](https://github.com/rogerio-alvesf)
-* **Vinicios Oliveira** - [Vinifd1234](https://github.com/Vinifd1234)
+* **Vinicius Oliveira** - [Vinifd1234](https://github.com/Vinifd1234)
 
