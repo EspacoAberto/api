@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @RestController
-@RequestMapping("/espacoAberto")
+@RequestMapping("/anunciantes")
 public class AnuncianteController {
 
     @Autowired
@@ -20,19 +20,19 @@ public class AnuncianteController {
     @Autowired
     private ImovelRepository imovelRepository;
 
-    @PostMapping("/cadastrarAnunciante")
+    @PostMapping("/cadastrar")
     public ResponseEntity<Usuario> cadastrarAnunciante(@RequestBody Anunciante novoAnunciante){
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
     }
 
-    @GetMapping("/listarAnunciantes")
+    @GetMapping("/listar")
     public ResponseEntity<List<Anunciante>> listarAnunciantes(){
         List<Anunciante> anunciantes = anuncianteRepository.findAll();
         return anunciantes.isEmpty() ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(anunciantes);
     }
 
-    @PostMapping("/anunciante/tornarPremium/{email}/{senha}")
+    @PostMapping("/tornarPremium/{email}/{senha}")
     public ResponseEntity<Anunciante> tornarAnunciantePremium(@PathVariable String email, @PathVariable String senha) {
         List<Anunciante> anunciantes = anuncianteRepository.findAll();
         for (Anunciante anunciante: anunciantes ) {
@@ -44,19 +44,6 @@ public class AnuncianteController {
         return ResponseEntity.status(400).build();
     }
 
-//    @PostMapping("{idUsuario}/cadastrarImovel")
-//    public ResponseEntity<Imovel> cadastrarImovel(@PathVariable Integer idUsuario, @RequestBody Imovel imovel){
-//        List<Anunciante> anunciantes = anuncianteRepository.findAll();
-//        for (Anunciante anum: anunciantes) {
-//            if(anum.getId() == idUsuario ){
-//                anum.cadastrarImovel(imovel);
-//                this.imovelRepository.save(imovel);
-//                return ResponseEntity.status(201).body(imovel);
-//            }
-//        }
-//        return ResponseEntity.status(400).build();
-//    }
-    //** Comentado pois não é possivel fazer a criação do banco com lista como atributos **
 
 }
 

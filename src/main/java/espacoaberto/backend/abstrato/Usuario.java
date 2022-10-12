@@ -28,15 +28,9 @@ public abstract class Usuario {
 
     private String senha;
 
+    private Boolean isAnunciante;
+
     //constructor
-    public Usuario(String nome, LocalDate dataNascimento, String cpf, String email, String senha) {
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.cpf = cpf;
-        this.isPremium = false;
-        this.email = email;
-        this.senha = senha;
-    }
 
     //methods abstract
     public abstract void tornarPremium();
@@ -97,6 +91,7 @@ public abstract class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
 
     //toString()
 
