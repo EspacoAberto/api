@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
+import java.time.LocalDate;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -15,10 +16,11 @@ public abstract class Usuario {
     @Id // Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotBlank
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
     @Past
-    private String dataNascimento;
+    private LocalDate dataNascimento;
+    @NotBlank(message = "CPF é obrigatório")
     private String cpf;
     private Boolean isPremium;
     @Email
@@ -27,8 +29,7 @@ public abstract class Usuario {
     private String senha;
 
     //constructor
-    public Usuario(Integer id,String nome, String dataNascimento, String cpf, Boolean isPremium, String email, String senha) {
-        this.id = id;
+    public Usuario(String nome, LocalDate dataNascimento, String cpf, String email, String senha) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;
@@ -57,11 +58,11 @@ public abstract class Usuario {
         this.nome = nome;
     }
 
-    public String getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

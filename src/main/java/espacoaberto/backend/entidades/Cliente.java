@@ -3,6 +3,7 @@ package espacoaberto.backend.entidades;
 import espacoaberto.backend.abstrato.Usuario;
 
 import javax.persistence.Entity;
+import java.time.LocalDate;
 import java.util.List;
 @Entity
 public class Cliente extends Usuario {
@@ -11,9 +12,9 @@ public class Cliente extends Usuario {
     //constructor
 
 
-    public Cliente(Integer id, String nome, String dataNascimento, String cpf,
-                   Boolean isPremium, String email, String senha, List<Imovel> favoritos) {
-        super(id, nome, dataNascimento, cpf, isPremium, email, senha);
+    public Cliente(String nome, LocalDate dataNascimento, String cpf,
+                    String email, String senha) {
+        super(nome, dataNascimento, cpf, email, senha);
 //        this.favoritos = favoritos;
     }
 

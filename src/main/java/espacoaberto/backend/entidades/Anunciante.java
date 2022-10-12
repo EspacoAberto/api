@@ -4,15 +4,16 @@ package espacoaberto.backend.entidades;
 import espacoaberto.backend.abstrato.Usuario;
 
 import javax.persistence.Entity;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 public class Anunciante extends Usuario {
 //    private List<Imovel> imoveisCadastrados;
     //constructor
-    public Anunciante(Integer id, String nome, String dataNascimento, String cpf,
-                      Boolean isPremium, String email, String senha, List<Imovel> imoveisCadastrados) {
-        super(id, nome, dataNascimento, cpf, isPremium, email, senha);
+    public Anunciante(String nome, LocalDate dataNascimento, String cpf,
+                      String email, String senha) {
+        super(nome, dataNascimento, cpf, email, senha);
 //        this.imoveisCadastrados = imoveisCadastrados;
     }
 
