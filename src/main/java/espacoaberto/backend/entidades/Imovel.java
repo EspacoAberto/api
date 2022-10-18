@@ -1,22 +1,32 @@
 package espacoaberto.backend.entidades;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Imovel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "anuncio_id")
+    private Anuncio Anuncio;
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
+    @NotBlank(message = "Endereço é obrigatório")
     private String endereco;
+    @NotBlank(message = "Comprovante é obrigatório")
     private String comprovanteImovel;
     private String descricao;
+    @Min(1)
     private Integer qtdQuartos;
+    @Min(0)
     private Boolean piscina;
     private Double precoDiaria;
+    @Min(0) @Max(1)
     private Integer avaliacao;
 
     //get and set
