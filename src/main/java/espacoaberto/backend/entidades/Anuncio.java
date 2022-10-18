@@ -14,7 +14,8 @@ public class Anuncio implements Serializable {
 //    @JoinColumn(name = "anunciante_id")
 //    private Anunciante anunciante;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "anuncio")
+    @OneToMany()
+    @JoinColumn (name = "anuncio")
     private List<Imovel> imovels;
 
 

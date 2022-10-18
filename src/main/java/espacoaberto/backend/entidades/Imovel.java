@@ -11,8 +11,7 @@ public class Imovel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "anuncio_id")
+    @ManyToOne()
     private Anuncio Anuncio;
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
