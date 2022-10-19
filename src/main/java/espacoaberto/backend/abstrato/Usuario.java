@@ -28,7 +28,7 @@ public abstract class Usuario {
 
     private String senha;
 
-    private Boolean isAnunciante;
+    // private Boolean isAnunciante;
 
     //constructor
 

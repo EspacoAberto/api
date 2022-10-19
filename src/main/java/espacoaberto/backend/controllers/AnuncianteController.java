@@ -59,19 +59,23 @@ public class AnuncianteController {
         return ResponseEntity.status(404).build();
     }
 
-//    @PostMapping("{idAnunciante}/AnunciarImovel/{idImovel}")
-//    public ResponseEntity<Anuncio> cadastrarAnuncio(@PathVariable int idAnunciante, @PathVariable int idImovel,
-//                                                    @RequestBody Anuncio novoanuncio){
-//        List<Anunciante> anunciantes = anuncianteRepository.findAll();
-//        for (Anunciante anunciante: anunciantes){
-//            if (anunciante.getId() == idAnunciante){
-//                novoanuncio.setIdAnunciante(idAnunciante);
-//                novoanuncio.setIdImovel(idImovel);
-//                return ResponseEntity.status(201).body(this.anuncioRepository.save(novoanuncio));
-//            }
-//        }
-//        return ResponseEntity.status(404).build();
-//    }
+    @PostMapping("{idAnunciante}/AnunciarImovel/{idImovel}")
+    public ResponseEntity<Anuncio> anunciarImovel(@PathVariable int idAnunciante, @PathVariable int idImovel,
+                                                    @RequestBody Anuncio novoanuncio){
+        List<Anunciante> anunciantes = anuncianteRepository.findAll();
+        for (Anunciante anunciante: anunciantes){
+            if (anunciante.getId() == idAnunciante){
+                List<Imovel> imoveis = imovelRepository.findAll();
+                for (Imovel movel: imoveis ) {
+                    if(movel.getId() == idImovel){
+                        novoanuncio.setImovels(imoveis);
+                        return ResponseEntity.status(201).body(this.anuncioRepository.save(novoanuncio));
+                    }
+                }
+            }
+        }
+        return ResponseEntity.status(404).build();
+    }
 
 }
 
