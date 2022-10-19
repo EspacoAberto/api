@@ -3,13 +3,14 @@ package espacoaberto.backend.entidades;
 
 import espacoaberto.backend.abstrato.Usuario;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 public class Anunciante extends Usuario {
-//    private List<Imovel> imoveisCadastrados;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "anunciante")
+//    private List<Anuncio> anuncios;
     //constructor
 
     //methods
