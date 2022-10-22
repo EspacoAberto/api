@@ -6,31 +6,64 @@ import java.util.Optional;
 
 @Entity
 public class Anuncio implements Serializable {
-    @Id // Primary Key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name="anunciante_id")
-    private Anunciante anunciante;
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn (name = "imovel_id")
-    private Imovel imovel;
-    private Double preco;
+
+    //    @ManyToMany
+//    @JoinColumn(name = "id")
+    @Id
+    private Integer idAnuncio;
+    private Integer idAnunciante;
+    //    @ManyToMany
+//    @JoinColumn(name = "id")
+ 
+    private Integer idImovel;
+    private double preco;
+
     private String descricao;
     private String titulo;
     private Integer curtidas;
 
     //Getters and Setters
-    public Integer getId() {
-        return id;
+    public Integer getIdAnuncio() {
+        return idAnuncio;
     }
-    public void setId(Integer id) {
-        this.id = id;
+
+    public void setIdAnuncio(Integer idAnuncio) {
+        this.idAnuncio = idAnuncio;
     }
-    public Anunciante getAnunciante() {return anunciante;}
-    public void setAnunciante(Anunciante anunciante) {this.anunciante = anunciante;}
-    public Imovel getImovel() {return imovel;}
-    public void setImovel(Imovel imovel) {this.imovel = imovel;}
+
+    public Integer getIdAnunciante() {
+        return idAnunciante;
+    }
+
+    public void setIdAnunciante(Integer idAnunciante) {
+        this.idAnunciante = idAnunciante;
+    }
+
+    public Integer getIdImovel() {
+        return idImovel;
+    }
+
+    public void setIdImovel(Integer idImovel) {
+        this.idImovel = idImovel;
+    }
+
+
+//    public Anunciante getAnunciante() {
+//        return anunciante;
+//    }
+//
+//    public void setAnunciante(Anunciante anunciante) {
+//        this.anunciante = anunciante;
+//    }
+//
+//    public Imovel getImovel() {
+//        return imovel;
+//    }
+//
+//    public void setImovel(Imovel imovel) {
+//        this.imovel = imovel;
+//    }
+
     public double getPreco() {
         return preco;
     }
