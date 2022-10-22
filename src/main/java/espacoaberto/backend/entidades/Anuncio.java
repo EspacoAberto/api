@@ -11,11 +11,12 @@ public class Anuncio implements Serializable {
     //    @ManyToMany
 //    @JoinColumn(name = "id")
     @Id
-    private int idAnunciante;
+    private Integer idAnuncio;
+    private Integer idAnunciante;
     //    @ManyToMany
 //    @JoinColumn(name = "id")
-    @Id
-    private int idImovel;
+ 
+    private Integer idImovel;
     private double preco;
     private String descricao;
     private String titulo;
@@ -23,21 +24,30 @@ public class Anuncio implements Serializable {
 
     //Getters and Setters
 
-    public int getIdAnunciante() {
+    public Integer getIdAnuncio() {
+        return idAnuncio;
+    }
+
+    public void setIdAnuncio(Integer idAnuncio) {
+        this.idAnuncio = idAnuncio;
+    }
+
+    public Integer getIdAnunciante() {
         return idAnunciante;
     }
 
-    public void setIdAnunciante(int idAnunciante) {
+    public void setIdAnunciante(Integer idAnunciante) {
         this.idAnunciante = idAnunciante;
     }
 
-    public int getIdImovel() {
+    public Integer getIdImovel() {
         return idImovel;
     }
 
-    public void setIdImovel(int idImovel) {
+    public void setIdImovel(Integer idImovel) {
         this.idImovel = idImovel;
     }
+
 
 //    public Anunciante getAnunciante() {
 //        return anunciante;
