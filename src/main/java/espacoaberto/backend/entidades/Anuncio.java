@@ -1,13 +1,12 @@
 package espacoaberto.backend.entidades;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Optional;
 
 @Entity
 public class Anuncio implements Serializable {
+
     //    @ManyToMany
 //    @JoinColumn(name = "id")
     @Id
@@ -18,12 +17,12 @@ public class Anuncio implements Serializable {
  
     private Integer idImovel;
     private double preco;
+
     private String descricao;
     private String titulo;
     private Integer curtidas;
 
     //Getters and Setters
-
     public Integer getIdAnuncio() {
         return idAnuncio;
     }
@@ -68,32 +67,26 @@ public class Anuncio implements Serializable {
     public double getPreco() {
         return preco;
     }
-
     public void setPreco(double preco) {
         this.preco = preco;
     }
-
     public String getDescricao() {
         return descricao;
     }
-
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
     public String getTitulo() {
         return titulo;
     }
-
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
     public Integer getCurtidas() {
         return curtidas;
     }
-
     public void setCurtidas(Integer curtidas) {
         this.curtidas = curtidas;
     }
+
 }

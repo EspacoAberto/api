@@ -3,8 +3,7 @@ package espacoaberto.backend.entidades;
 import espacoaberto.backend.abstrato.Usuario;
 
 import javax.persistence.Entity;
-import java.time.LocalDate;
-import java.util.List;
+
 @Entity
 public class Cliente extends Usuario {
 //    private List<Imovel> favoritos;
@@ -15,6 +14,10 @@ public class Cliente extends Usuario {
     @Override
     public void tornarPremium() {
         setPremium(true);
+    }
+
+    public Boolean autenticar(String email, String senha) {
+        return email.equals(this.getEmail()) && senha.equals(this.getSenha());
     }
 
     //toString

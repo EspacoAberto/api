@@ -25,16 +25,15 @@ public abstract class Usuario {
     private Boolean isPremium;
     @Email
     private String email;
-
     private String senha;
+    private Boolean isAutenticado;
 
-    private Boolean isAnunciante;
+    // private Boolean isAnunciante;
 
     //constructor
 
     //methods abstract
     public abstract void tornarPremium();
-
 
     //get and sett
     public Integer getId() {
@@ -92,17 +91,25 @@ public abstract class Usuario {
         this.senha = senha;
     }
 
+    public Boolean getAutenticado() {return isAutenticado;}
+
+    public void setAutenticado(Boolean autenticado) {isAutenticado = autenticado;}
 
     //toString()
+
+
+    public abstract Boolean autenticar(String email, String senha);
 
     @Override
     public String toString() {
         return "Usuario{" +
-                "nome='" + nome + '\'' +
-                ", dataNascimento='" + dataNascimento + '\'' +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", dataNascimento=" + dataNascimento +
                 ", cpf='" + cpf + '\'' +
                 ", isPremium=" + isPremium +
                 ", email='" + email + '\'' +
+                ", isAutenticado=" + isAutenticado +
                 ", senha='" + senha + '\'' +
                 '}';
     }
