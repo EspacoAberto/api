@@ -19,6 +19,11 @@ public class Anunciante extends Usuario {
         setPremium(true);
     }
 
+    @Override
+    public Boolean autenticar(String email, String senha) {
+        return email.equals(this.getEmail()) && senha.equals(this.getSenha());
+    }
+
     public String atualizarImovel(Integer n, Imovel i){
         return null;
     }

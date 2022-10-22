@@ -2,24 +2,20 @@ package espacoaberto.backend.entidades;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Anuncio implements Serializable {
     @Id // Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "anunciante_id")
-//    private Anunciante anunciante;
-
-    @OneToMany()
-    @JoinColumn (name = "anuncio")
-    private List<Imovel> imovels;
-
-
-    private double preco;
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    @JoinColumn(name="anunciante_id")
+    private Anunciante anunciante;
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    @JoinColumn (name = "imovel_id")
+    private Imovel imovel;
+    private Double preco;
     private String descricao;
     private String titulo;
     private Integer curtidas;
@@ -31,18 +27,10 @@ public class Anuncio implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-//    public Anunciante getAnunciante() {
-//        return anunciante;
-//    }
-//    public void setAnunciante(Anunciante anunciante) {
-//        this.anunciante = anunciante;
-//    }
-//    public List<Imovel> getImovels() {
-//        return imovels;
-//    }
-    public void setImovels(List<Imovel> imovels) {
-        this.imovels = imovels;
-    }
+    public Anunciante getAnunciante() {return anunciante;}
+    public void setAnunciante(Anunciante anunciante) {this.anunciante = anunciante;}
+    public Imovel getImovel() {return imovel;}
+    public void setImovel(Imovel imovel) {this.imovel = imovel;}
     public double getPreco() {
         return preco;
     }
@@ -67,4 +55,5 @@ public class Anuncio implements Serializable {
     public void setCurtidas(Integer curtidas) {
         this.curtidas = curtidas;
     }
+
 }
