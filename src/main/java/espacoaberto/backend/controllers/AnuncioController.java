@@ -1,6 +1,6 @@
 package espacoaberto.backend.controllers;
 
-import espacoaberto.backend.csv.ExportacaoCsv;
+//import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.entidades.Anuncio;
 import espacoaberto.backend.listaObj.ListaObj;
 import espacoaberto.backend.repository.AnuncioRepository;
@@ -43,7 +43,7 @@ public class AnuncioController {
             anuncios.adiciona(A);
         }
 
-        ExportacaoCsv.gravarArquivoCsvAnuncio(anuncios, nomeArq);
+//        ExportacaoCsv.gravarArquivoCsvAnuncio(anuncios, nomeArq);
         return ResponseEntity.status(200).build();
     }        
 

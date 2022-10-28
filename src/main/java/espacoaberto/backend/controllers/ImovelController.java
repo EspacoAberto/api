@@ -1,7 +1,7 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.abstrato.Usuario;
-import espacoaberto.backend.csv.ExportacaoCsv;
+//import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.listaObj.ListaObj;
@@ -40,7 +40,7 @@ public class ImovelController {
              imoveis.adiciona(Im);
          }
 
-        ExportacaoCsv.gravarArquivoCsvImovel(imoveis, nomeArq);
+//        ExportacaoCsv.gravarArquivoCsvImovel(imoveis, nomeArq);
         return ResponseEntity.status(200).build();
     }
 }

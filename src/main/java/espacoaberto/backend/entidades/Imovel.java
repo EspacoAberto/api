@@ -13,20 +13,11 @@ public class Imovel {
 
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
-    @NotBlank(message = "Endereço é obrigatório")
-    private String endereco;
-    @NotBlank(message = "Comprovante é obrigatório")
-    private String comprovanteImovel;
-    private String descricao;
-    @Min(1)
-    private Integer qtdQuartos;
-    @Min(0)
-    private Boolean piscina;
-    private Double precoDiaria;
-    @Min(0) @Max(1)
-    private Integer avaliacao;
+    @OneToOne
+    private Endereco endereco;
 
-    //get and set
+    //Getters and Setters
+
 
     public Integer getId() {
         return id;
@@ -44,76 +35,12 @@ public class Imovel {
         this.nome = nome;
     }
 
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
+    public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
-    }
-
-    public String getComprovanteImovel() {
-        return comprovanteImovel;
-    }
-
-    public void setComprovanteImovel(String comprovanteImovel) {
-        this.comprovanteImovel = comprovanteImovel;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Integer getQtdQuartos() {
-        return qtdQuartos;
-    }
-
-    public void setQtdQuartos(Integer qtdQuartos) {
-        this.qtdQuartos = qtdQuartos;
-    }
-
-    public Boolean getPiscina() {
-        return piscina;
-    }
-
-    public void setPiscina(Boolean piscina) {
-        this.piscina = piscina;
-    }
-
-    public Double getPrecoDiaria() {
-        return precoDiaria;
-    }
-
-    public void setPrecoDiaria(Double precoDiaria) {
-        this.precoDiaria = precoDiaria;
-    }
-
-    public Integer getAvaliacao() {
-        return avaliacao;
-    }
-
-    public void setAvaliacao(Integer avaliacao) {
-        this.avaliacao = avaliacao;
-    }
-
-    //toString()
-
-    @Override
-    public String toString() {
-        return "Imovel{" +
-                "nome='" + nome + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", comprovanteImovel='" + comprovanteImovel + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", qtdQuartos=" + qtdQuartos +
-                ", piscina=" + piscina +
-                ", precoDiaria=" + precoDiaria +
-                ", avaliacao=" + avaliacao +
-                '}';
     }
 }
 
