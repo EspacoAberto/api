@@ -16,6 +16,12 @@ public class Imovel {
     @OneToOne
     private Endereco endereco;
 
+    @ManyToOne
+    private Comodo comodo;
+
+    @ManyToOne
+    private Acomodacao acomodacao;
+
     //Getters and Setters
 
 
