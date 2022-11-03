@@ -25,6 +25,30 @@ public class ImovelController {
         return imoveis.isEmpty() ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(imoveis);
     }
+    private List<Imovel> ordenarCurtidas(List<Imovel> imoveis){
+        int qtdMenor = 0;
+        for (int i = 0; i < imoveis.size() - 1; i++) {
+            qtdMenor = i;
+            for (int j = i + 1; j < imoveis.size(); j++) {
+                if (imoveis.get(j).getQtdQuartos() < imoveis.get(qtdMenor).getQtdQuartos()){
+                    qtdMenor = j;
+                }
+            }
+            Imovel aux = imoveis.get(i);
+            imoveis.set(i, imoveis.get(qtdMenor));
+            imoveis.set(qtdMenor, aux);
+        }
+        return imoveis;
+    }
+    @GetMapping("/listarOrdenadoPorCurtida")
+    public ResponseEntity<List<Imovel>> listarOrdenadoPorCurtida(){
+        List<Imovel> imoveis = imovelRepository.findAll();
+        return imoveis.isEmpty() ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(ordenarCurtidas(imoveis));
+
+    }
+
+
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Imovel> cadastrar(@RequestBody Imovel novoImovel){
@@ -43,4 +67,6 @@ public class ImovelController {
         ExportacaoCsv.gravarArquivoCsvImovel(imoveis, nomeArq);
         return ResponseEntity.status(200).build();
     }
+
+
 }
