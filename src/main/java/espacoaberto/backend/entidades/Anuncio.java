@@ -6,15 +6,10 @@ import java.util.Optional;
 
 @Entity
 public class Anuncio implements Serializable {
-
-    //    @ManyToMany
-//    @JoinColumn(name = "id")
     @Id
     private Integer idAnuncio;
     private Integer idAnunciante;
-    //    @ManyToMany
-//    @JoinColumn(name = "id")
- 
+
     private Integer idImovel;
     private double preco;
 
