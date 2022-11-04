@@ -10,7 +10,10 @@ public class Comodo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nome;
+
+    private Integer quantidade;
 
     // getter and setter
     public Integer getId() {
@@ -24,5 +27,13 @@ public class Comodo {
     }
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 }
