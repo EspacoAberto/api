@@ -17,6 +17,7 @@ import java.util.Optional;
 import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/anunciantes")
 public class AnuncianteController {
