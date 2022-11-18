@@ -1,6 +1,9 @@
 package espacoaberto.backend.entidades;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -12,15 +15,21 @@ public class Anuncio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAnuncio;
-    private Integer idAnunciante;
+    @ManyToOne
+    @NotNull
+    private Anunciante anunciante;
     //    @ManyToMany
 //    @JoinColumn(name = "id")
- 
-    private Integer idImovel;
+
+    @ManyToOne
+    @NotNull
+    private Imovel imovel;
+    @DecimalMin(value="0.0")
     private double preco;
 
     private String descricao;
     private String titulo;
+
     private Integer curtidas;
 
     //Getters and Setters
@@ -32,24 +41,24 @@ public class Anuncio implements Serializable {
         this.idAnuncio = idAnuncio;
     }
 
-    public Integer getIdAnunciante() {
-        return idAnunciante;
+    public Anunciante getAnunciante() {
+        return anunciante;
     }
 
-    public void setIdAnunciante(Integer idAnunciante) {
-        this.idAnunciante = idAnunciante;
+    public void setAnunciante(Anunciante anunciante) {
+        this.anunciante = anunciante;
     }
 
-    public Integer getIdImovel() {
-        return idImovel;
+    public Imovel getImovel() {
+        return imovel;
     }
 
-    public void setIdImovel(Integer idImovel) {
-        this.idImovel = idImovel;
+    public void setImovel(Imovel imovel) {
+        this.imovel = imovel;
     }
 
 
-//    public Anunciante getAnunciante() {
+    //    public Anunciante getAnunciante() {
 //        return anunciante;
 //    }
 //

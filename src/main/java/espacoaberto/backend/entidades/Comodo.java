@@ -1,17 +1,20 @@
 package espacoaberto.backend.entidades;
 
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Comodo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotNull
     private String nome;
+    @Min(0)
     private int quantidade;
     @ManyToOne
+    @NotNull
     private Imovel imovel;
 
     public Comodo(String nome, int quantidade, Imovel imovel) {

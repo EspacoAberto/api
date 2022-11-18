@@ -1,13 +1,16 @@
 package espacoaberto.backend.entidades;
 
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
+@Entity
 public class Acomodacao {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String descricao;
     @ManyToOne
+    @NotNull
     private Imovel imovel;
 
     public Acomodacao(Integer id, String descricao, Imovel imovel) {
