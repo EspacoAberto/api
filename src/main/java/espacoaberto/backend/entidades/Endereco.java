@@ -2,12 +2,15 @@ package espacoaberto.backend.entidades;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Endereco {
     @Id
     private String cep;
+    @Size(max = 2, min = 2)
     private String estado;
+
     private String cidade;
     private String bairro;
     private String logradouro;
@@ -18,6 +21,10 @@ public class Endereco {
         this.cidade = cidade;
         this.bairro = bairro;
         this.logradouro = logradouro;
+    }
+
+    public Endereco() {
+
     }
 
     public String getCep() {

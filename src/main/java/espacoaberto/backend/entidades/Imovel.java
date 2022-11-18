@@ -20,6 +20,10 @@ public class Imovel {
         this.endereco = endereco;
     }
 
+    public Imovel() {
+
+    }
+
     public Integer getId() {
         return id;
     }
