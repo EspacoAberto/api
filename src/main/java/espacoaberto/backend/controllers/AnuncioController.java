@@ -1,6 +1,6 @@
 package espacoaberto.backend.controllers;
 
-import espacoaberto.backend.csv.ExportacaoCsv;
+//import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.entidades.Anuncio;
 import espacoaberto.backend.listaObj.ListaObj;
 import espacoaberto.backend.repository.AnuncioRepository;
@@ -33,7 +33,7 @@ public class AnuncioController {
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio){
         return ResponseEntity.status(201).body(this.anuncioRepository.save(novoAnuncio));
     }
-
+/*
     @PostMapping("/gerarCsv/{nomeArq}")
     public ResponseEntity gerarCsv(@PathVariable String nomeArq){
         List<Anuncio> listAnuncios = anuncioRepository.findAll();
@@ -46,5 +46,5 @@ public class AnuncioController {
         ExportacaoCsv.gravarArquivoCsvAnuncio(anuncios, nomeArq);
         return ResponseEntity.status(200).build();
     }        
-
+*/
 }

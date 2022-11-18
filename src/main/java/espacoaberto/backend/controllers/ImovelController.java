@@ -1,7 +1,7 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.abstrato.Usuario;
-import espacoaberto.backend.csv.ExportacaoCsv;
+//import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.listaObj.ListaObj;
@@ -25,6 +25,7 @@ public class ImovelController {
         return imoveis.isEmpty() ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(imoveis);
     }
+    /*
     private List<Imovel> ordenarCurtidas(List<Imovel> imoveis){
         int qtdMenor = 0;
         for (int i = 0; i < imoveis.size() - 1; i++) {
@@ -47,14 +48,14 @@ public class ImovelController {
                 : ResponseEntity.status(200).body(ordenarCurtidas(imoveis));
 
     }
-
+*/
 
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Imovel> cadastrar(@RequestBody Imovel novoImovel){
         return ResponseEntity.status(201).body(this.imovelRepository.save(novoImovel));
     }
-
+/*
     @PostMapping("/gerarCsv/{nomeArq}")
     public ResponseEntity gerarCsv(@PathVariable String nomeArq){
          List<Imovel> listImoveis = imovelRepository.findAll();
@@ -66,7 +67,7 @@ public class ImovelController {
 
         ExportacaoCsv.gravarArquivoCsvImovel(imoveis, nomeArq);
         return ResponseEntity.status(200).build();
-    }
+    }*/
 
 
 }

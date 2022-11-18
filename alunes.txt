@@ -1,0 +1,16 @@
+00RECIBO202218-11-2022 16:33:4101
+02 nullnull                          null                                              null                                              nullnullnull      nu
+02 nullnull                          null                                              null                                              nullnullnull      nu
+010000000002
+00RECIBO202218-11-2022 16:35:1801
+02 nullnull                          null                                              null                                              nullnullnull      nu
+02 nullnull                          null                                              null                                              nullnullnull      nu
+010000000002
+00RECIBO202218-11-2022 16:36:0301
+02 nullnull                          null                                              null                                              nullnullnull      nu
+02 nullnull                          null                                              null                                              nullnullnull      nu
+010000000002
+00RECIBO202218-11-2022 16:42:4701
+0200001a                             a                                                 a                                                 010001100001,00
+0200002b                             b                                                 b                                                 020002200002,00
+010000000002

@@ -10,6 +10,7 @@ public class Anuncio implements Serializable {
     //    @ManyToMany
 //    @JoinColumn(name = "id")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAnuncio;
     private Integer idAnunciante;
     //    @ManyToMany

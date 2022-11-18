@@ -1,4 +1,4 @@
-package recibo;
+/*package recibo;
 
 import espacoaberto.backend.entidades.Anuncio;
 import espacoaberto.backend.entidades.Imovel;
@@ -71,14 +71,14 @@ public class Recibo {
         String corpo;
         for (Recibo a : lista) {
             corpo = "02";
-            corpo += String.format("%05d", id);
-            corpo += String.format("%-30.30s", nome);
-            corpo += String.format("%-50.50s", endereco);
-            corpo += String.format("%-50.50s", descricao);
-            corpo += String.format("%02d", qtdQuartos);
-            corpo += String.format("%04d", curtidas);
-            corpo += String.format("%1d", avaliacao);
-            corpo += String.format("%08.2f", preco);
+            corpo += String.format("%05d", a.id);
+            corpo += String.format("%-30.30s", a.nome);
+            corpo += String.format("%-50.50s", a.endereco);
+            corpo += String.format("%-50.50s", a.descricao);
+            corpo += String.format("%02d", a.qtdQuartos);
+            corpo += String.format("%04d", a.curtidas);
+            corpo += String.format("%1d", a.avaliacao);
+            corpo += String.format("%08.2f", a.preco);
             contaRegDados++;
             gravaRegistro(corpo, nomeArq);
         }
@@ -185,7 +185,7 @@ public class Recibo {
         }
     }
 
-    public void gravaReciboCsv(ListaObj<Recibo> lista, String nomeArq){
+    public void gravaReciboCsv(List<Imovel> lista, String nomeArq){
         FileWriter arq = null;
         Formatter saida = null;
         Boolean deuRuim = false;
@@ -200,10 +200,10 @@ public class Recibo {
         }
 
         try{
-            for (int i = 0; i < lista.getTamanho(); i++){
-                Recibo r = lista.getElemento(i);
+            for (int i = 0; i < lista.size(); i++){
+                Imovel r = lista.get(i);
                 saida.format("%d;%s;%s;%s;%d;%d;%d;%.2f\n",
-                        r.id,r.nome,r.endereco,r.descricao,r.qtdQuartos,r.curtidas,r.avaliacao,r.preco);
+                        r.getId(),r.getNome(),r.getEndereco(),r.getDescricao(),r.getQtdQuartos(),r.getAvaliacao(),r.getPrecoDiaria());
             }
         }catch (FormatterClosedException erro){
             System.out.println("Erro ao gravar arquivo!");
@@ -284,3 +284,4 @@ public class Recibo {
                 '}';
     }
 }
+*/

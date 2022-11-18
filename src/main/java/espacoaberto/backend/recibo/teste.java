@@ -1,4 +1,4 @@
-package recibo;
+/*package recibo;
 
 import espacoaberto.backend.entidades.Anuncio;
 import lista.ListaObj;
@@ -16,10 +16,11 @@ public class teste {
         lista.add(new Recibo(2,"b","b","b",2,2,2,2.0));
 
         l.adiciona(new Recibo(1,"a","a","a",1,1,1,1.0));
-//            a.gravaReciboTxt(lista, "alunes.txt");
+//           a.gravaReciboTxt(lista, "alunes.txt");
 //            a.leReciboTxt("alunes.txt");
 
-//           a.gravaReciboCsv(l,"recibo");
-            a.leExibeReciboCsv("recibo");
+//          a.gravaReciboCsv(lista,"recibo");
+//          a.leExibeReciboCsv("recibo");
     }
 }
+*/

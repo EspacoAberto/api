@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-import espacoaberto.backend.csv.ExportacaoCsv;
+//import espacoaberto.backend.csv.ExportacaoCsv;
 
 
 
