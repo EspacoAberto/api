@@ -9,12 +9,10 @@ import java.util.Optional;
 
 @Entity
 public class Anuncio implements Serializable {
-
-    //    @ManyToMany
-//    @JoinColumn(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAnuncio;
+<<<<<<< HEAD
     @ManyToOne
     @NotNull
     private Anunciante anunciante;
@@ -25,6 +23,11 @@ public class Anuncio implements Serializable {
     @NotNull
     private Imovel imovel;
     @DecimalMin(value="0.0")
+=======
+    private Integer idAnunciante;
+
+    private Integer idImovel;
+>>>>>>> main
     private double preco;
 
     private String descricao;

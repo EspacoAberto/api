@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("imoveis")
 public class ImovelController {
@@ -65,7 +66,7 @@ public class ImovelController {
              imoveis.adiciona(Im);
          }
 
-        ExportacaoCsv.gravarArquivoCsvImovel(imoveis, nomeArq);
+//        ExportacaoCsv.gravarArquivoCsvImovel(imoveis, nomeArq);
         return ResponseEntity.status(200).build();
     }*/
 

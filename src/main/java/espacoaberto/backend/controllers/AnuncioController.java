@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/anuncios")
 public class AnuncioController {
@@ -44,7 +45,7 @@ public class AnuncioController {
             anuncios.adiciona(A);
         }
 
-        ExportacaoCsv.gravarArquivoCsvAnuncio(anuncios, nomeArq);
+//        ExportacaoCsv.gravarArquivoCsvAnuncio(anuncios, nomeArq);
         return ResponseEntity.status(200).build();
     }        
 */

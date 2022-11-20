@@ -2,7 +2,7 @@
 Projeto de Pesquisa e Inovação da faculdade SPTech
 
 ### Construído com:
-- [Spring Web] - EndPoinst (REST API)
+- [Spring Web] - EndPoints (REST API)
 - Swagger - Documentação viva do Java (http://localhost:8080/swagger-ui.html)
 - JPA - Comunicação com banco de dados
 

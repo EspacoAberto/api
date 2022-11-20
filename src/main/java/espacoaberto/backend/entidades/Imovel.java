@@ -15,6 +15,7 @@ public class Imovel {
     @NotNull
     private Endereco endereco;
 
+<<<<<<< HEAD
     public Imovel(Integer id, Endereco endereco) {
         this.id = id;
         this.endereco = endereco;
@@ -23,6 +24,21 @@ public class Imovel {
     public Imovel() {
 
     }
+=======
+    @NotBlank(message = "Nome é obrigatório")
+    private String nome;
+    @OneToOne
+    private Endereco endereco;
+
+    @ManyToOne
+    private Comodo comodo;
+
+    @ManyToOne
+    private Acomodacao acomodacao;
+
+    //Getters and Setters
+
+>>>>>>> main
 
     public Integer getId() {
         return id;
@@ -32,6 +48,17 @@ public class Imovel {
         this.id = id;
     }
 
+<<<<<<< HEAD
+=======
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+>>>>>>> main
     public Endereco getEndereco() {
         return endereco;
     }
@@ -39,6 +66,7 @@ public class Imovel {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
+<<<<<<< HEAD
 
     @Override
     public String toString() {
@@ -47,5 +75,7 @@ public class Imovel {
                 ", endereco=" + endereco +
                 '}';
     }
+=======
+>>>>>>> main
 }
 

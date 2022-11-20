@@ -14,7 +14,11 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api" options="-parameters" />
+<<<<<<< HEAD
       <module name="backend" options="-parameters --add-modules java.base" />
+=======
+      <module name="backend" options="-parameters" />
+>>>>>>> main
     </option>
   </component>
 </project>
