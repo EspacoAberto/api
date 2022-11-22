@@ -95,9 +95,6 @@ public abstract class Usuario {
 
     public void setAutenticado(Boolean autenticado) {isAutenticado = autenticado;}
 
-    //toString()
-
-
     public abstract Boolean autenticar(String email, String senha);
 
     @Override
