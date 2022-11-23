@@ -31,7 +31,7 @@ public class AnuncianteController {
     @PostMapping("/cadastrar")
     public ResponseEntity<Anunciante> cadastrarAnunciante(@RequestBody Anunciante novoAnunciante){
         novoAnunciante.setAutenticado(false);
-        sendEmailService.enviar(novoAnunciante.getEmail(), "Confirmação de email", "hello");
+        sendEmailService.enviar(novoAnunciante.getEmail(), novoAnunciante.getNome(), novoAnunciante.getSenha());
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
     }
 

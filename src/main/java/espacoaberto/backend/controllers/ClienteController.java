@@ -30,7 +30,7 @@ public class ClienteController {
     @PostMapping("/cadastrar")
     public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente novoCliente){
         novoCliente.setAutenticado(false);
-        sendEmailService.enviar(novoCliente.getEmail(), "Confirmação de email", "hello");
+        sendEmailService.enviar(novoCliente.getEmail(), novoCliente.getNome(), novoCliente.getSenha());
         return ResponseEntity.status(201).body(this.clienteRepository.save(novoCliente));
     }
 
