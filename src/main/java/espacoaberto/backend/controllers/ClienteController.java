@@ -8,6 +8,7 @@ import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.ClienteRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 import espacoaberto.backend.repository.UsuarioRepository;
+import espacoaberto.backend.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,13 @@ public class ClienteController {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private SendEmailService sendEmailService;
+
     @PostMapping("/cadastrar")
     public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente novoCliente){
-        novoCliente.setAutenticado(true);
+        novoCliente.setAutenticado(false);
+        sendEmailService.enviar(novoCliente.getEmail(), novoCliente.getNome(), novoCliente.getSenha());
         return ResponseEntity.status(201).body(this.clienteRepository.save(novoCliente));
     }
 

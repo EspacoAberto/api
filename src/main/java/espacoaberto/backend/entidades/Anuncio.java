@@ -9,56 +9,32 @@ public class Anuncio implements Serializable {
     @Id
     private Integer idAnuncio;
     private Integer idAnunciante;
-
     private Integer idImovel;
     private double preco;
-
     private String descricao;
     private String titulo;
     private Integer curtidas;
+    private Integer visualizacoes;
 
     //Getters and Setters
     public Integer getIdAnuncio() {
         return idAnuncio;
     }
-
     public void setIdAnuncio(Integer idAnuncio) {
         this.idAnuncio = idAnuncio;
     }
-
     public Integer getIdAnunciante() {
         return idAnunciante;
     }
-
     public void setIdAnunciante(Integer idAnunciante) {
         this.idAnunciante = idAnunciante;
     }
-
     public Integer getIdImovel() {
         return idImovel;
     }
-
     public void setIdImovel(Integer idImovel) {
         this.idImovel = idImovel;
     }
-
-
-//    public Anunciante getAnunciante() {
-//        return anunciante;
-//    }
-//
-//    public void setAnunciante(Anunciante anunciante) {
-//        this.anunciante = anunciante;
-//    }
-//
-//    public Imovel getImovel() {
-//        return imovel;
-//    }
-//
-//    public void setImovel(Imovel imovel) {
-//        this.imovel = imovel;
-//    }
-
     public double getPreco() {
         return preco;
     }
@@ -83,5 +59,10 @@ public class Anuncio implements Serializable {
     public void setCurtidas(Integer curtidas) {
         this.curtidas = curtidas;
     }
-
+    public Integer getVisualizacoes() {
+        return visualizacoes;
+    }
+    public void setVisualizacoes(Integer visualizacoes) {
+        this.visualizacoes = visualizacoes;
+    }
 }
