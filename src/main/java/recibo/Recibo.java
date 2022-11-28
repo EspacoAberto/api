@@ -71,14 +71,14 @@ public class Recibo {
         String corpo;
         for (Recibo a : lista) {
             corpo = "02";
-            corpo += String.format("%05d", id);
-            corpo += String.format("%-30.30s", nome);
-            corpo += String.format("%-50.50s", endereco);
-            corpo += String.format("%-50.50s", descricao);
-            corpo += String.format("%02d", qtdQuartos);
-            corpo += String.format("%04d", curtidas);
-            corpo += String.format("%1d", avaliacao);
-            corpo += String.format("%08.2f", preco);
+            corpo += String.format("%05d", a.id);
+            corpo += String.format("%-30.30s", a.nome);
+            corpo += String.format("%-50.50s", a.endereco);
+            corpo += String.format("%-50.50s", a.descricao);
+            corpo += String.format("%02d", a.qtdQuartos);
+            corpo += String.format("%04d", a.curtidas);
+            corpo += String.format("%1d", a.avaliacao);
+            corpo += String.format("%08.2f", a.preco);
             contaRegDados++;
             gravaRegistro(corpo, nomeArq);
         }

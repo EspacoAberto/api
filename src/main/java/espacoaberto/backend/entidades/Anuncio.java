@@ -1,5 +1,7 @@
 package espacoaberto.backend.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Optional;
@@ -7,6 +9,7 @@ import java.util.Optional;
 @Entity
 public class Anuncio implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAnuncio;
     private Integer idAnunciante;
     private Integer idImovel;
@@ -15,8 +18,15 @@ public class Anuncio implements Serializable {
     private String titulo;
     private Integer curtidas;
     private Integer visualizacoes;
+    @JsonIgnore
+    @Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
+    private byte[] foto;
 
     //Getters and Setters
+
+    public byte[] getFoto() {return foto;}
+
+    public void setFoto(byte[] foto) {this.foto = foto;}
     public Integer getIdAnuncio() {
         return idAnuncio;
     }

@@ -2,11 +2,14 @@ package espacoaberto.backend.controllers;
 
 //import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.entidades.Anuncio;
+import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
+import espacoaberto.backend.exceptions.ReciboNaoEncontradoException;
 import espacoaberto.backend.listaObj.ListaObj;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +49,30 @@ public class AnuncioController {
 
 //        ExportacaoCsv.gravarArquivoCsvAnuncio(anuncios, nomeArq);
         return ResponseEntity.status(200).build();
-    }        
+    }
+
+    @CrossOrigin("*")
+    @PatchMapping(value = "/foto/{id}", consumes = "image/jpeg")
+    public ResponseEntity<Void> patchFoto(@PathVariable int id, @RequestBody byte[] novaFoto) {
+        if (!anuncioRepository.existsById(id)) {
+            throw new FotoNaoEncontradaException();
+        }
+
+        anuncioRepository.setFoto(id, novaFoto);
+
+        return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping(value = "/foto/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getFoto(@PathVariable int id) {
+        if (!anuncioRepository.existsById(id)) {
+            throw new FotoNaoEncontradaException();
+        }
+
+        byte[] foto = anuncioRepository.getFoto(id);
+
+        return ResponseEntity.status(200).header("content-disposition",
+                "attachment; filename=\"foto-anuncio.jpg\"").body(foto);
+    }
 
 }
