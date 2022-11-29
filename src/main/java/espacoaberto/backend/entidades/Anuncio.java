@@ -1,5 +1,7 @@
 package espacoaberto.backend.entidades;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Optional;
@@ -7,14 +9,17 @@ import java.util.Optional;
 @Entity
 public class Anuncio implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAnuncio;
-    private Integer idAnunciante;
-
-    private Integer idImovel;
+    @ManyToOne
+    private Anunciante anunciante;
+    @ManyToOne
+    private Imovel imovel;
     private double preco;
 
     private String descricao;
     private String titulo;
+    @Column(columnDefinition = "int default 0")
     private Integer curtidas;
 
     //Getters and Setters
@@ -26,24 +31,23 @@ public class Anuncio implements Serializable {
         this.idAnuncio = idAnuncio;
     }
 
-    public Integer getIdAnunciante() {
-        return idAnunciante;
+    public Anunciante getAnunciante() {
+        return anunciante;
     }
 
-    public void setIdAnunciante(Integer idAnunciante) {
-        this.idAnunciante = idAnunciante;
+    public void setAnunciante(Anunciante anunciante) {
+        this.anunciante = anunciante;
     }
 
-    public Integer getIdImovel() {
-        return idImovel;
+    public Imovel getImovel() {
+        return imovel;
     }
 
-    public void setIdImovel(Integer idImovel) {
-        this.idImovel = idImovel;
+    public void setImovel(Imovel imovel) {
+        this.imovel = imovel;
     }
 
-
-//    public Anunciante getAnunciante() {
+    //    public Anunciante getAnunciante() {
 //        return anunciante;
 //    }
 //

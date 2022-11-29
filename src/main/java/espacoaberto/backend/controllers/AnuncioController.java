@@ -6,6 +6,7 @@ import espacoaberto.backend.listaObj.ListaObj;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,22 @@ public class AnuncioController {
         return anuncios.isEmpty() ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(anuncios);
     }
+
+    @PatchMapping("aumentarCurtidas/{idAnuncio}")
+    public ResponseEntity<Anuncio> aumentarCurtidas(@PathVariable Integer idAnuncio){
+
+        List<Anuncio> anuncios = anuncioRepository.findAll();
+
+        for (int i = 0; i < anuncios.size(); i++) {
+            if(anuncios.get(i).getIdAnuncio() == idAnuncio){
+                anuncios.get(i).setCurtidas(anuncios.get(i).getCurtidas() + 1);
+                return ResponseEntity.status(200).body(anuncios.get(i));
+            }
+        }
+
+        return ResponseEntity.status(204).build();
+    }
+
 
 
     @PostMapping("/cadastrar")
