@@ -2,6 +2,7 @@ package espacoaberto.backend.controllers;
 
 //import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.entidades.Anuncio;
+import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.listaObj.ListaObj;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
@@ -28,6 +29,17 @@ public class AnuncioController {
         List<Anuncio> anuncios = anuncioRepository.findAll();
         return anuncios.isEmpty() ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(anuncios);
+    }
+
+    @GetMapping("/listarFiltradoPorPreco/{precoMin}/{precoMax}")
+    public ResponseEntity<List<Anuncio>> listarPorIntervaloDePreco(@PathVariable Double precoMin, @PathVariable Double precoMax){
+        List<Anuncio> lista = anuncioRepository.findByPrecoBetween(precoMin, precoMax);
+
+        if(lista.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }else{
+            return ResponseEntity.status(200).body(lista);
+        }
     }
 
     @PatchMapping("aumentarCurtidas/{idAnuncio}")

@@ -37,5 +37,7 @@ public class AnuncianteController {
                 : ResponseEntity.status(200).body(anunciantes);
     }
 
+
+
 }
 
