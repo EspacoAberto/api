@@ -1,5 +1,6 @@
 package espacoaberto.backend.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import espacoaberto.backend.abstrato.Usuario;
 
 import javax.persistence.*;
@@ -16,15 +17,20 @@ public class Recibo {
     private Integer curtidas;
     private Integer avaliacao;
     private Double preco;
-
     @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="anuncio_id")
     private Anuncio anuncio;
-
     @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="cliente_id")
     private Cliente cliente;
 
+    @JsonIgnore // ignoramos no JSON pois não faz sentido retornar um vetor de bytes num JSON!
+    @Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
+    private byte[] foto;
+
+    @JsonIgnore // ignoramos no JSON pois não faz sentido retorna um vetor de bytes num JSON!
+    @Column(length = 10 * 1024 * 1024) // 10 Mega Bytes
+    private byte[] relatorioExcel;
     public Integer getId() {return id;}
 
     public void setId(Integer id) {this.id = id;}

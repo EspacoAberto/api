@@ -82,7 +82,10 @@ public class Recibo {
             corpo += String.format("%04d", a.curtidas);
             corpo += String.format("%1d", a.avaliacao);
             corpo += String.format("%08.2f", a.preco);
+
+
             corpo += String.format("%02d", a.qtdAcomodacoes);
+
             contaRegDados++;
             gravaRegistro(corpo, nomeArq);
         }
