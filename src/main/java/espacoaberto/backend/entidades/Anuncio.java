@@ -1,6 +1,8 @@
 package espacoaberto.backend.entidades;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,11 +13,13 @@ public class Anuncio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAnuncio;
+
     private Integer idAnunciante;
     private Integer idImovel;
     private double preco;
     private String descricao;
     private String titulo;
+    @Column(columnDefinition = "int default 0")
     private Integer curtidas;
     private Integer visualizacoes;
     @JsonIgnore

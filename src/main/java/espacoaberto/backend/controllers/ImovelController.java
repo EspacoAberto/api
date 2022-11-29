@@ -27,6 +27,8 @@ public class ImovelController {
                 : ResponseEntity.status(200).body(imoveis);
     }
 
+
+
     @PostMapping("/cadastrar")
     public ResponseEntity<Imovel> cadastrar(@RequestBody Imovel novoImovel){
         return ResponseEntity.status(201).body(this.imovelRepository.save(novoImovel));
@@ -44,4 +46,6 @@ public class ImovelController {
 //        ExportacaoCsv.gravarArquivoCsvImovel(imoveis, nomeArq);
         return ResponseEntity.status(200).build();
     }
+
+
 }

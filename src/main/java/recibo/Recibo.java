@@ -19,9 +19,10 @@ public class Recibo {
     private Integer curtidas;
     private Integer avaliacao;
     private Double preco;
+    private Integer qtdAcomodacoes;
 
     public Recibo(Integer id, String nome, String endereco, String descricao,
-                    Integer qtdQuartos, Integer curtidas, Integer avaliacao, Double preco) {
+                    Integer qtdQuartos, Integer curtidas, Integer avaliacao, Double preco, Integer qtdAcomodacoes) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
@@ -30,6 +31,8 @@ public class Recibo {
         this.curtidas = curtidas;
         this.avaliacao = avaliacao;
         this.preco = preco;
+        this.qtdAcomodacoes = qtdAcomodacoes;
+
     }
 
         public Recibo() {}
@@ -62,7 +65,7 @@ public class Recibo {
 
         // Monta o registro de header
         String header = "00RECIBO2022";
-        header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy HH:mm:ss"));
         header += "01";
         // Grava o registro de header
         gravaRegistro(header, nomeArq);
@@ -79,6 +82,10 @@ public class Recibo {
             corpo += String.format("%04d", a.curtidas);
             corpo += String.format("%1d", a.avaliacao);
             corpo += String.format("%08.2f", a.preco);
+
+
+            corpo += String.format("%02d", a.qtdAcomodacoes);
+
             contaRegDados++;
             gravaRegistro(corpo, nomeArq);
         }
@@ -95,6 +102,7 @@ public class Recibo {
         String nome1, endereco1, descricao1;
         Integer id1, qtdQuartos1, curtidas1, avaliacao1;
         Double preco1;
+        Integer qtdAcomodacoes1;
         Integer contaRegDadoLido = 0;
         Integer qtdRegDadoGravadoTrailer;
 
@@ -126,8 +134,8 @@ public class Recibo {
                     System.out.println("Registro de header");
                     System.out.println("Tipo de arquivo: " + registro.substring(2,8));
                     System.out.println("Ano : " + registro.substring(8,12));
-                    System.out.println("Data e hora de gravação: " + registro.substring(12,31));
-                    System.out.println("Versão do documento: " + registro.substring(31,33));
+                    System.out.println("Data e hora de gravação: " + registro.substring(12,25));
+                    System.out.println("Versão do documento: " + registro.substring(25));
 
                 }
                 else if (tipoRegistro.equals("01")) {
@@ -152,11 +160,12 @@ public class Recibo {
                     curtidas1 = Integer.valueOf(registro.substring(139,143));
                     avaliacao1 = Integer.valueOf(registro.substring(143,144));
                     preco1 = Double.valueOf(registro.substring(144,152).replace(',','.'));
+                    qtdAcomodacoes1 = Integer.valueOf(registro.substring(152,155));
 
                     // Incrementa o contador de registros lidos
                     contaRegDadoLido++;
 
-                    Recibo a = new Recibo(id1, nome1, endereco1, descricao1, qtdQuartos1, curtidas1, avaliacao1, preco1);
+                    Recibo a = new Recibo(id1, nome1, endereco1, descricao1, qtdQuartos1, curtidas1, avaliacao1, preco1, qtdAcomodacoes1);
 
                     // No Projeto de PI
                     // repository.save(a);
@@ -202,8 +211,8 @@ public class Recibo {
         try{
             for (int i = 0; i < lista.getTamanho(); i++){
                 Recibo r = lista.getElemento(i);
-                saida.format("%d;%s;%s;%s;%d;%d;%d;%.2f\n",
-                        r.id,r.nome,r.endereco,r.descricao,r.qtdQuartos,r.curtidas,r.avaliacao,r.preco);
+                saida.format("%d;%s;%s;%s;%d;%d;%d;%.2f;%d\n",
+                        r.id,r.nome,r.endereco,r.descricao,r.qtdQuartos,r.curtidas,r.avaliacao,r.preco, r.qtdAcomodacoes);
             }
         }catch (FormatterClosedException erro){
             System.out.println("Erro ao gravar arquivo!");
@@ -238,8 +247,8 @@ public class Recibo {
         }
 
         try {
-            System.out.printf("%5S %-5s %-50s %-50s %7S, %8S, %9S, %5S",
-                    "ID", "NOME", "ENDEREÇO", "DESCRIÇÃO", "QUARTOS", "CURTIDAS", "AVALIAÇÃO", "PREÇO\n");
+            System.out.printf("%5S %-5s %-50s %-50s %7S %8S %9S %5S %11S",
+                    "ID", "NOME", "ENDEREÇO", "DESCRIÇÃO", "QUARTOS", "CURTIDAS", "AVALIAÇÃO", "PREÇO", "ACOMODACOES\n");
             while (entrada.hasNext()){
                 int id = entrada.nextInt();
                 String nome = entrada.next();
@@ -249,8 +258,9 @@ public class Recibo {
                 int curtidas = entrada.nextInt();
                 int avaliacao = entrada.nextInt();
                 Double preco = entrada.nextDouble();
-                System.out.printf("%05d %-5s %-50s %-50s %02d, %08d, %1d, %08.2f\n",
-                        id, nome,endereco,descricao,quartos,curtidas,avaliacao,preco);
+                int qtdAcomocacoes = entrada.nextInt();
+                System.out.printf("%05d %-5s %-50s %-50s %7d %8d %9d %05.2f %11d\n",
+                        id, nome,endereco,descricao,quartos,curtidas,avaliacao,preco, qtdAcomocacoes);
             }
         }catch (NoSuchElementException erro){
             System.out.println("Arquivo com problemas!");
@@ -281,6 +291,7 @@ public class Recibo {
                 ", curtidas=" + curtidas +
                 ", avaliacao=" + avaliacao +
                 ", preco=" + preco +
+                ", qtdAcomodações=" + qtdAcomodacoes +
                 '}';
     }
 }
