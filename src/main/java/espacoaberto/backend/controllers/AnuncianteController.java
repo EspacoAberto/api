@@ -7,6 +7,7 @@ import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
+import espacoaberto.backend.service.RandomString;
 import espacoaberto.backend.service.SendEmailService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @RequestMapping("/anunciantes")
 public class AnuncianteController {
+
+    @Autowired
+    private RandomString randomString;
     @Autowired
     private AnuncianteRepository anuncianteRepository;
 
@@ -30,8 +34,8 @@ public class AnuncianteController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Anunciante> cadastrarAnunciante(@RequestBody Anunciante novoAnunciante){
-        novoAnunciante.setAutenticado(false);
-        sendEmailService.enviar(novoAnunciante.getEmail(), novoAnunciante.getNome(), novoAnunciante.getSenha());
+        novoAnunciante.setCodigo(randomString.gerarCodigoAlfanumerico());
+        sendEmailService.enviar(novoAnunciante.getEmail(), novoAnunciante.getNome(), novoAnunciante.getCodigo() );
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
     }
 

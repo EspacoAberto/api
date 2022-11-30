@@ -1,7 +1,10 @@
 package espacoaberto.backend.service;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Random;
 
+@Service
 public class RandomString {
 
     public String gerarCodigoAlfanumerico(){

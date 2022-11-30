@@ -25,13 +25,14 @@ public abstract class Usuario {
     private LocalDate dataNascimento;
     @NotBlank(message = "CPF é obrigatório")
     private String cpf;
-    private Boolean isPremium;
+    private Boolean isPremium = false;
     @Email
     private String email;
     private String senha;
 
     private String codigo;
-    private Boolean isAutenticado;
+    private Boolean isAutenticado = false;
+
 
     public abstract void tornarPremium();
 }
