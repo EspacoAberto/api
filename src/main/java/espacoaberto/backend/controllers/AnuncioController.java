@@ -32,7 +32,6 @@ public class AnuncioController {
                 : ResponseEntity.status(200).body(anuncios);
     }
 
-
     @PostMapping("/cadastrar")
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio){
         return ResponseEntity.status(201).body(this.anuncioRepository.save(novoAnuncio));

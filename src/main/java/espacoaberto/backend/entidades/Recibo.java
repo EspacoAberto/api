@@ -30,9 +30,13 @@ public class Recibo {
 
     @JsonIgnore // ignoramos no JSON pois não faz sentido retorna um vetor de bytes num JSON!
     @Column(length = 10 * 1024 * 1024) // 10 Mega Bytes
-    private byte[] relatorioExcel;
-    public Integer getId() {return id;}
+    private byte[] reciboCsv;
 
+    public byte[] getFoto() {return foto;}
+    public void setFoto(byte[] foto) {this.foto = foto;}
+    public byte[] getReciboCsv() {return reciboCsv;}
+    public void setReciboCsv(byte[] reciboCsv) {this.reciboCsv = reciboCsv;}
+    public Integer getId() {return id;}
     public void setId(Integer id) {this.id = id;}
 
     public String getNome() {return nome;}

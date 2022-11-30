@@ -1,7 +1,5 @@
 package recibo;
 
-import espacoaberto.backend.entidades.Anuncio;
-import espacoaberto.backend.entidades.Imovel;
 import lista.ListaObj;
 
 import java.io.*;
@@ -9,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Recibo {
+public class ReciboTeste {
 
     private Integer id;
     private String nome;
@@ -20,8 +18,8 @@ public class Recibo {
     private Integer avaliacao;
     private Double preco;
 
-    public Recibo(Integer id, String nome, String endereco, String descricao,
-                    Integer qtdQuartos, Integer curtidas, Integer avaliacao, Double preco) {
+    public ReciboTeste(Integer id, String nome, String endereco, String descricao,
+                       Integer qtdQuartos, Integer curtidas, Integer avaliacao, Double preco) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
@@ -32,7 +30,7 @@ public class Recibo {
         this.preco = preco;
     }
 
-        public Recibo() {}
+        public ReciboTeste() {}
 
     public void gravaRegistro(String registro, String nomeArq) {
         BufferedWriter saida = null;
@@ -57,7 +55,7 @@ public class Recibo {
         }
     }
 
-    public void gravaReciboTxt(List<Recibo> lista, String nomeArq) {
+    public void gravaReciboTxt(List<ReciboTeste> lista, String nomeArq) {
         int contaRegDados = 0;
 
         // Monta o registro de header
@@ -69,7 +67,7 @@ public class Recibo {
 
         // Monta e grava os registros de corpo
         String corpo;
-        for (Recibo a : lista) {
+        for (ReciboTeste a : lista) {
             corpo = "02";
             corpo += String.format("%05d", a.id);
             corpo += String.format("%-30.30s", a.nome);
@@ -99,7 +97,7 @@ public class Recibo {
         Integer qtdRegDadoGravadoTrailer;
 
         // Cria uma lista com os dados lidos do arquivo
-        ListaObj<Recibo> listaLida = new ListaObj<>(100);
+        ListaObj<ReciboTeste> listaLida = new ListaObj<>(100);
 
         // try-catch para abrir o arquivo
         try {
@@ -156,7 +154,7 @@ public class Recibo {
                     // Incrementa o contador de registros lidos
                     contaRegDadoLido++;
 
-                    Recibo a = new Recibo(id1, nome1, endereco1, descricao1, qtdQuartos1, curtidas1, avaliacao1, preco1);
+                    ReciboTeste a = new ReciboTeste(id1, nome1, endereco1, descricao1, qtdQuartos1, curtidas1, avaliacao1, preco1);
 
                     // No Projeto de PI
                     // repository.save(a);
@@ -180,12 +178,12 @@ public class Recibo {
         // Exibe o conteúdo da lista lida
         System.out.println("Conteúdo da lista lida do arquivo");
         for (int i = 0; i < listaLida.getTamanho(); i++) {
-            Recibo s = listaLida.getElemento(i);
+            ReciboTeste s = listaLida.getElemento(i);
             System.out.println(s);
         }
     }
 
-    public void gravaReciboCsv(ListaObj<Recibo> lista, String nomeArq){
+    public void gravaReciboCsv(ListaObj<ReciboTeste> lista, String nomeArq){
         FileWriter arq = null;
         Formatter saida = null;
         Boolean deuRuim = false;
@@ -201,7 +199,7 @@ public class Recibo {
 
         try{
             for (int i = 0; i < lista.getTamanho(); i++){
-                Recibo r = lista.getElemento(i);
+                ReciboTeste r = lista.getElemento(i);
                 saida.format("%d;%s;%s;%s;%d;%d;%d;%.2f\n",
                         r.id,r.nome,r.endereco,r.descricao,r.qtdQuartos,r.curtidas,r.avaliacao,r.preco);
             }
