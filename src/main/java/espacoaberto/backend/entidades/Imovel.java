@@ -1,9 +1,12 @@
 package espacoaberto.backend.entidades;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 public class Imovel {
@@ -16,11 +19,14 @@ public class Imovel {
     @OneToOne
     private Endereco endereco;
 
-    @ManyToOne
-    private Comodo comodo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
+    @JsonManagedReference
+    private List<Acomodacao> acomodacoes;
 
-    @ManyToOne
-    private Acomodacao acomodacao;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
+    @JsonManagedReference
+    private List<Comodo> comodo;
+
 
     //Getters and Setters
 
@@ -47,6 +53,14 @@ public class Imovel {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public List<Acomodacao> getAcomodacoes() {
+        return acomodacoes;
+    }
+
+    public void setAcomodacoes(List<Acomodacao> acomodacoes) {
+        this.acomodacoes = acomodacoes;
     }
 }
 

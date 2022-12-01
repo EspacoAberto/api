@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -32,6 +33,15 @@ public class AnuncioController {
         List<Anuncio> anuncios = anuncioRepository.findAll();
         return anuncios.isEmpty() ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(anuncios);
+    }
+
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<Anuncio> listarPorId(@PathVariable Integer id) {
+
+        Optional<Anuncio> a = anuncioRepository.findById(id);
+
+        return (a.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(a.get()));
+
     }
 
     @GetMapping("/listarFiltradoPorPreco/{precoMin}/{precoMax}")

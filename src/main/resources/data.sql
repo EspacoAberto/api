@@ -14,6 +14,9 @@ values
         ('Cliente', 'Juan', '775.919.330-00', '2002-02-03', 'juan@gmail.com', '123', true,false);
 
 insert into anuncio (descricao, preco, titulo) values ('alo', 20, 'titulo');
+insert into imovel (nome, endereco_id) values ('imovel1', 1);
+insert into acomodacao (descricao, imovel_id) values ('acomodacao', 1);
+insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (2, 'descricao', 2500, 'titulo', 10, 1, 1);
 --
 --
 --  "id": 0,
