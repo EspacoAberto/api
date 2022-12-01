@@ -60,7 +60,7 @@ public class Recibo {
         }
     }
 
-    public void gravaReciboTxt(List<Recibo> lista, String nomeArq) {
+    public void gravaReciboTxt(ListaObj<Recibo> lista, String nomeArq) {
         int contaRegDados = 0;
 
         // Monta o registro de header
@@ -72,22 +72,24 @@ public class Recibo {
 
         // Monta e grava os registros de corpo
         String corpo;
-        for (Recibo a : lista) {
+
+        for (int i = 0; i < lista.getTamanho(); i++) {
+            Recibo r = lista.getElemento(i);
+
             corpo = "02";
-            corpo += String.format("%05d", a.id);
-            corpo += String.format("%-30.30s", a.nome);
-            corpo += String.format("%-50.50s", a.endereco);
-            corpo += String.format("%-50.50s", a.descricao);
-            corpo += String.format("%02d", a.qtdQuartos);
-            corpo += String.format("%04d", a.curtidas);
-            corpo += String.format("%1d", a.avaliacao);
-            corpo += String.format("%08.2f", a.preco);
-
-
-            corpo += String.format("%02d", a.qtdAcomodacoes);
+            corpo += String.format("%05d", r.id);
+            corpo += String.format("%-30.30s", r.nome);
+            corpo += String.format("%-50.50s", r.endereco);
+            corpo += String.format("%-50.50s", r.descricao);
+            corpo += String.format("%02d", r.qtdQuartos);
+            corpo += String.format("%04d", r.curtidas);
+            corpo += String.format("%1d", r.avaliacao);
+            corpo += String.format("%08.2f", r.preco);
+            corpo += String.format("%02d", r.qtdAcomodacoes);
 
             contaRegDados++;
             gravaRegistro(corpo, nomeArq);
+
         }
 
         // Monta e grava o registro de trailer
@@ -247,7 +249,7 @@ public class Recibo {
         }
 
         try {
-            System.out.printf("%5S %-5s %-50s %-50s %7S %8S %9S %5S %11S",
+            System.out.printf("%5S %-30s %-50s %-50s %7S %8S %9S %8S %11S",
                     "ID", "NOME", "ENDEREÇO", "DESCRIÇÃO", "QUARTOS", "CURTIDAS", "AVALIAÇÃO", "PREÇO", "ACOMODACOES\n");
             while (entrada.hasNext()){
                 int id = entrada.nextInt();
@@ -259,7 +261,7 @@ public class Recibo {
                 int avaliacao = entrada.nextInt();
                 Double preco = entrada.nextDouble();
                 int qtdAcomocacoes = entrada.nextInt();
-                System.out.printf("%05d %-5s %-50s %-50s %7d %8d %9d %05.2f %11d\n",
+                System.out.printf("%05d %-30s %-50s %-50s %7d %8d %9d %8.2f %11d\n",
                         id, nome,endereco,descricao,quartos,curtidas,avaliacao,preco, qtdAcomocacoes);
             }
         }catch (NoSuchElementException erro){
