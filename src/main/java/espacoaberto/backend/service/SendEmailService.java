@@ -29,8 +29,8 @@ public class SendEmailService {
                 "\n Bem vindo(a) ao Espaço Aberto! " +
                 "\n Suas credencias de acesso estão logo a baixo: " +
                 "\n Email: %s\n Codigo: %s" +
-                "\n clique no link abaixo parar autenticar sua conta" +
-                "\n www.google.com", usuario, email, codigo);
+                "\n clique no link abaixo parar autenticar sua conta:" +
+                "\n http://localhost:9090/usuarios/autenticacao/%s/%s", usuario, email, codigo, email, codigo);
 
         var mensagem = new SimpleMailMessage();
         mensagem.setTo(email);
