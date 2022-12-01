@@ -1,9 +1,8 @@
 package espacoaberto.backend.entidades;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 
 @Entity
 public class Comodo {
@@ -14,6 +13,13 @@ public class Comodo {
     private String nome;
 
     private Integer quantidade;
+
+    @ManyToOne
+    @JsonBackReference
+    private Imovel imovel;
+
+
+
 
     // getter and setter
     public Integer getId() {
@@ -35,5 +41,13 @@ public class Comodo {
 
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public Imovel getImovel() {
+        return imovel;
+    }
+
+    public void setImovel(Imovel imovel) {
+        this.imovel = imovel;
     }
 }

@@ -14,8 +14,11 @@ public class Anuncio implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAnuncio;
 
-    private Integer idAnunciante;
-    private Integer idImovel;
+
+    @ManyToOne
+    private Anunciante anunciante;
+    @ManyToOne
+    private Imovel imovel;
     private double preco;
     private String descricao;
     private String titulo;
@@ -37,18 +40,23 @@ public class Anuncio implements Serializable {
     public void setIdAnuncio(Integer idAnuncio) {
         this.idAnuncio = idAnuncio;
     }
-    public Integer getIdAnunciante() {
-        return idAnunciante;
+
+    public Anunciante getAnunciante() {
+        return anunciante;
     }
-    public void setIdAnunciante(Integer idAnunciante) {
-        this.idAnunciante = idAnunciante;
+
+    public void setAnunciante(Anunciante anunciante) {
+        this.anunciante = anunciante;
     }
-    public Integer getIdImovel() {
-        return idImovel;
+
+    public Imovel getImovel() {
+        return imovel;
     }
-    public void setIdImovel(Integer idImovel) {
-        this.idImovel = idImovel;
+
+    public void setImovel(Imovel imovel) {
+        this.imovel = imovel;
     }
+
     public double getPreco() {
         return preco;
     }
