@@ -13,7 +13,7 @@ public class Cliente extends Usuario {
     //methods
     @Override
     public void tornarPremium() {
-        setPremium(true);
+        setIsPremium(true);
     }
 
     public Boolean autenticar(String email, String senha) {

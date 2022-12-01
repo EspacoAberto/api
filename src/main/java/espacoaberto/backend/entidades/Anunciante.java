@@ -13,16 +13,19 @@ public class Anunciante extends Usuario {
 //    private List<Anuncio> anuncios;
     //constructor
 
+
+
+
     //methods
     @Override
     public void tornarPremium() { // -> abstratic
-        setPremium(true);
+        setIsPremium(true);
     }
 
-    @Override
-    public Boolean autenticar(String email, String senha) {
-        return email.equals(this.getEmail()) && senha.equals(this.getSenha());
-    }
+//    @Override
+//    public Boolean autenticar(String email, String senha) {
+//        return email.equals(this.getEmail()) && senha.equals(this.getSenha());
+//    }
 
     public String atualizarImovel(Integer n, Imovel i){
         return null;

@@ -8,6 +8,7 @@ import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.ClienteRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 import espacoaberto.backend.repository.UsuarioRepository;
+import espacoaberto.backend.service.RandomString;
 import espacoaberto.backend.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/clientes")
 public class ClienteController {
 
+
+    @Autowired
+    private RandomString randomString;
     @Autowired
     private ClienteRepository clienteRepository;
 
@@ -29,8 +33,8 @@ public class ClienteController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente novoCliente){
-        novoCliente.setAutenticado(false);
-        sendEmailService.enviar(novoCliente.getEmail(), novoCliente.getNome(), novoCliente.getSenha());
+        novoCliente.setCodigo(randomString.gerarCodigoAlfanumerico());
+        sendEmailService.enviar(novoCliente.getEmail(), novoCliente.getNome(), novoCliente.getCodigo());
         return ResponseEntity.status(201).body(this.clienteRepository.save(novoCliente));
     }
 

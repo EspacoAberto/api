@@ -8,6 +8,7 @@ import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.ClienteRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 import espacoaberto.backend.repository.UsuarioRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuarios")
@@ -27,7 +29,7 @@ public class UsuarioController {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuario: usuarios ) {
             if (usuario.getId() == id){
-                usuario.setPremium(true);
+                usuario.setIsPremium(true);
                 usuarioRepository.save(usuario);
                 return ResponseEntity.status(200).body(usuario);
             }
@@ -35,15 +37,19 @@ public class UsuarioController {
         return ResponseEntity.status(400).build();
     }
 
-    @PostMapping("/autenticacao/{email}/{senha}")
+    @PutMapping("/autenticacao/{email}/{codigo}")
     public ResponseEntity<Usuario> logonUsuario(@PathVariable String email,
-                                                @PathVariable String senha) {
+                                                @PathVariable String codigo) {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuarioAtual : usuarios) {
-            if (usuarioAtual.autenticar(email, senha)) {
-                usuarioAtual.setAutenticado(true);
-                usuarioRepository.save(usuarioAtual);
-                return ResponseEntity.ok(usuarioAtual);
+            if (email.equals(usuarioAtual.getEmail())) {
+                if (usuarioAtual.getIsAutenticado() == false){
+                    if(codigo.equals(usuarioAtual.getCodigo())){
+                        usuarioAtual.setIsAutenticado(true);
+                        usuarioRepository.save(usuarioAtual);
+                        return ResponseEntity.status(200).body(usuarioAtual);
+                    }
+                }
             }
         }
         return ResponseEntity.notFound().build();
@@ -54,8 +60,8 @@ public class UsuarioController {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuarioAtual : usuarios) {
             if(usuarioAtual.getEmail().equals(email)) {
-                if (usuarioAtual.getAutenticado()) {
-                    usuarioAtual.setAutenticado(false);
+                if (usuarioAtual.getIsAutenticado()) {
+                    usuarioAtual.setIsAutenticado(false);
                     usuarioRepository.save(usuarioAtual);
                     return ResponseEntity.ok().
                             body(String.format("Logoff do cliente %s concluído", usuarioAtual.getEmail()));
@@ -71,9 +77,9 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> getUsuariosAutenticados() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuarioAtual : usuarios){
-            if(usuarioAtual.getAutenticado()){
+            if(usuarioAtual.getIsAutenticado()){
                 return ResponseEntity.ok().body(usuarios.stream()
-                        .filter(Usuario::getAutenticado)
+                        .filter(Usuario::getIsAutenticado)
                         .collect(Collectors.toList()));
             }
         }
@@ -84,7 +90,7 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> logoffGeral() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuario : usuarios) {
-            usuario.setAutenticado(false);
+            usuario.setIsAutenticado(false);
             usuarioRepository.save(usuario);
         }
         return ResponseEntity.ok().body(usuarios);
