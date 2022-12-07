@@ -13,8 +13,6 @@ public class Anuncio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAnuncio;
-
-
     @ManyToOne
     private Anunciante anunciante;
     @ManyToOne
@@ -24,6 +22,7 @@ public class Anuncio implements Serializable {
     private String titulo;
     @Column(columnDefinition = "int default 0")
     private Integer curtidas;
+    @Column(columnDefinition = "int default 0")
     private Integer visualizacoes;
     @JsonIgnore
     @Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
@@ -37,6 +36,7 @@ public class Anuncio implements Serializable {
     public Integer getIdAnuncio() {
         return idAnuncio;
     }
+
     public void setIdAnuncio(Integer idAnuncio) {
         this.idAnuncio = idAnuncio;
     }

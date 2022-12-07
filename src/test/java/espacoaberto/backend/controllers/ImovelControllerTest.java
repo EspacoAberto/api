@@ -23,7 +23,7 @@ public class ImovelControllerTest {
     @MockBean
     private ImovelRepository repository;
 
-    @Test
+    /*@Test
     @DisplayName("Retorna lista de Imovels e retorna o status 200")
     void retornaComSucesso(){
 
@@ -49,7 +49,7 @@ public class ImovelControllerTest {
 
         assertEquals(204, listaImovels.getStatusCodeValue());
         assertNull(listaImovels.getBody());
-    }
+    }*/
 
     @Test
     @DisplayName("Retorna 201 quando cadastro com sucesso")

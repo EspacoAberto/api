@@ -46,6 +46,27 @@ public class AnuncianteController {
                 : ResponseEntity.status(200).body(anunciantes);
     }
 
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<Anunciante> listarAnunciantePorId(@PathVariable int id){
+        Optional<Anunciante> anunciante = anuncianteRepository.findById(id);
+
+        if(anunciante.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(anunciante.get());
+    }
+
+    @GetMapping("/listarPremium")
+    public ResponseEntity<List<Anunciante>> listarAnunciantesPremium(){
+        List<Anunciante> anunciantesPremium = anuncianteRepository.findByIsPremiumTrue();
+
+        if (anunciantesPremium.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(anunciantesPremium);
+    }
+
 
 
 }
