@@ -34,6 +34,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency> <!-- Dependencia azure -->
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>11.2.1.jre17</version>
+		</dependency>
+
 		<dependency> <!--Dependencia web-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
