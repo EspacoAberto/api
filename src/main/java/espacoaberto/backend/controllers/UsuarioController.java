@@ -37,7 +37,7 @@ public class UsuarioController {
         return ResponseEntity.status(400).build();
     }
 
-    @PutMapping("/autenticacao/{email}/{codigo}")
+    @GetMapping("/autenticacao/{email}/{codigo}")
     public ResponseEntity<Usuario> logonUsuario(@PathVariable String email,
                                                 @PathVariable String codigo) {
         List<Usuario> usuarios = usuarioRepository.findAll();
