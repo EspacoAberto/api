@@ -1,9 +1,8 @@
 package espacoaberto.backend.entidades;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 
 @Entity
 public class Endereco {
@@ -15,16 +14,28 @@ public class Endereco {
     private String cidade;
     private String logradouro;
     private String numero;
+    @ManyToOne
+    @JsonBackReference
+    private Imovel imovel;
 
+    public Endereco(String cep, String estado, String cidade, String logradouro, String numero, Imovel imovel) {
+        this.cep = cep;
+        this.estado = estado;
+        this.cidade = cidade;
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.imovel = imovel;
+    }
+
+    public Endereco(){};
 
     // Getters and Setters
 
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
+
     public String getCep() {
         return cep;
     }
@@ -54,5 +65,17 @@ public class Endereco {
     }
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Imovel getImovel() {
+        return imovel;
+    }
+
+    public void setImovel(Imovel imovel) {
+        this.imovel = imovel;
     }
 }

@@ -24,10 +24,9 @@ values
         ('Cliente', 'Juan', '775.919.330-00', '2002-02-03', 'juan@gmail.com', '123', true,false);
 
 
-insert into imovel (endereco_id, disponibilidade) values (1, 'Tanto faz');
-insert into imovel (endereco_id, disponibilidade) values (1, 'Urgente');
-insert into imovel (endereco_id, disponibilidade) values (1, 'Em breve');
-insert into acomodacao (descricao, imovel_id) values ('acomodacao', 1);
+insert into imovel ( disponibilidade) values ('Tanto faz');
+insert into imovel (disponibilidade) values ('Urgente');
+insert into imovel (disponibilidade) values ('Em breve');
 insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (14, 'descricao', 5500, 'Sitio del Rei', 10, 6, 1);
 insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (71, 'descricao', 2500, 'Chacara Klabin', 10, 7, 2);
 insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (20, 'descricao', 7500, 'Chacara Emerindo Lima', 10, 1, 3);

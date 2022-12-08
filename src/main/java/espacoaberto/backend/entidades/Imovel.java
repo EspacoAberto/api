@@ -18,8 +18,9 @@ public class Imovel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne
-    private Endereco endereco;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
+    @JsonManagedReference
+    private List<Endereco> enderecos;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
     @JsonManagedReference
@@ -39,11 +40,6 @@ public class Imovel {
     @JsonManagedReference
     private List<Imagem> fotos;
 
-
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
 
     public List<Acomodacao> getAcomodacoes() {
         return acomodacoes;
