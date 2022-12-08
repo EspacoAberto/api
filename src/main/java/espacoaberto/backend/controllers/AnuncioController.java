@@ -5,10 +5,13 @@ import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
 
+import espacoaberto.backend.entidades.Imagem;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
 import espacoaberto.backend.exceptions.ReciboNaoEncontradoException;
+import espacoaberto.backend.listaObj.FilaObj;
 import espacoaberto.backend.listaObj.ListaObj;
+import espacoaberto.backend.listaObj.PilhaObj;
 import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
@@ -36,6 +39,25 @@ public class AnuncioController {
     @Autowired
     private AnuncianteRepository anuncianteRepository;
 
+    FilaObj<Anuncio> fila = new FilaObj<Anuncio>(100);
+    PilhaObj pilha = new PilhaObj<>(100);
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio){
+        fila.insert(novoAnuncio);
+        return ResponseEntity.status(201).body(novoAnuncio);
+    }
+    @PostMapping("/executarAgendamento/{qtd}")
+    public ResponseEntity<Void> executar(@PathVariable Integer qtd){
+        if (qtd < 1 || qtd > fila.getTamanho()){
+            throw new IllegalArgumentException();
+        }
+        for (int i = 0; i < qtd; i++){
+            Anuncio anuncio = fila.poll();
+            this.anuncioRepository.save(anuncio);
+        }
+
+        return ResponseEntity.status(200).build();
+    }
     @GetMapping("/listar")
     public ResponseEntity<List<Anuncio>> listar() {
 
@@ -67,13 +89,6 @@ public class AnuncioController {
         }
 
         return ResponseEntity.status(204).build();
-    }
-
-
-
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio){
-        return ResponseEntity.status(201).body(this.anuncioRepository.save(novoAnuncio));
     }
 
     @PostMapping("/gerarCsv/{nomeArq}")

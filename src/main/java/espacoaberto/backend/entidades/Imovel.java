@@ -18,9 +18,6 @@ public class Imovel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @NotBlank(message = "Nome é obrigatório")
-    private String nome;
     @OneToOne
     private Endereco endereco;
 
