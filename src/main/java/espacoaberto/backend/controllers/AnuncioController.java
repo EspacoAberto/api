@@ -59,11 +59,42 @@ public class AnuncioController {
         return ResponseEntity.status(200).build();
     }
     @GetMapping("/listar")
-    public ResponseEntity<List<Anuncio>> listar() {
+    public ResponseEntity<List<Anuncio>> listar(
+            @RequestParam(required = false) Double precoMin,
+            @RequestParam(required = false) Double precoMax,
+            @RequestParam(required = false) String disponibilidade
+    ) {
+
+        // Se vier os três parametros
+        if (precoMin != null && precoMax != null && disponibilidade != null) {
+            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(precoMin, precoMax, disponibilidade);
+            return ResponseEntity.status(200).body(anuncios);
+        }
+
+        // Se vier apenas os preços
+        if (disponibilidade == null && precoMax != null && precoMin != null) {
+            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltradosSemDisp(precoMin, precoMax);
+            return ResponseEntity.status(200).body(anuncios);
+        }
+        // Se vier apenas o preço maximo
+        if (precoMin == null && disponibilidade != null && precoMax != null) {
+            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
+            return ResponseEntity.status(200).body(anuncios);
+        }
+        // Se vier apenas o preço mínimo
+        if (precoMax == null && precoMin != null && disponibilidade != null) {
+            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
+            return ResponseEntity.status(200).body(anuncios);
+        }
+
+        /*if (precoMax == null && precoMin == null && disponibilidade != null) {
+            List<Anuncio> anuncios = imovelRepository.findByDisponibilidade(disponibilidade);
+            return ResponseEntity.status(200).body(anuncios);
+        }*/
 
         List<Anuncio> anuncios = anuncioRepository.findAll();
-        return anuncios.isEmpty() ? ResponseEntity.status(204).build()
-                : ResponseEntity.status(200).body(anuncios);
+        return ResponseEntity.status(200).body(anuncios);
+
     }
 
     @GetMapping("/listar/{id}")

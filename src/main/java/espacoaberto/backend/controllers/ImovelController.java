@@ -5,6 +5,7 @@ import espacoaberto.backend.abstrato.Usuario;
 //import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.dto.DocumentoDTO;
 import espacoaberto.backend.dto.ImagemDTO;
+import espacoaberto.backend.entidades.Anuncio;
 import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.entidades.Imagem;
 import espacoaberto.backend.entidades.Imovel;
@@ -28,8 +29,8 @@ public class ImovelController {
     @Autowired
     private AnuncioRepository anuncioRepository;
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<Imovel>> listar(
+    /*@GetMapping("/listar")
+    public ResponseEntity<List<Anuncio>> listar(
             @RequestParam(required = false) Double precoMin,
             @RequestParam(required = false) Double precoMax,
             @RequestParam(required = false) String disponibilidade
@@ -37,35 +38,35 @@ public class ImovelController {
 
         // Se vier os três parametros
         if (precoMin != null && precoMax != null && disponibilidade != null) {
-            List<Imovel> imovels = anuncioRepository.getAnunciosFiltrados(precoMin, precoMax, disponibilidade);
-            return ResponseEntity.status(200).body(imovels);
+            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(precoMin, precoMax, disponibilidade);
+            return ResponseEntity.status(200).body(anuncios);
         }
 
         // Se vier apenas os preços
         if (disponibilidade == null && precoMax != null && precoMin != null) {
-            List<Imovel> imovels = anuncioRepository.getAnunciosFiltradosSemDisp(precoMin, precoMax);
-            return ResponseEntity.status(200).body(imovels);
+            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltradosSemDisp(precoMin, precoMax);
+            return ResponseEntity.status(200).body(anuncios);
         }
         // Se vier apenas o preço maximo
         if (precoMin == null && disponibilidade != null && precoMax != null) {
-            List<Imovel> imovels = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
-            return ResponseEntity.status(200).body(imovels);
+            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
+            return ResponseEntity.status(200).body(anuncios);
         }
         // Se vier apenas o preço mínimo
         if (precoMax == null && precoMin != null && disponibilidade != null) {
-            List<Imovel> imovels = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
-            return ResponseEntity.status(200).body(imovels);
+            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
+            return ResponseEntity.status(200).body(anuncios);
         }
 
-        if (precoMax == null && precoMin == null && disponibilidade != null) {
-            List<Imovel> imovels = imovelRepository.findByDisponibilidade(disponibilidade);
-            return ResponseEntity.status(200).body(imovels);
+        /*if (precoMax == null && precoMin == null && disponibilidade != null) {
+            List<Anuncio> anuncios = imovelRepository.findByDisponibilidade(disponibilidade);
+            return ResponseEntity.status(200).body(anuncios);
         }
 
-        List<Imovel> imovels = imovelRepository.findAll();
-        return ResponseEntity.status(200).body(imovels);
+        List<Anuncio> anuncios = anuncioRepository.findAll();
+        return ResponseEntity.status(200).body(anuncios);
 
-    }
+    }*/
 
 
     @PostMapping("/cadastrar")

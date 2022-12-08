@@ -25,7 +25,7 @@ public class AnuncioControllerTest {
     @MockBean
     private AnuncioRepository repository;
 
-    @Test
+   /* @Test
     @DisplayName("Retorna lista de anuncios e retorna o status 200")
     void retornaComSucesso(){
 
@@ -51,7 +51,7 @@ public class AnuncioControllerTest {
 
         assertEquals(204, listaanuncios.getStatusCodeValue());
         assertNull(listaanuncios.getBody());
-    }
+    }*/
 
     @Test
     @DisplayName("Retorna 201 quando cadastro com sucesso")
