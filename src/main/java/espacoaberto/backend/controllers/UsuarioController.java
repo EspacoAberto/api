@@ -38,7 +38,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/autenticacao/{email}/{codigo}")
-    public ResponseEntity<Usuario> logonUsuario(@PathVariable String email,
+    public ResponseEntity<Usuario> autenticarConta(@PathVariable String email,
                                                 @PathVariable String codigo) {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuarioAtual : usuarios) {
@@ -55,13 +55,30 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/autenticacao/{email}")
+    @PostMapping("/login/{email}/{senha}")
+    public ResponseEntity<Usuario> logonUsuario(@PathVariable String email,
+                                                @PathVariable String senha) {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        for (Usuario usuarioAtual : usuarios) {
+            if (email.equals(usuarioAtual.getEmail())) {
+                if(senha.equals(usuarioAtual.getSenha())){
+                    usuarioAtual.setLogin(true);
+                    usuarioRepository.save(usuarioAtual);
+                    return ResponseEntity.ok(usuarioAtual);
+
+                }
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/logoff/{email}")
     public ResponseEntity<String> logoffUsuario(@PathVariable String email) {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuarioAtual : usuarios) {
             if(usuarioAtual.getEmail().equals(email)) {
-                if (usuarioAtual.getIsAutenticado()) {
-                    usuarioAtual.setIsAutenticado(false);
+                if (usuarioAtual.getLogin()) {
+                    usuarioAtual.setLogin(false);
                     usuarioRepository.save(usuarioAtual);
                     return ResponseEntity.ok().
                             body(String.format("Logoff do cliente %s concluído", usuarioAtual.getEmail()));

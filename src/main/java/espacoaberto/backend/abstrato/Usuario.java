@@ -31,6 +31,8 @@ public abstract class Usuario {
     private String senha;
 
     private String codigo;
+
+    private Boolean Login = false;
     private Boolean isAutenticado = false;
 
 
