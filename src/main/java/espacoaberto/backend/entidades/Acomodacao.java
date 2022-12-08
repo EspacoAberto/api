@@ -11,6 +11,14 @@ public class Acomodacao {
     private Integer id;
     private String descricao;
 
+    public Acomodacao() {
+    }
+
+    public Acomodacao(Imovel imovel, String descricao) {
+        this.descricao = descricao;
+        this.imovel = imovel;
+    }
+
     @ManyToOne
     @JsonBackReference
     private Imovel imovel;

@@ -29,7 +29,7 @@ public class ImovelController {
     @Autowired
     private AnuncioRepository anuncioRepository;
 
-    /*@GetMapping("/listar")
+    @GetMapping("/listar")
     public ResponseEntity<List<Anuncio>> listar(
             @RequestParam(required = false) Double precoMin,
             @RequestParam(required = false) Double precoMax,
@@ -61,12 +61,12 @@ public class ImovelController {
         /*if (precoMax == null && precoMin == null && disponibilidade != null) {
             List<Anuncio> anuncios = imovelRepository.findByDisponibilidade(disponibilidade);
             return ResponseEntity.status(200).body(anuncios);
-        }
+        }*/
 
         List<Anuncio> anuncios = anuncioRepository.findAll();
         return ResponseEntity.status(200).body(anuncios);
 
-    }*/
+    }
 
 
     @PostMapping("/cadastrar")

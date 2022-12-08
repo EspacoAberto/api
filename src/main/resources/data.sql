@@ -23,15 +23,17 @@ values
         ('Anunciante', 'Victor', '775.919.330-00','2002-10-17', 'nickolas.ng@outlook.com', '123', true,true),
         ('Cliente', 'Juan', '775.919.330-00', '2002-02-03', 'juan@gmail.com', '123', true,false);
 
-insert into anuncio (descricao, preco, titulo) values ('alo', 20, 'titulo');
+
 insert into imovel (endereco_id, disponibilidade) values (1, 'Tanto faz');
 insert into imovel (endereco_id, disponibilidade) values (1, 'Urgente');
 insert into imovel (endereco_id, disponibilidade) values (1, 'Em breve');
 insert into acomodacao (descricao, imovel_id) values ('acomodacao', 1);
-insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (2, 'descricao', 5500, 'titulo', 10, 6, 1);
-insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (2, 'descricao', 2500, 'titulo', 10, 7, 2);
-insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (2, 'descricao', 7500, 'titulo', 10, 1, 3);
-insert into imagem (imovel_id, photo, tipo_imagem) values (1, 'dsajkdsajkdadjla', '.jpg');
+insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (14, 'descricao', 5500, 'Sitio del Rei', 10, 6, 1);
+insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (71, 'descricao', 2500, 'Chacara Klabin', 10, 7, 2);
+insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (20, 'descricao', 7500, 'Chacara Emerindo Lima', 10, 1, 3);
+insert into imagem (imovel_id, photo, tipo_imagem) values (1, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');
+insert into imagem (imovel_id, photo, tipo_imagem) values (2, 'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');
+insert into imagem (imovel_id, photo, tipo_imagem) values (3, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');
 --
 --
 --  "id": 0,
