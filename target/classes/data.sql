@@ -1,12 +1,3 @@
-insert into endereco (cep, estado, cidade, logradouro, numero)
-values
-('8521984731', 'SP', 'Ilha Bela', 'casa', '560'),
-('9876543218', 'SP', 'Campos de Jordão', 'casa', '560'),
-('8889995132', 'MT', 'Brasilia', 'casa', '560'),
-('1234567891', 'SP', 'Sptech', 'Faculdade', '560'),
-('2005268423', 'SP', 'minha casa', 'casa', '560');
-
-
 insert into usuario
          (type, nome, cpf, data_nascimento, email, senha, is_premium, is_autenticado)
 values
@@ -27,9 +18,14 @@ values
 insert into imovel ( disponibilidade) values ('Tanto faz');
 insert into imovel (disponibilidade) values ('Urgente');
 insert into imovel (disponibilidade) values ('Em breve');
+insert into endereco (cep, estado, cidade, logradouro, numero,imovel_id)
+values
+('8521984731', 'SP', 'Ilha Bela', 'casa', '560',1),
+('9876543218', 'SP', 'Campos de Jordão', 'casa', '560',2),
+('8889995132', 'MT', 'Brasilia', 'casa', '560',3);
 insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (14, 'descricao', 5500, 'Sitio del Rei', 10, 6, 1);
 insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (71, 'descricao', 2500, 'Chacara Klabin', 10, 7, 2);
-insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (20, 'descricao', 7500, 'Chacara Emerindo Lima', 10, 1, 3);
+insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (20, 'descricao', 7500, 'Chacara Emerindo Lima', 10, 8, 3);
 insert into imagem (imovel_id, photo, tipo_imagem) values (1, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');
 insert into imagem (imovel_id, photo, tipo_imagem) values (2, 'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');
 insert into imagem (imovel_id, photo, tipo_imagem) values (3, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');

@@ -14,7 +14,7 @@ public class Endereco {
     private String cidade;
     private String logradouro;
     private String numero;
-    @ManyToOne
+    @OneToOne
     @JsonBackReference
     private Imovel imovel;
 

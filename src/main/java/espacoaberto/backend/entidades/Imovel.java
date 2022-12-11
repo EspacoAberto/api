@@ -18,9 +18,9 @@ public class Imovel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "imovel")
     @JsonManagedReference
-    private List<Endereco> enderecos;
+    private Endereco endereco;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
     @JsonManagedReference
