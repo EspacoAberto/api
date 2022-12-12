@@ -12,7 +12,7 @@ values
         ('Anunciante', 'Guilherme', '775.919.330-00','2002-10-17', 'nickolas.ng@outlook.com', '123', true,true),
         ('Anunciante', 'Vinicius', '775.919.330-00','2002-10-17', 'nickolas.ng@outlook.com', '123', true,true),
         ('Anunciante', 'Victor', '775.919.330-00','2002-10-17', 'nickolas.ng@outlook.com', '123', true,true),
-        ('Cliente', 'Juan', '775.919.330-00', '2002-02-03', 'juan@gmail.com', '123', true,false);
+        ('Anunciante', 'Juan', '775.919.330-00', '2002-02-03', 'juan@gmail.com', '123', true,true);
 
 
 insert into imovel ( disponibilidade) values ('Tanto faz');
