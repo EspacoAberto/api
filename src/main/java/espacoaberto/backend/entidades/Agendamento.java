@@ -18,6 +18,6 @@ public class Agendamento {
     @ManyToOne
     private Anunciante anunciante;
     @ManyToOne
-    private Imovel imovel;
+    private Anuncio anuncio;
 
 }
