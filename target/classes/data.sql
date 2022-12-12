@@ -26,9 +26,9 @@ values
 insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (14, 'descricao', 5500, 'Sitio del Rei', 10, 6, 1);
 insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (71, 'descricao', 2500, 'Chacara Klabin', 10, 7, 2);
 insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, imovel_id) values (20, 'descricao', 7500, 'Chacara Emerindo Lima', 10, 8, 3);
-insert into imagem (imovel_id, photo, tipo_imagem) values (1, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');
-insert into imagem (imovel_id, photo, tipo_imagem) values (2, 'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');
-insert into imagem (imovel_id, photo, tipo_imagem) values (3, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', '.jpg');
+insert into imagem (imovel_id, photo) values (1, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+insert into imagem (imovel_id, photo) values (2, 'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+insert into imagem (imovel_id, photo) values (3, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
 --
 --
 --  "id": 0,
