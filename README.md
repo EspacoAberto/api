@@ -1,16 +1,17 @@
-# BackEnd SpringBoot - Espaço Aberto
-Projeto de Pesquisa e Inovação da faculdade SPTech
+# API - Espaço Aberto
+Projeto feito por alunos da faculdade SPTECH
+
+> Espaço aberto <br>
+O lugar ideal para você alugar seu imovel por temporada.
 
 ### Construído com:
-- [Spring Web] - EndPoints (REST API)
+- Spring Web - EndPoints (REST API)
 - Swagger - Documentação viva do Java (http://localhost:9090/swagger-ui.html)
 - JPA - Comunicação com banco de dados
 
 ### 
 
 ## ✒️ Autores
-
-
 
 * **Juan Santiago** - [juansantiago58](https://github.com/juansantiago58)
 * **Kauã Silva** - [kaua010203](https://github.com/kaua010203)
