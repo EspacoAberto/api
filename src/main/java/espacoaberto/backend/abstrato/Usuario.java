@@ -34,7 +34,5 @@ public abstract class Usuario {
 
     private Boolean Login = false;
     private Boolean isAutenticado = false;
-
-
     public abstract void tornarPremium();
 }
