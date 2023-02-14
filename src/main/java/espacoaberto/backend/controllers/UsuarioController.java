@@ -9,11 +9,13 @@ import espacoaberto.backend.repository.ClienteRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 import espacoaberto.backend.repository.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,6 +25,14 @@ import java.util.stream.Collectors;
 public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @GetMapping
+    public ResponseEntity<List<Usuario>> getUsuarios(){
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        return (usuarios.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(usuarios));
+
+    }
 
     @PutMapping("/tornarPremium/{id}")
     public ResponseEntity<Usuario> tornarPremium(@PathVariable Integer id) {
@@ -111,6 +121,28 @@ public class UsuarioController {
             usuarioRepository.save(usuario);
         }
         return ResponseEntity.ok().body(usuarios);
+    }
+
+    @PutMapping ("/atualizar/{cpf}")
+    public ResponseEntity<Usuario> atualizarUsuario(@RequestBody Usuario usuario, @PathVariable String cpf){
+
+
+
+        Optional<Usuario> usuarioASerAtualizadoOP  = usuarioRepository.findByCpf(cpf);
+
+        if(usuarioASerAtualizadoOP.isPresent()){
+            Usuario usuarioASerAtualizado = usuarioASerAtualizadoOP.get();
+            usuarioASerAtualizado.setNome(usuario.getNome());
+            usuarioASerAtualizado.setEmail(usuario.getEmail());
+            usuarioASerAtualizado.setDataNascimento(usuario.getDataNascimento());
+            return ResponseEntity.status(200).body(usuarioRepository.save(usuarioASerAtualizado));
+        }
+
+        return ResponseEntity.status(404).build();
+
+
+
+
     }
 
 }

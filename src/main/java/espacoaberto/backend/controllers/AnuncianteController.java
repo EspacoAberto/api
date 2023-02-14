@@ -39,7 +39,7 @@ public class AnuncianteController {
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
     }
 
-    @GetMapping("/listar")
+    @GetMapping()
     public ResponseEntity<List<Anunciante>> listarAnunciantes(){
         List<Anunciante> anunciantes = anuncianteRepository.findAll();
         return anunciantes.isEmpty() ? ResponseEntity.status(204).build()
@@ -66,6 +66,40 @@ public class AnuncianteController {
         }
         return ResponseEntity.status(200).body(anunciantesPremium);
     }
+
+    /*
+    @GetMapping("/{cpf}")
+        public ResponseEntity<Anunciante> listarPorCpf(@PathVariable String cpf){
+            Optional<Anunciante> anunciante = anuncianteRepository.findByCpf(cpf);
+
+            if (anunciante.isEmpty()){
+                return ResponseEntity.status(204).build();
+            }
+            return ResponseEntity.status(200).body(anunciante.get());
+        }
+    }
+
+    @PutMapping ("/atualizar/{cpf}")
+    public ResponseEntity<Anunciante> atualizarUsuario(@RequestBody Anunciante usuario, @PathVariable String cpf){
+
+
+
+        Optional<Anunciante> usuarioASerAtualizadoOP  = anuncianteRepository.findByCpf(cpf);
+
+        if(usuarioASerAtualizadoOP.isPresent()){
+            Anunciante usuarioASerAtualizado = usuarioASerAtualizadoOP.get();
+            usuarioASerAtualizado.setNome(usuario.getNome());
+            usuarioASerAtualizado.setEmail(usuario.getEmail());
+            usuarioASerAtualizado.setDataNascimento(usuario.getDataNascimento());
+            return ResponseEntity.status(200).body(anuncianteRepository.save(usuarioASerAtualizado));
+        }
+
+        return ResponseEntity.status(404).build();
+
+
+
+
+    }*/
 
 
 
