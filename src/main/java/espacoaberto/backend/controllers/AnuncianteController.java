@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,24 +68,32 @@ public class AnuncianteController {
         return ResponseEntity.status(200).body(anunciantesPremium);
     }
 
-    /*
+
     @GetMapping("/{cpf}")
         public ResponseEntity<Anunciante> listarPorCpf(@PathVariable String cpf){
-            Optional<Anunciante> anunciante = anuncianteRepository.findByCpf(cpf);
+        // Decodificando o CPF que vem na requisição
+        byte[] decodedBytes = Base64.getDecoder().decode(cpf);
+        String cpfDecodificado = new String(decodedBytes);
+
+            Optional<Anunciante> anunciante = anuncianteRepository.findByCpf(cpfDecodificado);
 
             if (anunciante.isEmpty()){
                 return ResponseEntity.status(204).build();
             }
             return ResponseEntity.status(200).body(anunciante.get());
         }
-    }
+
+
 
     @PutMapping ("/atualizar/{cpf}")
     public ResponseEntity<Anunciante> atualizarUsuario(@RequestBody Anunciante usuario, @PathVariable String cpf){
 
 
+        // Decodificando o CPF que vem na requisição
+        byte[] decodedBytes = Base64.getDecoder().decode(cpf);
+        String cpfDecodificado = new String(decodedBytes);
 
-        Optional<Anunciante> usuarioASerAtualizadoOP  = anuncianteRepository.findByCpf(cpf);
+        Optional<Anunciante> usuarioASerAtualizadoOP  = anuncianteRepository.findByCpf(cpfDecodificado);
 
         if(usuarioASerAtualizadoOP.isPresent()){
             Anunciante usuarioASerAtualizado = usuarioASerAtualizadoOP.get();
@@ -99,9 +108,11 @@ public class AnuncianteController {
 
 
 
-    }*/
-
-
-
+    }
 }
+
+
+
+
+
 

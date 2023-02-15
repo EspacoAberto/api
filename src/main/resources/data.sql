@@ -1,18 +1,18 @@
 insert into usuario
          (type, nome, cpf, data_nascimento, email, senha, is_premium, is_autenticado)
 values
-        ('Anunciante', 'nickolas', '775.919.330-00','2002-10-17', 'nickolas.ng@outlook.com', '123', false,true),
-        ('Anunciante', 'Nicolau', '775.919.330-00','2002-10-17', 'nickolau.ng@outlook.com', '123', false,true),
-        ('Anunciante', 'Pedro', '775.919.330-00','2002-10-17', 'pedro@outlook.com', '123', false,true),
-        ('Anunciante', 'José', '775.919.330-00','2002-10-17', 'jose@outlook.com', '123', false,true),
-        ('Anunciante', 'Kleber', '775.919.330-00','2002-10-17', 'kklbr@outlook.com', '123', false,true),
-        ('Anunciante', 'Cabeçudo', '775.919.330-00','2002-10-17', 'cabeca@outlook.com', '123', true,true),
-        ('Anunciante', 'Paulo', '775.919.330-00','2002-10-17', 'paulo@outlook.com', '123', true,true),
-        ('Anunciante', 'Gabriel', '775.919.330-00','2002-10-17', 'gabriel@outlook.com', '123', true,true),
-        ('Anunciante', 'Guilherme', '775.919.330-00','2002-10-17', 'guilherme@outlook.com', '123', true,true),
-        ('Anunciante', 'Vinicius', '775.919.330-00','2002-10-17', 'vinicius@outlook.com', '123', true,true),
-        ('Anunciante', 'Victor', '775.919.330-00','2002-10-17', 'victor@outlook.com', '123', true,true),
-        ('Anunciante', 'Juan', '775.919.330-00', '2002-02-03', 'juan@gmail.com', '123', true,true);
+        ('Anunciante', 'nickolas', '775.919.340-00','2002-10-17', 'nickolas.ng@outlook.com', '123', false,true),
+        ('Anunciante', 'Nicolau', '775.919.430-00','2002-10-17', 'nickolau.ng@outlook.com', '123', false,true),
+        ('Anunciante', 'Pedro', '775.949.330-00','2002-10-17', 'pedro@outlook.com', '123', false,true),
+        ('Anunciante', 'José', '745.919.330-00','2002-10-17', 'jose@outlook.com', '123', false,true),
+        ('Anunciante', 'Kleber', '773.919.330-00','2002-10-17', 'kklbr@outlook.com', '123', false,true),
+        ('Anunciante', 'Cabeçudo', '775.919.332-00','2002-10-17', 'cabeca@outlook.com', '123', true,true),
+        ('Anunciante', 'Paulo', '775.919.310-00','2002-10-17', 'paulo@outlook.com', '123', true,true),
+        ('Anunciante', 'Gabriel', '725.919.330-00','2002-10-17', 'gabriel@outlook.com', '123', true,true),
+        ('Anunciante', 'Guilherme', '735.919.330-00','2002-10-17', 'guilherme@outlook.com', '123', true,true),
+        ('Anunciante', 'Vinicius', '775.219.330-00','2002-10-17', 'vinicius@outlook.com', '123', true,true),
+        ('Anunciante', 'Victor', '215.919.330-00','2002-10-17', 'victor@outlook.com', '123', true,true),
+        ('Anunciante', 'Juan', '7753219.330-00', '2002-02-03', 'juan@gmail.com', '123', true,true);
 
 
 insert into imovel ( disponibilidade) values ('Tanto faz');
