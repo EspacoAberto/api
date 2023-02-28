@@ -1,7 +1,6 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.entidades.Cliente;
-import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.repository.ClienteRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

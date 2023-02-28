@@ -52,12 +52,14 @@ private AnuncianteRepository repository;
         assertNull(listaAnunciantes.getBody());
     }
 
+
+
     @Test
     @DisplayName("Retorna 201 quando cadastro com sucesso")
     void postRetornoSucesso(){
-        /*when(repository.findAll()).thenReturn(List.of(
+       /* when(repository.findAll()).thenReturn(List.of(
                 new Anunciante()
-        ));*/
+        )); */
 
         ResponseEntity<Anunciante> retorno = controller.cadastrarAnunciante(new Anunciante());
 

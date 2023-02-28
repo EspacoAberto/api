@@ -1,23 +1,16 @@
 package espacoaberto.backend.controllers;
 
-import espacoaberto.backend.abstrato.Usuario;
-import espacoaberto.backend.entidades.Anunciante;
-import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.entidades.Cliente;
-import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.ClienteRepository;
-import espacoaberto.backend.repository.ImovelRepository;
-import espacoaberto.backend.repository.UsuarioRepository;
 import espacoaberto.backend.service.RandomString;
 import espacoaberto.backend.service.SendEmailService;
+import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Base64;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -35,8 +28,6 @@ public class ClienteController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente novoCliente){
-        novoCliente.setCodigo(randomString.gerarCodigoAlfanumerico());
-        sendEmailService.enviar(novoCliente.getEmail(), novoCliente.getNome(), novoCliente.getCodigo());
         return ResponseEntity.status(201).body(this.clienteRepository.save(novoCliente));
     }
 
@@ -49,9 +40,7 @@ public class ClienteController {
 
     @GetMapping("/{cpf}")
     public ResponseEntity<Cliente> listarPorCpf(@PathVariable String cpf){
-        // Decodificando o CPF que vem na requisição
-        byte[] decodedBytes = Base64.getDecoder().decode(cpf);
-        String cpfDecodificado = new String(decodedBytes);
+        String cpfDecodificado = ServiceBase64.descriptografaBase64(cpf);
 
         Optional<Cliente> cliente = clienteRepository.findByCpf(cpfDecodificado);
 
@@ -67,9 +56,7 @@ public class ClienteController {
     public ResponseEntity<Cliente> atualizarUsuario(@RequestBody Cliente usuario, @PathVariable String cpf){
 
 
-        // Decodificando o CPF que vem na requisição
-        byte[] decodedBytes = Base64.getDecoder().decode(cpf);
-        String cpfDecodificado = new String(decodedBytes);
+        String cpfDecodificado = ServiceBase64.descriptografaBase64(cpf);
 
         Optional<Cliente> usuarioASerAtualizadoOP  = clienteRepository.findByCpf(cpfDecodificado);
 
