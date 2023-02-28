@@ -27,6 +27,19 @@ public class UsuarioController {
 
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> getUsuario(@PathVariable Integer id){
+        List<Usuario> users = usuarioRepository.findAll();
+
+        for (Usuario user : users){
+            if(user.getId() == id){
+                return ResponseEntity.status(200).body(user);
+            }
+        }
+
+        return ResponseEntity.status(204).build();
+    }
+
     @PutMapping("/tornarPremium/{id}")
     public ResponseEntity<Usuario> tornarPremium(@PathVariable Integer id) {
         List<Usuario> usuarios = usuarioRepository.findAll();
