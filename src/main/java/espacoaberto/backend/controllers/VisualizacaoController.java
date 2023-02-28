@@ -1,16 +1,9 @@
 package espacoaberto.backend.controllers;
 
-import espacoaberto.backend.entidades.Anuncio;
-import espacoaberto.backend.entidades.Visualizacao;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.VisualizacaoRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.annotation.Repeatable;
-import java.util.List;
 
 @RestController
 @RequestMapping("/visualizacoes")

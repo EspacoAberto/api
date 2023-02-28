@@ -1,11 +1,9 @@
 package espacoaberto.backend.controllers;
 
-import espacoaberto.backend.entidades.Acomodacao;
 import espacoaberto.backend.entidades.Endereco;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.EnderecoRepository;
 import espacoaberto.backend.repository.ImovelRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,7 @@ public class EnderecoController {
     @Autowired
     private ImovelRepository imovelRepository;
 
-    @PostMapping("/cadastrarEndereco/{id}")
+    @PostMapping("/cadastrar/{id}")
     public ResponseEntity<Endereco> cadastrarEndereco(@PathVariable int id, @RequestBody Endereco endereco){
         Optional<Imovel> im = imovelRepository.findById(id);
 

@@ -1,23 +1,18 @@
 package espacoaberto.backend.controllers;
 
-import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.entidades.Anunciante;
-import espacoaberto.backend.entidades.Anuncio;
-import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.AnuncianteRepository;
-import espacoaberto.backend.repository.AnuncioRepository;
-import espacoaberto.backend.repository.ImovelRepository;
 import espacoaberto.backend.service.RandomString;
 import espacoaberto.backend.service.SendEmailService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import espacoaberto.backend.service.ServiceBase64;
 
-import java.util.Base64;
+
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
 @CrossOrigin(origins = "*")
@@ -33,10 +28,11 @@ public class AnuncianteController {
     @Autowired
     private SendEmailService sendEmailService;
 
+    @Autowired
+    private ServiceBase64 serviceBase64;
+
     @PostMapping("/cadastrar")
     public ResponseEntity<Anunciante> cadastrarAnunciante(@RequestBody Anunciante novoAnunciante){
-        novoAnunciante.setCodigo(randomString.gerarCodigoAlfanumerico());
-        sendEmailService.enviar(novoAnunciante.getEmail(), novoAnunciante.getNome(), novoAnunciante.getCodigo() );
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
     }
 
@@ -47,12 +43,12 @@ public class AnuncianteController {
                 : ResponseEntity.status(200).body(anunciantes);
     }
 
-    @GetMapping("/listar/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Anunciante> listarAnunciantePorId(@PathVariable int id){
         Optional<Anunciante> anunciante = anuncianteRepository.findById(id);
 
         if(anunciante.isEmpty()){
-            return ResponseEntity.status(204).build();
+            return ResponseEntity.status(404).build();
         }
 
         return ResponseEntity.status(200).body(anunciante.get());
@@ -71,9 +67,16 @@ public class AnuncianteController {
 
     @GetMapping("/{cpf}")
         public ResponseEntity<Anunciante> listarPorCpf(@PathVariable String cpf){
+
+
+        String cpfDecodificado = ServiceBase64.descriptografaBase64(cpf);
+
+        /*
         // Decodificando o CPF que vem na requisição
         byte[] decodedBytes = Base64.getDecoder().decode(cpf);
         String cpfDecodificado = new String(decodedBytes);
+
+         */
 
             Optional<Anunciante> anunciante = anuncianteRepository.findByCpf(cpfDecodificado);
 
@@ -89,9 +92,7 @@ public class AnuncianteController {
     public ResponseEntity<Anunciante> atualizarUsuario(@RequestBody Anunciante usuario, @PathVariable String cpf){
 
 
-        // Decodificando o CPF que vem na requisição
-        byte[] decodedBytes = Base64.getDecoder().decode(cpf);
-        String cpfDecodificado = new String(decodedBytes);
+        String cpfDecodificado = ServiceBase64.descriptografaBase64(cpf);
 
         Optional<Anunciante> usuarioASerAtualizadoOP  = anuncianteRepository.findByCpf(cpfDecodificado);
 

@@ -2,7 +2,6 @@ package espacoaberto.backend.repository;
 
 import espacoaberto.backend.entidades.Imagem;
 import espacoaberto.backend.entidades.Imovel;
-import espacoaberto.backend.listaObj.ListaObj;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

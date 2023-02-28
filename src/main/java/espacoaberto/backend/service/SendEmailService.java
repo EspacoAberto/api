@@ -1,6 +1,8 @@
 package espacoaberto.backend.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.cfg.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -30,7 +32,7 @@ public class SendEmailService {
                 "\n Suas credencias de acesso estão logo a baixo: " +
                 "\n Email: %s\n Codigo: %s" +
                 "\n clique no link abaixo parar autenticar sua conta:" +
-                "\n http://localhost:9090/usuarios/autenticacao/%s/%s", usuario, email, codigo, email, codigo);
+                "\n http://localhost:9091/usuarios/autenticacao/%s/%s", usuario, email, codigo,email, codigo);
 
         var mensagem = new SimpleMailMessage();
         mensagem.setTo(email);
