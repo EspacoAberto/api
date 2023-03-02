@@ -1,22 +1,15 @@
 package espacoaberto.backend.controllers;
 
 //import espacoaberto.backend.csv.ExportacaoCsv;
-import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
 
-import espacoaberto.backend.entidades.Imagem;
-import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
-import espacoaberto.backend.exceptions.ReciboNaoEncontradoException;
-import espacoaberto.backend.listaObj.FilaObj;
-import espacoaberto.backend.listaObj.ListaObj;
-import espacoaberto.backend.listaObj.PilhaObj;
 import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 
-import org.apache.coyote.Response;
+import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +32,12 @@ public class AnuncioController {
     @Autowired
     private AnuncianteRepository anuncianteRepository;
 
-    FilaObj<Anuncio> fila = new FilaObj<Anuncio>(100);
-    PilhaObj pilha = new PilhaObj<>(100);
     @PostMapping("/cadastrar")
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio){
-        fila.insert(novoAnuncio);
         return ResponseEntity.status(201).body(novoAnuncio);
     }
-    @PostMapping("/executarAgendamento/{qtd}")
+
+    /* @PostMapping("/executarAgendamento/{qtd}")
     public ResponseEntity<Void> executar(@PathVariable Integer qtd){
         if (qtd < 1 || qtd > fila.getTamanho()){
             throw new IllegalArgumentException();
@@ -57,8 +48,8 @@ public class AnuncioController {
         }
 
         return ResponseEntity.status(200).build();
-    }
-    @GetMapping("/listar")
+    }*/
+    @GetMapping()
     public ResponseEntity<List<Anuncio>> listar(
             @RequestParam(required = false) Double precoMin,
             @RequestParam(required = false) Double precoMax,
@@ -68,22 +59,42 @@ public class AnuncioController {
         // Se vier os três parametros
         if (precoMin != null && precoMax != null && disponibilidade != null) {
             List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(precoMin, precoMax, disponibilidade);
+
+            if (anuncios.isEmpty()){
+                return ResponseEntity.status(204).build();
+            }
+
             return ResponseEntity.status(200).body(anuncios);
         }
 
         // Se vier apenas os preços
         if (disponibilidade == null && precoMax != null && precoMin != null) {
             List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltradosSemDisp(precoMin, precoMax);
+
+            if (anuncios.isEmpty()){
+                return ResponseEntity.status(204).build();
+            }
+
             return ResponseEntity.status(200).body(anuncios);
         }
         // Se vier apenas o preço maximo
         if (precoMin == null && disponibilidade != null && precoMax != null) {
             List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
+
+            if (anuncios.isEmpty()){
+                return ResponseEntity.status(204).build();
+            }
+
             return ResponseEntity.status(200).body(anuncios);
         }
         // Se vier apenas o preço mínimo
         if (precoMax == null && precoMin != null && disponibilidade != null) {
             List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
+
+            if (anuncios.isEmpty()){
+                return ResponseEntity.status(204).build();
+            }
+
             return ResponseEntity.status(200).body(anuncios);
         }
 
@@ -93,12 +104,16 @@ public class AnuncioController {
         }*/
 
         List<Anuncio> anuncios = anuncioRepository.findAll();
+        if (anuncios.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
         return ResponseEntity.status(200).body(anuncios);
 
     }
 
-    @GetMapping("/listar/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Anuncio> listarPorId(@PathVariable Integer id) {
+        String idDecodificado = ServiceBase64.descriptografaBase64(id.toString());
 
         Optional<Anuncio> a = anuncioRepository.findById(id);
 
@@ -122,18 +137,6 @@ public class AnuncioController {
         return ResponseEntity.status(204).build();
     }
 
-    @PostMapping("/gerarCsv/{nomeArq}")
-    public ResponseEntity gerarCsv(@PathVariable String nomeArq){
-        List<Anuncio> listAnuncios = anuncioRepository.findAll();
-        ListaObj<Anuncio> anuncios = new ListaObj<>(listAnuncios.size());
-
-        for (Anuncio A  : listAnuncios){
-            anuncios.adiciona(A);
-        }
-
-//        ExportacaoCsv.gravarArquivoCsvAnuncio(anuncios, nomeArq);
-        return ResponseEntity.status(200).build();
-    }
 
     @CrossOrigin("*")
     @PatchMapping(value = "/foto/{id}", consumes = "image/jpeg")
@@ -185,9 +188,5 @@ public class AnuncioController {
         
     }
 
-    @GetMapping("/teste/{id}")
-    public ResponseEntity<List<Anuncio>> teste(@PathVariable int id){
-        return ResponseEntity.status(200).body(anuncioRepository.findByAnuncianteId(id));
-    }
 
 }

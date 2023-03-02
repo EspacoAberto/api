@@ -1,19 +1,11 @@
 package espacoaberto.backend.controllers;
 
-import com.sun.xml.txw2.Document;
-import espacoaberto.backend.abstrato.Usuario;
 //import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.dto.DocumentoDTO;
-import espacoaberto.backend.dto.ImagemDTO;
-import espacoaberto.backend.entidades.Anuncio;
-import espacoaberto.backend.entidades.Cliente;
-import espacoaberto.backend.entidades.Imagem;
 import espacoaberto.backend.entidades.Imovel;
-import espacoaberto.backend.listaObj.ListaObj;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,42 +21,17 @@ public class ImovelController {
     @Autowired
     private AnuncioRepository anuncioRepository;
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<Anuncio>> listar(
-            @RequestParam(required = false) Double precoMin,
-            @RequestParam(required = false) Double precoMax,
-            @RequestParam(required = false) String disponibilidade
+    @GetMapping()
+    public ResponseEntity<List<Imovel>> listar(
+
     ) {
 
-        // Se vier os três parametros
-        if (precoMin != null && precoMax != null && disponibilidade != null) {
-            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(precoMin, precoMax, disponibilidade);
-            return ResponseEntity.status(200).body(anuncios);
-        }
+        List<Imovel> imoveis = imovelRepository.findAll();
 
-        // Se vier apenas os preços
-        if (disponibilidade == null && precoMax != null && precoMin != null) {
-            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltradosSemDisp(precoMin, precoMax);
-            return ResponseEntity.status(200).body(anuncios);
+        if(imoveis.isEmpty()){
+            return ResponseEntity.status(204).build();
         }
-        // Se vier apenas o preço maximo
-        if (precoMin == null && disponibilidade != null && precoMax != null) {
-            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
-            return ResponseEntity.status(200).body(anuncios);
-        }
-        // Se vier apenas o preço mínimo
-        if (precoMax == null && precoMin != null && disponibilidade != null) {
-            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
-            return ResponseEntity.status(200).body(anuncios);
-        }
-
-        /*if (precoMax == null && precoMin == null && disponibilidade != null) {
-            List<Anuncio> anuncios = imovelRepository.findByDisponibilidade(disponibilidade);
-            return ResponseEntity.status(200).body(anuncios);
-        }*/
-
-        List<Anuncio> anuncios = anuncioRepository.findAll();
-        return ResponseEntity.status(200).body(anuncios);
+        return ResponseEntity.status(200).body(imoveis);
 
     }
 
@@ -74,20 +41,7 @@ public class ImovelController {
         return ResponseEntity.status(201).body(this.imovelRepository.save(novoImovel));
     }
 
-    @PostMapping("/gerarCsv/{nomeArq}")
-    public ResponseEntity gerarCsv(@PathVariable String nomeArq) {
-        List<Imovel> listImoveis = imovelRepository.findAll();
-        ListaObj<Imovel> imoveis = new ListaObj<>(listImoveis.size());
-
-        for (Imovel Im : listImoveis) {
-            imoveis.adiciona(Im);
-        }
-
-//        ExportacaoCsv.gravarArquivoCsvImovel(imoveis, nomeArq);
-        return ResponseEntity.status(200).build();
-    }
-
-    @PatchMapping("/cadastrarDocumento/{id}")
+    @PatchMapping("/cadastrar/{id}")
     public ResponseEntity<Imovel> cadastrarDocumento(
             @PathVariable Integer id,
             @RequestBody DocumentoDTO documento

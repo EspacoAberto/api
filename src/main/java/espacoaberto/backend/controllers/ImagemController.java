@@ -6,7 +6,6 @@ import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.ImagemRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ public class ImagemController {
     @Autowired
     private ImovelRepository imovelRepository;
 
-    @PostMapping("/cadastrarImagem/{id}")
+    @PostMapping("/cadastrar/{id}")
     public ResponseEntity<Imagem> cadastrarImagem(
             @PathVariable Integer id,
             @RequestBody ImagemDTO imagem

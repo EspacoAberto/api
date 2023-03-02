@@ -3,7 +3,6 @@ package espacoaberto.backend.controllers;
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.repository.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<Usuario>> getUsuarios(){
         List<Usuario> usuarios = usuarioRepository.findAll();
 
@@ -74,7 +73,7 @@ public class UsuarioController {
                 }
             }
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(401).build();
     }
 
     @DeleteMapping("/logoff/{email}")

@@ -1,9 +1,7 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.entidades.Agendamento;
-import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.repository.AgendamentoRepository;
-import espacoaberto.backend.repository.AnuncianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +23,7 @@ public class AgendamentoController {
         return ResponseEntity.status(201).body(this.agendamentoRepository.save(novoAgendamento));
     }
 
-    @GetMapping("/listarAgendamentos")
+    @GetMapping()
     public ResponseEntity<List<Agendamento>> listarAgendamentos(){
         List<Agendamento> agendamentos = agendamentoRepository.findAll();
         return agendamentos.isEmpty() ? ResponseEntity.status(204).build()

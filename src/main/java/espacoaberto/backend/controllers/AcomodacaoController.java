@@ -4,7 +4,6 @@ import espacoaberto.backend.entidades.Acomodacao;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.AcomodacaoRepository;
 import espacoaberto.backend.repository.ImovelRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class AcomodacaoController {
     @Autowired
     private ImovelRepository imovelRepository;
 
-    @PostMapping("/cadastrarAcomodacao/{id}")
+    @PostMapping("/cadastrar/{id}")
     public ResponseEntity<Acomodacao> cadastrarAcomodacao(@PathVariable int id, @RequestBody Acomodacao acomodacao){
         Optional<Imovel> im = imovelRepository.findById(id);
 

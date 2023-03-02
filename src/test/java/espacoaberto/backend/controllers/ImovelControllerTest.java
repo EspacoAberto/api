@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -23,7 +22,7 @@ public class ImovelControllerTest {
     @MockBean
     private ImovelRepository repository;
 
-    /*@Test
+    @Test
     @DisplayName("Retorna lista de Imovels e retorna o status 200")
     void retornaComSucesso(){
 
@@ -49,14 +48,14 @@ public class ImovelControllerTest {
 
         assertEquals(204, listaImovels.getStatusCodeValue());
         assertNull(listaImovels.getBody());
-    }*/
+    }
 
     @Test
     @DisplayName("Retorna 201 quando cadastro com sucesso")
     void postRetornoSucesso(){
-        /*when(repository.findAll()).thenReturn(List.of(
+        when(repository.findAll()).thenReturn(List.of(
                 new Imovel()
-        ));*/
+        ));
 
         ResponseEntity<Imovel> retorno = controller.cadastrar(new Imovel());
 

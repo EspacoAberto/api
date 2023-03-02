@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -25,7 +24,7 @@ public class AnuncioControllerTest {
     @MockBean
     private AnuncioRepository repository;
 
-   /* @Test
+    @Test
     @DisplayName("Retorna lista de anuncios e retorna o status 200")
     void retornaComSucesso(){
 
@@ -35,7 +34,7 @@ public class AnuncioControllerTest {
                 new Anuncio()
         ));
 
-        ResponseEntity<List<Anuncio>> listaAnuncios = controller.listar();
+        ResponseEntity<List<Anuncio>> listaAnuncios = controller.listar(null, null, null);
 
         assertEquals(200, listaAnuncios.getStatusCodeValue());
         assertTrue(listaAnuncios.getBody().size() > 0);
@@ -47,11 +46,11 @@ public class AnuncioControllerTest {
 
         when(repository.findAll()).thenReturn(new ArrayList<>());
 
-        ResponseEntity<List<Anuncio>> listaanuncios = controller.listar();
+        ResponseEntity<List<Anuncio>> listaanuncios = controller.listar(null, null, null);
 
         assertEquals(204, listaanuncios.getStatusCodeValue());
         assertNull(listaanuncios.getBody());
-    }*/
+    }
 
     @Test
     @DisplayName("Retorna 201 quando cadastro com sucesso")
