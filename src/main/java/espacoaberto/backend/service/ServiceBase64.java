@@ -2,6 +2,8 @@ package espacoaberto.backend.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
+
 @Service
 public class ServiceBase64 {
 
@@ -19,5 +21,15 @@ public class ServiceBase64 {
         }
 
 
+    }
+
+    public static String encriptografaBae64(Integer idDecodificado){
+
+        if (idDecodificado != null){
+            String idCodificado = Base64.getEncoder().encodeToString(idDecodificado.toString().getBytes());
+            return idCodificado;
+        }else{
+            throw new IllegalArgumentException("Id vazio");
+        }
     }
 }

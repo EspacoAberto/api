@@ -1,6 +1,7 @@
 package espacoaberto.backend.controllers;
 
 //import espacoaberto.backend.csv.ExportacaoCsv;
+
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -33,7 +35,7 @@ public class AnuncioController {
     private AnuncianteRepository anuncianteRepository;
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio){
+    public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio) {
         return ResponseEntity.status(201).body(novoAnuncio);
     }
 
@@ -60,7 +62,7 @@ public class AnuncioController {
         if (precoMin != null && precoMax != null && disponibilidade != null) {
             List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(precoMin, precoMax, disponibilidade);
 
-            if (anuncios.isEmpty()){
+            if (anuncios.isEmpty()) {
                 return ResponseEntity.status(204).build();
             }
 
@@ -71,7 +73,7 @@ public class AnuncioController {
         if (disponibilidade == null && precoMax != null && precoMin != null) {
             List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltradosSemDisp(precoMin, precoMax);
 
-            if (anuncios.isEmpty()){
+            if (anuncios.isEmpty()) {
                 return ResponseEntity.status(204).build();
             }
 
@@ -81,7 +83,7 @@ public class AnuncioController {
         if (precoMin == null && disponibilidade != null && precoMax != null) {
             List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
 
-            if (anuncios.isEmpty()){
+            if (anuncios.isEmpty()) {
                 return ResponseEntity.status(204).build();
             }
 
@@ -91,7 +93,7 @@ public class AnuncioController {
         if (precoMax == null && precoMin != null && disponibilidade != null) {
             List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
 
-            if (anuncios.isEmpty()){
+            if (anuncios.isEmpty()) {
                 return ResponseEntity.status(204).build();
             }
 
@@ -104,31 +106,38 @@ public class AnuncioController {
         }*/
 
         List<Anuncio> anuncios = anuncioRepository.findAll();
-        if (anuncios.isEmpty()){
+        if (anuncios.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(anuncios);
 
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Anuncio> listarPorId(@PathVariable Integer id) {
-        String idDecodificado = ServiceBase64.descriptografaBase64(id.toString());
+    @GetMapping("/{idBase64}")
+    public ResponseEntity<Anuncio> listarPorId(@PathVariable String idBase64) {
+        String idDecodificado;
 
-        Optional<Anuncio> a = anuncioRepository.findById(id);
+        try {
+            idDecodificado = ServiceBase64.descriptografaBase64(idBase64);
+            Optional<Anuncio> a = anuncioRepository.findById(Integer.parseInt(idDecodificado));
+            return (a.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(a.get()));
 
-        return (a.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(a.get()));
+        } catch (Exception e) {
+            System.out.println("Não foi possível converter o ID de base 64");
+        }
+
+        return ResponseEntity.status(404).build();
 
     }
 
 
     @PatchMapping("aumentarCurtidas/{idAnuncio}")
-    public ResponseEntity<Anuncio> aumentarCurtidas(@PathVariable Integer idAnuncio){
+    public ResponseEntity<Anuncio> aumentarCurtidas(@PathVariable Integer idAnuncio) {
 
         List<Anuncio> anuncios = anuncioRepository.findAll();
 
         for (int i = 0; i < anuncios.size(); i++) {
-            if(anuncios.get(i).getIdAnuncio() == idAnuncio){
+            if (anuncios.get(i).getIdAnuncio() == idAnuncio) {
                 anuncios.get(i).setCurtidas(anuncios.get(i).getCurtidas() + 1);
                 return ResponseEntity.status(200).body(anuncios.get(i));
             }
@@ -163,13 +172,13 @@ public class AnuncioController {
     }
 
     @GetMapping("/listarAnunciosPremium")
-    public ResponseEntity<List<Anuncio>> listarAnunciosPremium(){
+    public ResponseEntity<List<Anuncio>> listarAnunciosPremium() {
         List<Anunciante> usuariosPremium = anuncianteRepository.findByIsPremiumTrue();
         List<Anunciante> usuariosPremiumFiltro = new ArrayList<>();
 
         // pegando os seis primeiros anunciantes
         for (int i = 0; i < 6; i++) {
-            if(usuariosPremium.get(i) != null){
+            if (usuariosPremium.get(i) != null) {
                 usuariosPremiumFiltro.add(usuariosPremium.get(i));
             }
         }
@@ -177,15 +186,15 @@ public class AnuncioController {
         List<Anuncio> anunciosSelecionados = new ArrayList<>();
 
         for (Anunciante a : usuariosPremiumFiltro) {
-           List<Anuncio> anuncios =  anuncioRepository.findByAnuncianteId(a.getId());
+            List<Anuncio> anuncios = anuncioRepository.findByAnuncianteId(a.getId());
 
-           if(!anuncios.isEmpty()){
-               anunciosSelecionados.add(anuncios.get(0));
-           }
+            if (!anuncios.isEmpty()) {
+                anunciosSelecionados.add(anuncios.get(0));
+            }
         }
 
         return ResponseEntity.status(200).body(anunciosSelecionados);
-        
+
     }
 
 

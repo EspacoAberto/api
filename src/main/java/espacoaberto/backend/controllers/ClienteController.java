@@ -38,7 +38,24 @@ public class ClienteController {
                 : ResponseEntity.status(200).body(clientes);
     }
 
-    @GetMapping("/{cpf}")
+
+    @GetMapping("/{idBase64}")
+    public ResponseEntity<Cliente> listarPorId(@PathVariable String idBase64){
+        Integer idDecodificado;
+
+        try{
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+            Optional<Cliente> c = clienteRepository.findById(idDecodificado);
+            return (c.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(c.get()));
+        }catch (Exception e){
+            System.out.println("Não foi possível converter o ID de base 64");
+        }
+
+        return ResponseEntity.status(404).build();
+
+    }
+
+    @GetMapping("/listarPorCpf/{cpf}")
     public ResponseEntity<Cliente> listarPorCpf(@PathVariable String cpf){
         String cpfDecodificado = ServiceBase64.descriptografaBase64(cpf);
 
