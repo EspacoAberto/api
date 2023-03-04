@@ -112,10 +112,10 @@ public class AnuncioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Anuncio> listarPorId(@PathVariable Integer id) {
-        String idDecodificado = ServiceBase64.descriptografaBase64(id.toString());
+    public ResponseEntity<Anuncio> listarPorId(@PathVariable String id) {
+        Integer idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(id.toString()));
 
-        Optional<Anuncio> a = anuncioRepository.findById(id);
+        Optional<Anuncio> a = anuncioRepository.findById(idDecodificado);
 
         return (a.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(a.get()));
 
