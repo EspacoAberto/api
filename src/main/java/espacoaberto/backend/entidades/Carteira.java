@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Carteira {
     @Id // Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id_carteira;
     @OneToOne
     @JsonBackReference
     private Usuario fkUsuario;
