@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ImovelRepository extends JpaRepository<Imovel, Integer> {
 
 
-    List<Imovel> findByDisponibilidade(String disponibilidade);
+    // List<Imovel> findByDisponibilidade(String disponibilidade);
 
     @Modifying
     @Transactional

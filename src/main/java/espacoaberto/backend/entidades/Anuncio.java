@@ -20,6 +20,9 @@ public class Anuncio implements Serializable {
     private double preco;
     private String descricao;
     private String titulo;
+
+
+    private String disponibilidade;
     @Column(columnDefinition = "int default 0")
     private Integer curtidas;
     @Column(columnDefinition = "int default 0")
@@ -43,6 +46,14 @@ public class Anuncio implements Serializable {
 
     public Anunciante getAnunciante() {
         return anunciante;
+    }
+
+    public String getDisponibilidade() {
+        return disponibilidade;
+    }
+
+    public void setDisponibilidade(String disponibilidade) {
+        this.disponibilidade = disponibilidade;
     }
 
     public void setAnunciante(Anunciante anunciante) {

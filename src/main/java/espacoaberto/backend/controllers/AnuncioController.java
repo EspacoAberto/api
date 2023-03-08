@@ -60,7 +60,7 @@ public class AnuncioController {
 
         // Se vier os três parametros
         if (precoMin != null && precoMax != null && disponibilidade != null) {
-            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(precoMin, precoMax, disponibilidade);
+            List<Anuncio> anuncios = anuncioRepository.findByDisponibilidadeAndPrecoBetween(disponibilidade, precoMin, precoMax);
 
             if (anuncios.isEmpty()) {
                 return ResponseEntity.status(204).build();
@@ -71,7 +71,7 @@ public class AnuncioController {
 
         // Se vier apenas os preços
         if (disponibilidade == null && precoMax != null && precoMin != null) {
-            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltradosSemDisp(precoMin, precoMax);
+            List<Anuncio> anuncios = anuncioRepository.findByPrecoBetween(precoMin, precoMax);
 
             if (anuncios.isEmpty()) {
                 return ResponseEntity.status(204).build();
@@ -80,8 +80,8 @@ public class AnuncioController {
             return ResponseEntity.status(200).body(anuncios);
         }
         // Se vier apenas o preço maximo
-        if (precoMin == null && disponibilidade != null && precoMax != null) {
-            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
+        if (precoMin == null && disponibilidade == null && precoMax != null) {
+            List<Anuncio> anuncios = anuncioRepository.findByPrecoLessThan(precoMin);
 
             if (anuncios.isEmpty()) {
                 return ResponseEntity.status(204).build();
@@ -90,8 +90,21 @@ public class AnuncioController {
             return ResponseEntity.status(200).body(anuncios);
         }
         // Se vier apenas o preço mínimo
-        if (precoMax == null && precoMin != null && disponibilidade != null) {
-            List<Anuncio> anuncios = anuncioRepository.getAnunciosFiltrados(0.0, precoMax, disponibilidade);
+        if (precoMax == null && precoMin != null && disponibilidade == null) {
+            List<Anuncio> anuncios = anuncioRepository.findByPrecoGreaterThan(precoMin);
+
+            if (anuncios.isEmpty()) {
+                return ResponseEntity.status(204).build();
+            }
+
+
+
+            return ResponseEntity.status(200).body(anuncios);
+        }
+
+        // Se vier apenas disponibilidade
+        if (precoMax == null && precoMin == null && disponibilidade != null) {
+            List<Anuncio> anuncios = anuncioRepository.findByDisponibilidade(disponibilidade);
 
             if (anuncios.isEmpty()) {
                 return ResponseEntity.status(204).build();
@@ -99,11 +112,6 @@ public class AnuncioController {
 
             return ResponseEntity.status(200).body(anuncios);
         }
-
-        /*if (precoMax == null && precoMin == null && disponibilidade != null) {
-            List<Anuncio> anuncios = imovelRepository.findByDisponibilidade(disponibilidade);
-            return ResponseEntity.status(200).body(anuncios);
-        }*/
 
         List<Anuncio> anuncios = anuncioRepository.findAll();
         if (anuncios.isEmpty()) {
