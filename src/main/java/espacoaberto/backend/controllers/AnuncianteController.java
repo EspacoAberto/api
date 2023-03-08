@@ -43,15 +43,27 @@ public class AnuncianteController {
                 : ResponseEntity.status(200).body(anunciantes);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Anunciante> listarAnunciantePorId(@PathVariable int id){
-        Optional<Anunciante> anunciante = anuncianteRepository.findById(id);
+    @GetMapping("/{idBase64}")
+    public ResponseEntity<Anunciante> listarAnunciantePorId(@PathVariable String idBase64){
+        Integer idDecodificado;
 
-        if(anunciante.isEmpty()){
-            return ResponseEntity.status(404).build();
+        try{
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+
+            Optional<Anunciante> anunciante = anuncianteRepository.findById(idDecodificado);
+
+            if(anunciante.isEmpty()){
+                return ResponseEntity.status(404).build();
+            }
+
+            return ResponseEntity.status(200).body(anunciante.get());
+
+        }catch (Exception e) {
+            System.out.println("Não foi possível converter o ID de base 64");
         }
 
-        return ResponseEntity.status(200).body(anunciante.get());
+        return ResponseEntity.status(404).build();
+
     }
 
     @GetMapping("/listarPremium")
@@ -65,7 +77,7 @@ public class AnuncianteController {
     }
 
 
-    @GetMapping("/{cpf}")
+    @GetMapping("/listarPorCpf/{cpf}")
         public ResponseEntity<Anunciante> listarPorCpf(@PathVariable String cpf){
 
 

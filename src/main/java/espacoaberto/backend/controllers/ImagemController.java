@@ -5,6 +5,7 @@ import espacoaberto.backend.entidades.Imagem;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.ImagemRepository;
 import espacoaberto.backend.repository.ImovelRepository;
+import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,24 +22,34 @@ public class ImagemController {
     @Autowired
     private ImovelRepository imovelRepository;
 
-    @PostMapping("/cadastrar/{id}")
+    @PostMapping("/cadastrar/{idBase64}")
     public ResponseEntity<Imagem> cadastrarImagem(
-            @PathVariable Integer id,
+            @PathVariable String idBase64,
             @RequestBody ImagemDTO imagem
     ){
-        Optional<Imovel> im = imovelRepository.findById(id);
+        Integer idDecodificado;
 
-        if(im.isEmpty()){
-            return ResponseEntity.status(404).build();
+        try{
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+
+            Optional<Imovel> im = imovelRepository.findById(idDecodificado);
+
+            if(im.isEmpty()){
+                return ResponseEntity.status(404).build();
+            }
+
+
+
+            Imagem imagemCadastrar = new Imagem(im.get(), imagem.getImagem(), imagem.getTipoArquivo());
+
+            this.imagemRepository.save(imagemCadastrar);
+
+            return ResponseEntity.status(200).body(imagemCadastrar);
+        } catch(Exception e) {
+            System.out.println("Não foi possível converter o ID de base 64");
         }
 
-
-
-        Imagem imagemCadastrar = new Imagem(im.get(), imagem.getImagem(), imagem.getTipoArquivo());
-
-        this.imagemRepository.save(imagemCadastrar);
-
-        return ResponseEntity.status(200).body(imagemCadastrar);
+        return ResponseEntity.status(404).build();
 
 
     }
