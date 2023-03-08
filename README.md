@@ -6,7 +6,7 @@ O lugar ideal para você alugar seu imovel por temporada.
 
 ### Construído com:
 - Spring Web - EndPoints (REST API)
-- Swagger - Documentação viva do Java (http://localhost:9090/swagger-ui.html)
+- Swagger - Documentação viva do Java (http://localhost:9091/swagger-ui.html)
 - JPA - Comunicação com banco de dados
 
 ### 

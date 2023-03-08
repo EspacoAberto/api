@@ -1,7 +1,11 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.abstrato.Usuario;
+import espacoaberto.backend.entidades.Carteira;
+import espacoaberto.backend.repository.CarteiraRepository;
 import espacoaberto.backend.repository.UsuarioRepository;
+import espacoaberto.backend.service.ServiceBase64;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +21,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/usuarios")
 public class UsuarioController {
     @Autowired
+    private ServiceBase64 serviceBase64;
+    @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CarteiraRepository carteiraRepository;
 
     @GetMapping()
     public ResponseEntity<List<Usuario>> getUsuarios(){
@@ -135,6 +144,48 @@ public class UsuarioController {
 
 
 
+
+    }
+
+    @GetMapping("/{id_usuario}/carteira/consultarSaldo")
+    public ResponseEntity<Carteira> consultaSaldoCarteira(@PathVariable String id_usuario){
+
+        List<Usuario> allUsers = usuarioRepository.findAll();
+
+        String idDecodificado = ServiceBase64.descriptografaBase64(id_usuario.toString());
+
+        int idDecodificadoInt = Integer.parseInt(idDecodificado);
+
+        for (Usuario user: allUsers) {
+            if(user.getId() == idDecodificadoInt){
+               return ResponseEntity.status(200).body(user.getCarteira());
+            }
+        }
+        return ResponseEntity.status(404).build();
+
+    }
+
+    @PutMapping("/{id_usuario}/carteira/depositar/{valor}")
+    public ResponseEntity<Carteira> despositarSaldoCateira(@PathVariable String id_usuario, @PathVariable Double valor){
+        if(valor < 1) {
+            return ResponseEntity.status(406).build();
+        }
+
+        String idDecodificado = ServiceBase64.descriptografaBase64(id_usuario.toString());
+
+        int idDecodificadoInt = Integer.parseInt(idDecodificado);
+
+        List<Usuario> allUsers = usuarioRepository.findAll();
+
+        for (Usuario user: allUsers) {
+            if(user.getId() == idDecodificadoInt){
+                Optional<Carteira> carteiraASerAtualizadaOP = carteiraRepository.findById(user.getCarteira().getId_carteira());
+                Carteira carteiraAtualizada = carteiraASerAtualizadaOP.get();
+                carteiraAtualizada.setSaldo(carteiraAtualizada.getSaldo() + valor);
+                return ResponseEntity.status(200).body(this.carteiraRepository.save(carteiraAtualizada));
+            }
+        }
+        return ResponseEntity.status(404).build();
 
     }
 

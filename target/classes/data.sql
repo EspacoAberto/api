@@ -14,6 +14,23 @@ values
         ('Anunciante', 'Victor', '215.919.330-00','2002-10-17', 'victor@outlook.com', '123', true,true),
         ('Anunciante', 'Juan', '7753219.330-00', '2002-02-03', 'juan@gmail.com', '123', true,true);
 
+insert into Carteira
+(fk_usuario_id, saldo)
+values
+(1,100.0),
+(2,100.0),
+(3,100.0),
+(4,100.0),
+(5,100.0),
+(6,100.0),
+(7,100.0),
+(8,100.0),
+(9,100.0),
+(10,100.0),
+(11,100.0),
+(12,100.0);
+
+
 
 insert into imovel ( disponibilidade) values ('Tanto faz');
 insert into imovel (disponibilidade) values ('Urgente');
