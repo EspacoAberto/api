@@ -34,26 +34,30 @@ insert into imovel (qtd_quartos, qtd_banheiros)
 values
 (4, 2),
 (7, 4),
-(5, 3);
+(5, 3),
+(2, 1),
+(3, 2);
 
 insert into endereco (cep, estado, cidade, logradouro, numero, imovel_id)
 values
 ('8521984731', 'SP', 'Ilha Bela', 'casa', '1070',1),
 ('9876543218', 'SP', 'Campos do Jordão', '9621', '560',2),
-('8889995132', 'MT', 'Brasilia', 'casa', '63',3);
+('8889995132', 'MT', 'Brasilia', 'casa', '63',3),
+('58050280', 'PB', 'João Pessoa', 'casa', '758', 4),
+('57052070', 'AL', 'Maceió', 'casa', '568', 5);
 
 insert into imagem (imovel_id, photo)
 values
-(1,
-'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
-(2,
-'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
-(3,
-'https://images.pexels.com/photos/13894755/pexels-photo-13894755.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
-(3,
-'https://images.pexels.com/photos/235725/pexels-photo-235725.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
-(3,
-'https://images.pexels.com/photos/13867111/pexels-photo-13867111.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720dpr=2');
+(1,'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
+(2,'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
+(3,'https://images.pexels.com/photos/13894755/pexels-photo-13894755.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
+(3,'https://images.pexels.com/photos/235725/pexels-photo-235725.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
+(3,'https://images.pexels.com/photos/13867111/pexels-photo-13867111.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720dpr=2'),
+(4, 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
+(4, 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=853&q=80'),
+(5, 'https://images.unsplash.com/photo-1567002260834-61d030a974d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
+(5, 'https://images.unsplash.com/photo-1601327708356-cd4e1c399e2e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=828&q=80'),
+(5, 'https://images.unsplash.com/photo-1558036117-15d82a90b9b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');
 
 insert into anuncio (
 imovel_id,
@@ -72,18 +76,7 @@ values
  'Sitio del Rei',
  50,
  10,
- 'Em breve');
-
-insert into anuncio (
-imovel_id,
-curtidas,
-descricao,
-preco,
-titulo,
-visualizacoes,
-anunciante_id,
-disponibilidade)
-values
+ 'Em breve'),
 (2,
 75,
 'Chácara Aparecida é o lugal perfeito para você que deseja fazer uma festa com o pessoal',
@@ -91,18 +84,7 @@ values
 'Chácara Aparecida',
 186,
 11,
-'Disponivel');
-
-insert into anuncio (
-imovel_id,
-curtidas,
-descricao,
-preco,
-titulo,
-visualizacoes,
-anunciante_id,
-disponibilidade)
-values
+'Disponivel'),
 (3,
 75,
 'Chácara Bela Vista é uma maravilha para você que busca um lugar amplo',
@@ -110,4 +92,24 @@ values
 'Chácara Bela Vista',
 186,
 11,
-'Disponivel');
+'Disponivel'),
+(
+4,
+260,
+'Lugar moderno e bom para qualquer tipo de publico.',
+3560.50,
+'Casa da alvorada',
+530,
+6,
+'Em breve'
+),
+(
+5,
+165,
+'Casa do interior com um design muito interessante.',
+1253.00,
+'Casa Campo Belo',
+342,
+7,
+'Disponivel'
+);
