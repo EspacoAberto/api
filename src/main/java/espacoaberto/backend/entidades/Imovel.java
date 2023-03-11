@@ -19,6 +19,7 @@ public class Imovel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "imovel")
+
     @JsonManagedReference
     private Endereco endereco;
 

@@ -30,26 +30,84 @@ values
 (11,100.0),
 (12,100.0);
 
+insert into imovel (qtd_quartos, qtd_banheiros)
+values
+(4, 2),
+(7, 4),
+(5, 3);
 
+insert into endereco (cep, estado, cidade, logradouro, numero, imovel_id)
+values
+('8521984731', 'SP', 'Ilha Bela', 'casa', '1070',1),
+('9876543218', 'SP', 'Campos do Jordão', '9621', '560',2),
+('8889995132', 'MT', 'Brasilia', 'casa', '63',3);
 
+insert into imagem (imovel_id, photo)
+values
+(1,
+'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
+(2,
+'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
+(3,
+'https://images.pexels.com/photos/13894755/pexels-photo-13894755.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
+(3,
+'https://images.pexels.com/photos/235725/pexels-photo-235725.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
+(3,
+'https://images.pexels.com/photos/13867111/pexels-photo-13867111.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720dpr=2');
 
--- insert into endereco (cep, estado, cidade, logradouro, numero,imovel_id)
--- values
--- ('8521984731', 'SP', 'Ilha Bela', 'casa', '560',1),
--- ('9876543218', 'SP', 'Campos de Jordão', 'casa', '560',2),
--- ('8889995132', 'MT', 'Brasilia', 'casa', '560',3);
-insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, disponibilidade) values (14, 'descricao', 5500, 'Sitio del Rei', 10, 1, 'Em breve');
-insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id,  disponibilidade) values (71, 'descricao', 2500, 'Chacara Klabin', 10, 2, 'Urgente');
-insert into anuncio (curtidas, descricao, preco, titulo, visualizacoes, anunciante_id, disponibilidade) values (20, 'descricao', 7500, 'Chacara Emerindo Lima', 10, 10, 'Tanto faz');
--- insert into imagem (imovel_id, photo) values (1, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
--- insert into imagem (imovel_id, photo) values (2, 'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
--- insert into imagem (imovel_id, photo) values (3, 'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
---
---
---  "id": 0,
---  "nome": "string",
---  "dataNascimento": "2022-10-19",
---  "cpf": "string",
---  "email": "string",
---  "senha": "string",
---  "premium": true
+insert into anuncio (
+imovel_id,
+curtidas,
+descricao,
+preco,
+titulo,
+visualizacoes,
+anunciante_id,
+disponibilidade)
+values
+(1,
+14,
+'Sitio del Rei é um lugar muito agradavel e calmo para você passar o final de semana  com a familia',
+ 5500,
+ 'Sitio del Rei',
+ 50,
+ 10,
+ 'Em breve');
+
+insert into anuncio (
+imovel_id,
+curtidas,
+descricao,
+preco,
+titulo,
+visualizacoes,
+anunciante_id,
+disponibilidade)
+values
+(2,
+75,
+'Chácara Aparecida é o lugal perfeito para você que deseja fazer uma festa com o pessoal',
+2660.50,
+'Chácara Aparecida',
+186,
+11,
+'Disponivel');
+
+insert into anuncio (
+imovel_id,
+curtidas,
+descricao,
+preco,
+titulo,
+visualizacoes,
+anunciante_id,
+disponibilidade)
+values
+(3,
+75,
+'Chácara Bela Vista é uma maravilha para você que busca um lugar amplo',
+1560.50,
+'Chácara Bela Vista',
+186,
+11,
+'Disponivel');
