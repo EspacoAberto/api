@@ -17,18 +17,18 @@ values
 insert into Carteira
 (fk_usuario_id, saldo)
 values
-(1,100.0),
-(2,100.0),
-(3,100.0),
-(4,100.0),
-(5,100.0),
+(1,535.56),
+(2,1000.00),
+(3,750.00),
+(4,240.00),
+(5,0),
 (6,100.0),
-(7,100.0),
-(8,100.0),
-(9,100.0),
-(10,100.0),
-(11,100.0),
-(12,100.0);
+(7,75.0),
+(8,124.0),
+(9,465.0),
+(10,896.0),
+(11,666.0),
+(12,858.0);
 
 insert into imovel (qtd_quartos, qtd_banheiros)
 values
@@ -48,11 +48,11 @@ values
 
 insert into imagem (imovel_id, photo)
 values
-(1,'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
-(2,'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
-(3,'https://images.pexels.com/photos/13894755/pexels-photo-13894755.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
-(3,'https://images.pexels.com/photos/235725/pexels-photo-235725.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2'),
-(3,'https://images.pexels.com/photos/13867111/pexels-photo-13867111.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720dpr=2'),
+(1,'https://images.pexels.com/photos/2468773/pexels-photo-2468773.jpeg?auto=compress&cs=tinysrgb&w=854&h=480&dpr=2'),
+(2,'https://images.pexels.com/photos/453201/pexels-photo-453201.jpeg?auto=compress&cs=tinysrgb&w=854&h=480&dpr=2'),
+(3,'https://images.pexels.com/photos/13894755/pexels-photo-13894755.jpeg?auto=compress&cs=tinysrgb&w=854&h=480&dpr=2'),
+(3,'https://images.pexels.com/photos/235725/pexels-photo-235725.jpeg?auto=compress&cs=tinysrgb&w=854&h=480&dpr=2'),
+(3,'https://images.pexels.com/photos/13867111/pexels-photo-13867111.jpeg?auto=compress&cs=tinysrgb&w=854&h=480dpr=2'),
 (4, 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
 (4, 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=853&q=80'),
 (5, 'https://images.unsplash.com/photo-1567002260834-61d030a974d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
