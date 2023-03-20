@@ -205,5 +205,35 @@ public class AnuncioController {
 
     }
 
+    @PatchMapping("aumentarVisualizacoes/{idBase64}")
+    public ResponseEntity<Anuncio> aumentarVisualizacao(@PathVariable String idBase64){
+        int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+
+        Optional<Anuncio> OPanuncioEncontrado = anuncioRepository.findById(id);
+
+        if (OPanuncioEncontrado.isPresent()){
+            // Caso encontre o anuncio procurado
+            Anuncio anuncioEncontrado = OPanuncioEncontrado.get();
+            int visualizacoes = anuncioEncontrado.getVisualizacoes();
+            visualizacoes = visualizacoes +  1;
+            anuncioEncontrado.setVisualizacoes(visualizacoes);
+            anuncioRepository.save(anuncioEncontrado);
+
+            // Criando novo anuncio com mesmas caracteristicas e aumentando 1 de visualização
+
+
+
+
+            return ResponseEntity.status(201).body(anuncioEncontrado);
+
+
+        }else {
+            return ResponseEntity.status(404).build();
+        }
+
+
+
+    }
+
 
 }
