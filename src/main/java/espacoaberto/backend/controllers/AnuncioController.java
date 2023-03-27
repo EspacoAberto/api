@@ -2,13 +2,14 @@ package espacoaberto.backend.controllers;
 
 //import espacoaberto.backend.csv.ExportacaoCsv;
 
+import espacoaberto.backend.dto.AvaliacaoDTO;
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
 
+import espacoaberto.backend.entidades.Avaliacao;
+import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
-import espacoaberto.backend.repository.AnuncianteRepository;
-import espacoaberto.backend.repository.AnuncioRepository;
-import espacoaberto.backend.repository.ImovelRepository;
+import espacoaberto.backend.repository.*;
 
 import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,11 @@ public class AnuncioController {
     @Autowired
     private ImovelRepository imovelRepository;
     @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
+    @Autowired
     private AnuncianteRepository anuncianteRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio) {
@@ -205,6 +210,9 @@ public class AnuncioController {
 
     }
 
+
+
+
     @PatchMapping("aumentarVisualizacoes/{idBase64}")
     public ResponseEntity<Anuncio> aumentarVisualizacao(@PathVariable String idBase64){
         int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
@@ -233,6 +241,49 @@ public class AnuncioController {
 
 
 
+    }
+
+
+    @PostMapping("enviarAvaliacao")
+    public ResponseEntity<Avaliacao> enviarAvaliacao(@RequestBody AvaliacaoDTO avDTO){
+        Avaliacao avaliacao = new Avaliacao();
+
+        Anuncio an = anuncioRepository.findById(avDTO.getIdAnuncio()).get();
+
+        // Verifica se o usuário é anunciante
+        Optional<Anunciante> ant = anuncianteRepository.findById(avDTO.getIdUsuario());
+
+        // É anunciante
+        if(ant.isPresent()){
+            Anunciante antEncontrado = ant.get();
+            avaliacao.setUsuario(antEncontrado);
+
+        }else{
+            // É cliente
+            Optional<Cliente> cli = clienteRepository.findById(avDTO.getIdUsuario());
+            Cliente cliEncontrado = cli.get();
+            avaliacao.setUsuario(cliEncontrado);
+        }
+
+
+        avaliacao.setAnuncio(an);
+        avaliacao.setAvaliacao(avDTO.getAvaliacao());
+        return ResponseEntity.status(200).body(avaliacaoRepository.save(avaliacao));
+
+
+
+    }
+
+    @GetMapping("avaliacoes")
+    public ResponseEntity<List<Avaliacao>> listarAvaliacoes(){
+
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findAll();
+
+        if (avaliacoes.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }else {
+            return ResponseEntity.status(200).body(avaliacoes);
+        }
     }
 
 
