@@ -6,16 +6,26 @@ import java.util.Base64;
 
 @Service
 public class ServiceBase64 {
+    public static void main(String[]args){
+        System.out.println(descriptografaBase64("MQWEWRW"));
+
+    }
 
 
     public static String descriptografaBase64(String stringCodificada){
 
         if (stringCodificada != null){
             // Decodificando o CPF que vem na requisição
-            byte[] decodedBytes = java.util.Base64.getDecoder().decode(stringCodificada);
-            String stringDecodificado = new String(decodedBytes);
+            try {
+                byte[] decodedBytes = java.util.Base64.getDecoder().decode(stringCodificada);
+                String stringDecodificado = new String(decodedBytes);
 
-            return stringDecodificado;
+                Integer.parseInt(stringDecodificado);
+                return stringDecodificado;
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            return null;
         } else{
             throw new IllegalArgumentException("String vazia!");
         }

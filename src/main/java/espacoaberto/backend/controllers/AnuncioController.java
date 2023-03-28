@@ -2,6 +2,7 @@ package espacoaberto.backend.controllers;
 
 //import espacoaberto.backend.csv.ExportacaoCsv;
 
+import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.AvaliacaoDTO;
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
@@ -12,6 +13,7 @@ import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
 import espacoaberto.backend.repository.*;
 
 import espacoaberto.backend.service.ServiceBase64;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,8 @@ public class AnuncioController {
     private AnuncianteRepository anuncianteRepository;
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio) {
@@ -275,15 +279,86 @@ public class AnuncioController {
     }
 
     @GetMapping("avaliacoes")
-    public ResponseEntity<List<Avaliacao>> listarAvaliacoes(){
+    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoes(){
 
         List<Avaliacao> avaliacoes = avaliacaoRepository.findAll();
+        List<AvaliacaoDTO> avaliacoesDTO = new ArrayList<>();
 
         if (avaliacoes.isEmpty()){
             return ResponseEntity.status(204).build();
         }else {
-            return ResponseEntity.status(200).body(avaliacoes);
+            // Rodando a lista de avaliações encontradas e adicionando a listas de DTO
+            for (int i = 0; i < avaliacoes.size(); i++) {
+                AvaliacaoDTO avDTO = new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao());
+                avaliacoesDTO.add(avDTO);
+            }
+            return ResponseEntity.status(200).body(avaliacoesDTO);
         }
+    }
+
+   @GetMapping("avaliacoes/usuarios/{idBase64}")
+    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesPorUsuario(@PathVariable String idBase64){
+        String stid = ServiceBase64.descriptografaBase64(idBase64);
+
+        if (stid == null){
+            return ResponseEntity.status(404).build();
+        }
+
+        int id = Integer.parseInt(stid);
+
+        // Verificando se o usuário existe
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
+        if(optionalUsuario.isPresent()){
+            Usuario usuario = optionalUsuario.get();
+            List<AvaliacaoDTO> avaliacoesDTO = new ArrayList<>();
+            List<Avaliacao> avaliacoes = avaliacaoRepository.findByUsuario(usuario);
+            //Verificando se a lista de avaliações está vazia
+            if (avaliacoes.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }else {
+            // Convertendo avaliação para avaliacao DTO
+            // Rodando a lista de avaliações encontradas e adicionando a listas de DTO
+            for (int i = 0; i < avaliacoes.size(); i++) {
+                AvaliacaoDTO avDTO = new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao());
+                avaliacoesDTO.add(avDTO);
+            }
+            return ResponseEntity.status(200).body(avaliacoesDTO);
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("avaliacoes/anuncio/{idBase64}")
+    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacaoPorAnuncio(@PathVariable String idBase64){
+        String stid = ServiceBase64.descriptografaBase64(idBase64);
+
+        if (stid == null){
+            return ResponseEntity.status(404).build();
+        }
+
+        int id = Integer.parseInt(stid);
+
+        // Verificando se o anuncio existe
+        Optional<Anuncio> optionalAnuncio = anuncioRepository.findById(id);
+
+        if(optionalAnuncio.isPresent()){
+            List<Avaliacao> avaliacoes = avaliacaoRepository.findByAnuncio(optionalAnuncio.get());
+            // Verificando se contém anúncios
+            if (avaliacoes.isEmpty()){
+                return ResponseEntity.status(204).build();
+            }else {
+                List<AvaliacaoDTO> avaliacaoDTOS = new ArrayList<>();
+                // Convertendo as avaliacoes do anuncio em avaliações DTO
+                for (int i = 0; i < avaliacoes.size(); i++) {
+                    avaliacaoDTOS.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
+
+                }
+                return ResponseEntity.status(200).body(avaliacaoDTOS);
+            }
+        }else{
+        }
+        return ResponseEntity.status(404).build();
     }
 
 

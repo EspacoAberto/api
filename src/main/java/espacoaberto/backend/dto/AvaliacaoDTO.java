@@ -6,6 +6,12 @@ public class AvaliacaoDTO {
 
     private Double avaliacao;
 
+    public AvaliacaoDTO(Integer idAnuncio, Integer idUsuario, Double avaliacao) {
+        this.idAnuncio = idAnuncio;
+        this.idUsuario = idUsuario;
+        this.avaliacao = avaliacao;
+    }
+
     public Integer getIdAnuncio() {
         return idAnuncio;
     }

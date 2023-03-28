@@ -102,6 +102,7 @@ public class UsuarioController {
         return ResponseEntity.status(404).body(String.format("Cliente %s não encontrado", email));
     }
 
+
     @GetMapping("/autenticados")
     public ResponseEntity<List<Usuario>> getUsuariosAutenticados() {
         List<Usuario> usuarios = usuarioRepository.findAll();
