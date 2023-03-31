@@ -19,10 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -360,6 +359,53 @@ public class AnuncioController {
         }
         return ResponseEntity.status(404).build();
     }
+
+    @GetMapping("avaliacoes/ordenarPorMaior")
+    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesOrdenadoPorMaior(){
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findAll();
+
+        if (avaliacoes.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        List<AvaliacaoDTO> avaliacoesDTO = new ArrayList<>();
+        for (int i = 0; i < avaliacoes.size(); i++) {
+            avaliacoesDTO.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
+        }
+
+        // Ordenando as avaliações
+        List<AvaliacaoDTO> sortedList = avaliacoesDTO.stream()
+                .sorted(Comparator.comparingDouble(AvaliacaoDTO::getAvaliacao)
+                        .reversed())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(200).body(sortedList);
+
+    }
+
+    @GetMapping("avaliacoes/ordenarPorMenor")
+    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesOrdenadoPorMenor(){
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findAll();
+
+        if (avaliacoes.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        List<AvaliacaoDTO> avaliacoesDTO = new ArrayList<>();
+        for (int i = 0; i < avaliacoes.size(); i++) {
+            avaliacoesDTO.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
+        }
+
+        // Ordenando as avaliações
+        List<AvaliacaoDTO> sortedList = avaliacoesDTO.stream()
+                .sorted(Comparator.comparingDouble(AvaliacaoDTO::getAvaliacao))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(200).body(sortedList);
+
+    }
+
+
 
 
 }
