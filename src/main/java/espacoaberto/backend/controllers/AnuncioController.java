@@ -405,6 +405,32 @@ public class AnuncioController {
 
     }
 
+    @GetMapping("/avaliacoes/mediaPorImovel/{idBase64}")
+    public ResponseEntity<Double> retornaMediaPorImovel(@PathVariable String idBase64){
+        int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+        Optional<Anuncio> OPanuncioEncontrado = anuncioRepository.findById(id);
+
+        if (OPanuncioEncontrado.isPresent()){
+            List<Avaliacao> avaliacoes = avaliacaoRepository.findByAnuncio(OPanuncioEncontrado.get());
+            // Verificando se contém anúncios
+            if (avaliacoes.isEmpty()){
+                return ResponseEntity.status(204).build();
+            }else{
+                Double media = 0.0;
+                for (int i = 0; i < avaliacoes.size(); i++) {
+                    media += avaliacoes.get(i).getAvaliacao();
+                }
+                media = media / avaliacoes.size();
+                return ResponseEntity.status(200).body(media);
+            }
+
+        }else{
+            return ResponseEntity.status(404).build();
+        }
+
+
+    }
+
 
 
 
