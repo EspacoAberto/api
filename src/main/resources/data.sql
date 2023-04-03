@@ -1,7 +1,7 @@
 insert into usuario
          (type, nome, cpf, data_nascimento, email, senha, is_premium, is_autenticado)
 values
-        ('Anunciante', 'nickolas', '775.919.340-00','2002-10-17', 'nickolas.ng@outlook.com', '123', false,true),
+        ('Cliente', 'nickolas', '775.919.340-00','2002-10-17', 'nickolas.ng@outlook.com', '123', false,true),
         ('Anunciante', 'Nicolau', '775.919.430-00','2002-10-17', 'nickolau.ng@outlook.com', '123', false,true),
         ('Anunciante', 'Pedro', '775.949.330-00','2002-10-17', 'pedro@outlook.com', '123', false,true),
         ('Anunciante', 'José', '745.919.330-00','2002-10-17', 'jose@outlook.com', '123', false,true),
