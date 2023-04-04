@@ -1,5 +1,6 @@
 package espacoaberto.backend.repository;
 
+import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.entidades.Anuncio;
 
 import espacoaberto.backend.entidades.Imovel;
@@ -39,6 +40,7 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Integer> {
     List<Anuncio> getAnunciosPorAnunciante(int idAnunciante);
 
     List<Anuncio> findByAnuncianteId(int idAnunciante);
+    //List<Anuncio> findByUsuario(Usuario usuario);
 
 
 
