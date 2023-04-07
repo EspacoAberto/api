@@ -1,5 +1,8 @@
 package espacoaberto.backend.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import espacoaberto.backend.abstrato.Usuario;
 import lombok.*;
 
@@ -16,7 +19,7 @@ public class Agendamento {
     private String dataCheckout;
 
     @ManyToOne
-    private Anunciante usuario;
+    private Cliente usuario;
     @ManyToOne
     private Anuncio anuncio;
 
