@@ -33,6 +33,15 @@ public class AnuncianteController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Anunciante> cadastrarAnunciante(@RequestBody Anunciante novoAnunciante){
+        // Validando se o e-mail cadastrado já existe
+        String email = novoAnunciante.getEmail();
+        Optional<Anunciante> opAnunciante = anuncianteRepository.findByEmail(email);
+
+        if(opAnunciante.isPresent()){
+            return ResponseEntity.status(409).build();
+        }
+
+
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
     }
 
