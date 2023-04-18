@@ -1,6 +1,7 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.entidades.Anunciante;
+import espacoaberto.backend.entidades.Carteira;
 import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.service.RandomString;
 import espacoaberto.backend.service.SendEmailService;
@@ -40,6 +41,9 @@ public class AnuncianteController {
         if(opAnunciante.isPresent()){
             return ResponseEntity.status(409).build();
         }
+        Carteira newCarteira = new Carteira( novoAnunciante, 0.0);
+
+        novoAnunciante.setCarteira(newCarteira);
 
 
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
