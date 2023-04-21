@@ -77,7 +77,6 @@ public class UsuarioController {
                     usuarioAtual.setLogin(true);
                     usuarioRepository.save(usuarioAtual);
                     return ResponseEntity.ok(usuarioAtual);
-
                 }
             }
         }

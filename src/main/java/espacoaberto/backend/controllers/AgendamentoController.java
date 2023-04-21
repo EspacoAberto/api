@@ -1,6 +1,11 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.abstrato.Usuario;
+import espacoaberto.backend.dto.AgendamentoDTO;
+
+import java.time.*;
+
+import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
 import espacoaberto.backend.entidades.Agendamento;
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
@@ -11,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,24 +36,19 @@ public class AgendamentoController {
     @Autowired
     private AgendamentoRepository agendamentoRepository;
     @Autowired
+    private PendenciaAgendamentoDTORepository  pendenciaAgendamentoDTORepository;
+    @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
     private AnuncioRepository anuncioRepository;
 
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Agendamento> cadastrarAgendamento(@RequestBody Agendamento novoAgendamento){
-
-        Optional<Cliente> usuario = clienteRepository.findById(novoAgendamento.getUsuario().getId());
-
-        Optional<Anuncio> anuncio = anuncioRepository.findById(novoAgendamento.getAnuncio().getIdAnuncio());
-
-        novoAgendamento.setAnuncio(anuncio.get());
-        novoAgendamento.setUsuario(usuario.get());
 
 
-        return ResponseEntity.status(201).body(this.agendamentoRepository.save(novoAgendamento));
-    }
+
+
+
+
 
     @GetMapping()
     public ResponseEntity<List<Agendamento>> listarAgendamentos(){

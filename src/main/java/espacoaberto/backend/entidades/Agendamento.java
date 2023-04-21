@@ -19,7 +19,7 @@ public class Agendamento {
     private String dataCheckout;
 
     @ManyToOne
-    private Cliente usuario;
+    private Usuario usuario;
     @ManyToOne
     private Anuncio anuncio;
 

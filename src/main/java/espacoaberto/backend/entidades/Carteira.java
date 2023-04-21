@@ -23,6 +23,8 @@ public class Carteira {
 
     private Double saldo = 0.0;
 
+    public Carteira() {
+    }
 
     public Carteira(Usuario fkUsuario, Double saldo) {
         this.fkUsuario = fkUsuario;
