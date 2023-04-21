@@ -123,7 +123,7 @@ public class PendenciasAgendamentoController {
 
     }
 
-    @DeleteMapping("/excluir/{idBase64}")
+   /* @DeleteMapping("/excluir/{idBase64}")
     public ResponseEntity<PendenciaAgendamentoDTO> excluirAgendamento(@PathVariable String idBase64) {
         Integer idDecodificado;
 
@@ -156,5 +156,5 @@ public class PendenciasAgendamentoController {
         } else{
             return ResponseEntity.status(404).build();
         }
-    }
+    } */
 }
