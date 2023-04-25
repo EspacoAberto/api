@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuarios")
@@ -127,15 +125,6 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarios);
     }
 
-    @GetMapping("/{token}")
-    public ResponseEntity<Usuario> consultaUsuario(@PathVariable byte[] token){
-        Optional<Usuario> response = usuarioRepository.findByEmail(new String(Base64.getDecoder().decode(token)));
-
-        return (response.isEmpty() ?
-                ResponseEntity.status(404).build() :
-                ResponseEntity.status(200).body(response.get())
-        );
-    }
     @PutMapping ("/atualizar/{cpf}")
     public ResponseEntity<Usuario> atualizarUsuario(@RequestBody Usuario usuario, @PathVariable String cpf){
 
