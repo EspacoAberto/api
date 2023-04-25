@@ -1,6 +1,7 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.entidades.Anunciante;
+import espacoaberto.backend.entidades.Carteira;
 import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.service.RandomString;
 import espacoaberto.backend.service.SendEmailService;
@@ -33,6 +34,18 @@ public class AnuncianteController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Anunciante> cadastrarAnunciante(@RequestBody Anunciante novoAnunciante){
+        // Validando se o e-mail cadastrado já existe
+        String email = novoAnunciante.getEmail();
+        Optional<Anunciante> opAnunciante = anuncianteRepository.findByEmail(email);
+
+        if(opAnunciante.isPresent()){
+            return ResponseEntity.status(409).build();
+        }
+        Carteira newCarteira = new Carteira( novoAnunciante, 0.0);
+
+        novoAnunciante.setCarteira(newCarteira);
+
+
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
     }
 
@@ -43,15 +56,27 @@ public class AnuncianteController {
                 : ResponseEntity.status(200).body(anunciantes);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Anunciante> listarAnunciantePorId(@PathVariable int id){
-        Optional<Anunciante> anunciante = anuncianteRepository.findById(id);
+    @GetMapping("/{idBase64}")
+    public ResponseEntity<Anunciante> listarAnunciantePorId(@PathVariable String idBase64){
+        Integer idDecodificado;
 
-        if(anunciante.isEmpty()){
-            return ResponseEntity.status(404).build();
+        try{
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+
+            Optional<Anunciante> anunciante = anuncianteRepository.findById(idDecodificado);
+
+            if(anunciante.isEmpty()){
+                return ResponseEntity.status(404).build();
+            }
+
+            return ResponseEntity.status(200).body(anunciante.get());
+
+        }catch (Exception e) {
+            System.out.println("Não foi possível converter o ID de base 64");
         }
 
-        return ResponseEntity.status(200).body(anunciante.get());
+        return ResponseEntity.status(404).build();
+
     }
 
     @GetMapping("/listarPremium")
@@ -65,7 +90,7 @@ public class AnuncianteController {
     }
 
 
-    @GetMapping("/{cpf}")
+    @GetMapping("/listarPorCpf/{cpf}")
         public ResponseEntity<Anunciante> listarPorCpf(@PathVariable String cpf){
 
 

@@ -1,7 +1,8 @@
 package espacoaberto.backend.abstrato;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import espacoaberto.backend.entidades.Carteira;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,12 +24,17 @@ public abstract class Usuario {
     private String nome;
     @Past
     private LocalDate dataNascimento;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "fkUsuario")
+    @JsonManagedReference
+    private Carteira carteira;
     @NotBlank(message = "CPF é obrigatório")
     private String cpf;
     private Boolean isPremium = false;
     @Email
     private String email;
     private String senha;
+    private String telefone;
 
     private String codigo;
 

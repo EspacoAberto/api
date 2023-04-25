@@ -19,6 +19,7 @@ public class Imovel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "imovel")
+
     @JsonManagedReference
     private Endereco endereco;
 
@@ -26,7 +27,7 @@ public class Imovel {
     @JsonManagedReference
     private List<Acomodacao> acomodacoes;
 
-    private String disponibilidade;
+
 
     @Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
     private byte[] comprovante;
@@ -81,13 +82,6 @@ public class Imovel {
         this.tipoArquivoComprovante = tipoArquivoComprovante;
     }
 
-    public String getDisponibilidade() {
-        return disponibilidade;
-    }
-
-    public void setDisponibilidade(String disponibilidade) {
-        this.disponibilidade = disponibilidade;
-    }
 
     public List<Imagem> getFotos() {
         return fotos;

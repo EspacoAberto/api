@@ -2,6 +2,7 @@ package espacoaberto.backend.entidades;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Value;
 
 
 import javax.persistence.*;
@@ -20,10 +21,15 @@ public class Anuncio implements Serializable {
     private double preco;
     private String descricao;
     private String titulo;
+
+
+    private String disponibilidade;
     @Column(columnDefinition = "int default 0")
     private Integer curtidas;
     @Column(columnDefinition = "int default 0")
     private Integer visualizacoes;
+    @Column(columnDefinition = "double default 5.0")
+    private Double avaliacao;
     @JsonIgnore
     @Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
     private byte[] foto;
@@ -43,6 +49,14 @@ public class Anuncio implements Serializable {
 
     public Anunciante getAnunciante() {
         return anunciante;
+    }
+
+    public String getDisponibilidade() {
+        return disponibilidade;
+    }
+
+    public void setDisponibilidade(String disponibilidade) {
+        this.disponibilidade = disponibilidade;
     }
 
     public void setAnunciante(Anunciante anunciante) {
@@ -86,5 +100,13 @@ public class Anuncio implements Serializable {
     }
     public void setVisualizacoes(Integer visualizacoes) {
         this.visualizacoes = visualizacoes;
+    }
+
+    public Double getAvaliacao() {
+        return avaliacao;
+    }
+
+    public void setAvaliacao(Double avaliacao) {
+        this.avaliacao = avaliacao;
     }
 }
