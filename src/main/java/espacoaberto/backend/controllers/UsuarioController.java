@@ -1,11 +1,14 @@
 package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.abstrato.Usuario;
+import espacoaberto.backend.dto.Usuario.Input.InLogin;
+import espacoaberto.backend.dto.Usuario.Output.OutLogin;
 import espacoaberto.backend.entidades.Carteira;
+import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.CarteiraRepository;
+import espacoaberto.backend.repository.ClienteRepository;
 import espacoaberto.backend.repository.UsuarioRepository;
 import espacoaberto.backend.service.ServiceBase64;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuarios")
@@ -23,9 +27,12 @@ public class UsuarioController {
     private ServiceBase64 serviceBase64;
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private CarteiraRepository carteiraRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private AnuncianteRepository anuncianteRepository;
 
     @GetMapping()
     public ResponseEntity<List<Usuario>> getUsuarios(){
@@ -50,7 +57,7 @@ public class UsuarioController {
 
     @GetMapping("/autenticacao/{email}/{codigo}")
     public ResponseEntity<Usuario> autenticarConta(@PathVariable String email,
-                                                @PathVariable String codigo) {
+                                                   @PathVariable String codigo) {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuarioAtual : usuarios) {
             if (email.equals(usuarioAtual.getEmail())) {
@@ -66,21 +73,36 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/login/{email}/{senha}")
-    public ResponseEntity<Usuario> logonUsuario(@PathVariable String email,
-                                                @PathVariable String senha) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        for (Usuario usuarioAtual : usuarios) {
-            if (email.equals(usuarioAtual.getEmail())) {
-                if(senha.equals(usuarioAtual.getSenha())){
-                    usuarioAtual.setLogin(true);
-                    usuarioRepository.save(usuarioAtual);
-                    return ResponseEntity.ok(usuarioAtual);
+    @PostMapping("/login")
+    public ResponseEntity<OutLogin> login(@RequestBody InLogin entrada) {
+        OutLogin response;
+        Optional<Usuario> usuario = usuarioRepository.findByEmailAndSenha(
+                entrada.getEmail(),
+                entrada.getSenha()
+        );
 
-                }
+        if (usuario.isPresent()) {
+            response = new OutLogin(
+                    usuario.get().getId()
+                    ,usuario.get().getNome()
+                    ,usuario.get().getEmail()
+                    ,usuario.get().getCpf()
+                    ,usuario.get().getIsPremium()
+                    ,""
+            );
+
+            if (anuncianteRepository.findByEmail(entrada.getEmail()).isPresent()) {
+                response.setTipoUsuario("anunciante");
             }
+
+            if (clienteRepository.findByEmail(entrada.getEmail()).isPresent()) {
+                response.setTipoUsuario("cliente");
+
+            }
+            return ResponseEntity.status(200).body(response);
         }
-        return ResponseEntity.status(401).build();
+
+        return ResponseEntity.status(404).build();
     }
 
     @DeleteMapping("/logoff/{email}")
@@ -158,7 +180,7 @@ public class UsuarioController {
 
         for (Usuario user: allUsers) {
             if(user.getId() == idDecodificadoInt){
-               return ResponseEntity.status(200).body(user.getCarteira());
+                return ResponseEntity.status(200).body(user.getCarteira());
             }
         }
         return ResponseEntity.status(404).build();
@@ -190,4 +212,3 @@ public class UsuarioController {
     }
 
 }
-
