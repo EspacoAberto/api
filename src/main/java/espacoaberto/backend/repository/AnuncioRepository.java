@@ -32,7 +32,8 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Integer> {
     List<Anuncio> findByDisponibilidade(String disponibilidade);
     List<Anuncio> findByDisponibilidadeAndPrecoBetween(String disponibilidade, double precoMin, double precoMax);
 
-    @Query("select a from Anuncio a inner join a.imovel im where a.preco > ?1 and a.preco < ?2")
+    @Query("select a from Anuncio a " +
+            "inner join a.imovel im where a.preco > ?1 and a.preco < ?2")
     List<Anuncio> getAnunciosFiltradosSemDisp(Double preco1, Double preco2);
 
     @Query("select an from Anuncio an inner join an.anunciante a where a.id = ?1")
