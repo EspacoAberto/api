@@ -39,10 +39,9 @@ public class UsuarioController {
         List<Usuario> usuarios = usuarioRepository.findAll();
 
         return (usuarios.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(usuarios));
-
     }
 
-    @PutMapping("/tornarPremium/{id}")
+    @PutMapping("tornarPremium/{id}")
     public ResponseEntity<Usuario> tornarPremium(@PathVariable Integer id) {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuario: usuarios ) {
@@ -55,7 +54,7 @@ public class UsuarioController {
         return ResponseEntity.status(400).build();
     }
 
-    @GetMapping("/autenticacao/{email}/{codigo}")
+    @GetMapping("autenticacao/{email}/{codigo}")
     public ResponseEntity<Usuario> autenticarConta(@PathVariable String email,
                                                    @PathVariable String codigo) {
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -73,7 +72,7 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public ResponseEntity<OutLogin> login(@RequestBody InLogin entrada) {
         OutLogin response;
         Optional<Usuario> usuario = usuarioRepository.findByEmailAndSenha(
@@ -101,11 +100,10 @@ public class UsuarioController {
             }
             return ResponseEntity.status(200).body(response);
         }
-
         return ResponseEntity.status(404).build();
     }
 
-    @DeleteMapping("/logoff/{email}")
+    @DeleteMapping("logoff/{email}")
     public ResponseEntity<String> logoffUsuario(@PathVariable String email) {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuarioAtual : usuarios) {
@@ -123,8 +121,7 @@ public class UsuarioController {
         return ResponseEntity.status(404).body(String.format("Cliente %s não encontrado", email));
     }
 
-
-    @GetMapping("/autenticados")
+    @GetMapping("autenticados")
     public ResponseEntity<List<Usuario>> getUsuariosAutenticados() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuarioAtual : usuarios){
@@ -137,7 +134,7 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping ("/logoff-todos-usuarios")
+    @DeleteMapping ("logoff-todos-usuarios")
     public ResponseEntity<List<Usuario>> logoffGeral() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario usuario : usuarios) {
@@ -147,11 +144,8 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarios);
     }
 
-    @PutMapping ("/atualizar/{cpf}")
+    @PutMapping ("atualizar/{cpf}")
     public ResponseEntity<Usuario> atualizarUsuario(@RequestBody Usuario usuario, @PathVariable String cpf){
-
-
-
         Optional<Usuario> usuarioASerAtualizadoOP  = usuarioRepository.findByCpf(cpf);
 
         if(usuarioASerAtualizadoOP.isPresent()){
@@ -163,52 +157,39 @@ public class UsuarioController {
         }
 
         return ResponseEntity.status(404).build();
-
-
-
-
     }
 
-    @GetMapping("/{id_usuario}/carteira/consultarSaldo")
-    public ResponseEntity<Carteira> consultaSaldoCarteira(@PathVariable String id_usuario){
+    @GetMapping("{idUsuarioBase64}/carteira")
+    public ResponseEntity<Carteira> consultarCarteira(@PathVariable String idUsuarioBase64){
+        Integer idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idUsuarioBase64));
+        Optional<Usuario> usuario = usuarioRepository.findById(idDecodificado);
 
-        List<Usuario> allUsers = usuarioRepository.findAll();
-
-        String idDecodificado = ServiceBase64.descriptografaBase64(id_usuario.toString());
-
-        int idDecodificadoInt = Integer.parseInt(idDecodificado);
-
-        for (Usuario user: allUsers) {
-            if(user.getId() == idDecodificadoInt){
-                return ResponseEntity.status(200).body(user.getCarteira());
-            }
-        }
-        return ResponseEntity.status(404).build();
-
+        return usuario.isPresent()
+                ? ResponseEntity.status(200).body(usuario.get().getCarteira())
+                : ResponseEntity.status(404).build();
     }
 
-    @PutMapping("/{id_usuario}/carteira/depositar/{valor}")
-    public ResponseEntity<Carteira> despositarSaldoCateira(@PathVariable String id_usuario, @PathVariable Double valor){
+    @PutMapping("{idUsuarioBase64}/carteira/depositar/{valor}")
+    public ResponseEntity<Carteira> despositarCateira(@PathVariable String idUsuarioBase64, @PathVariable Double valor){
         if(valor < 1) {
             return ResponseEntity.status(406).build();
         }
 
-        String idDecodificado = ServiceBase64.descriptografaBase64(id_usuario.toString());
+        Integer idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idUsuarioBase64));
 
-        int idDecodificadoInt = Integer.parseInt(idDecodificado);
+        Optional<Usuario> usuario =  usuarioRepository.findById(idDecodificado);
 
-        List<Usuario> allUsers = usuarioRepository.findAll();
+        if (usuario.isPresent()) {
+            Optional<Carteira> carteira = carteiraRepository.findById(usuario.get().getCarteira().getId_carteira());
 
-        for (Usuario user: allUsers) {
-            if(user.getId() == idDecodificadoInt){
-                Optional<Carteira> carteiraASerAtualizadaOP = carteiraRepository.findById(user.getCarteira().getId_carteira());
-                Carteira carteiraAtualizada = carteiraASerAtualizadaOP.get();
-                carteiraAtualizada.setSaldo(carteiraAtualizada.getSaldo() + valor);
-                return ResponseEntity.status(200).body(this.carteiraRepository.save(carteiraAtualizada));
+            if(carteira.isPresent()) {
+                carteira.get().setSaldo(carteira.get().getSaldo() + valor);
+                return ResponseEntity.status(200).body(carteiraRepository.save(carteira.get()));
             }
+
+            return ResponseEntity.status(404).build();
         }
+
         return ResponseEntity.status(404).build();
-
     }
-
 }
