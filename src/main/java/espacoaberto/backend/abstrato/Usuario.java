@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE")
 public abstract class Usuario {
-    @Id // Primary Key
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotBlank(message = "Nome é obrigatório")
@@ -33,7 +33,5 @@ public abstract class Usuario {
     private String senha;
     private String telefone;
     private String codigo;
-    private Boolean Login = false;
-    private Boolean isAutenticado = false;
     public abstract void tornarPremium();
 }

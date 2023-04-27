@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @CrossOrigin(origins = "*")
@@ -35,41 +34,24 @@ public class UsuarioController {
     private AnuncianteRepository anuncianteRepository;
 
     @GetMapping()
-    public ResponseEntity<List<Usuario>> getUsuarios(){
+    public ResponseEntity<List<Usuario>> consultarUsuarios(){
         List<Usuario> usuarios = usuarioRepository.findAll();
 
-        return (usuarios.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(usuarios));
+        return usuarios.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(usuarios);
     }
 
     @PutMapping("tornarPremium/{id}")
     public ResponseEntity<Usuario> tornarPremium(@PathVariable Integer id) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        for (Usuario usuario: usuarios ) {
-            if (usuario.getId() == id){
-                usuario.setIsPremium(true);
-                usuarioRepository.save(usuario);
-                return ResponseEntity.status(200).body(usuario);
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+            if (usuario.isPresent()){
+                usuario.get().setIsPremium(true);
+                usuarioRepository.save(usuario.get());
+                return ResponseEntity.status(200).body(usuario.get());
             }
-        }
-        return ResponseEntity.status(400).build();
-    }
 
-    @GetMapping("autenticacao/{email}/{codigo}")
-    public ResponseEntity<Usuario> autenticarConta(@PathVariable String email,
-                                                   @PathVariable String codigo) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        for (Usuario usuarioAtual : usuarios) {
-            if (email.equals(usuarioAtual.getEmail())) {
-                if (usuarioAtual.getIsAutenticado() == false){
-                    if(codigo.equals(usuarioAtual.getCodigo())){
-                        usuarioAtual.setIsAutenticado(true);
-                        usuarioRepository.save(usuarioAtual);
-                        return ResponseEntity.status(200).body(usuarioAtual);
-                    }
-                }
-            }
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(400).build();
     }
 
     @PostMapping("login")
@@ -103,57 +85,16 @@ public class UsuarioController {
         return ResponseEntity.status(404).build();
     }
 
-    @DeleteMapping("logoff/{email}")
-    public ResponseEntity<String> logoffUsuario(@PathVariable String email) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        for (Usuario usuarioAtual : usuarios) {
-            if(usuarioAtual.getEmail().equals(email)) {
-                if (usuarioAtual.getLogin()) {
-                    usuarioAtual.setLogin(false);
-                    usuarioRepository.save(usuarioAtual);
-                    return ResponseEntity.ok().
-                            body(String.format("Logoff do cliente %s concluído", usuarioAtual.getEmail()));
-                } else {
-                    return ResponseEntity.status(401).body(String.format("Cliente %s NÃO está autenticado", usuarioAtual.getEmail()));
-                }
-            }
-        }
-        return ResponseEntity.status(404).body(String.format("Cliente %s não encontrado", email));
-    }
-
-    @GetMapping("autenticados")
-    public ResponseEntity<List<Usuario>> getUsuariosAutenticados() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        for (Usuario usuarioAtual : usuarios){
-            if(usuarioAtual.getIsAutenticado()){
-                return ResponseEntity.ok().body(usuarios.stream()
-                        .filter(Usuario::getIsAutenticado)
-                        .collect(Collectors.toList()));
-            }
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping ("logoff-todos-usuarios")
-    public ResponseEntity<List<Usuario>> logoffGeral() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        for (Usuario usuario : usuarios) {
-            usuario.setIsAutenticado(false);
-            usuarioRepository.save(usuario);
-        }
-        return ResponseEntity.ok().body(usuarios);
-    }
-
     @PutMapping ("atualizar/{cpf}")
-    public ResponseEntity<Usuario> atualizarUsuario(@RequestBody Usuario usuario, @PathVariable String cpf){
-        Optional<Usuario> usuarioASerAtualizadoOP  = usuarioRepository.findByCpf(cpf);
+    public ResponseEntity<Usuario> atualizarUsuario(@RequestBody Usuario entrada, @PathVariable String cpf){
+        Optional<Usuario> usuario  = usuarioRepository.findByCpf(cpf);
 
-        if(usuarioASerAtualizadoOP.isPresent()){
-            Usuario usuarioASerAtualizado = usuarioASerAtualizadoOP.get();
-            usuarioASerAtualizado.setNome(usuario.getNome());
-            usuarioASerAtualizado.setEmail(usuario.getEmail());
-            usuarioASerAtualizado.setDataNascimento(usuario.getDataNascimento());
-            return ResponseEntity.status(200).body(usuarioRepository.save(usuarioASerAtualizado));
+        if(usuario.isPresent()){
+            Usuario usuarioAtualizado = usuario.get();
+            usuarioAtualizado.setNome(entrada.getNome());
+            usuarioAtualizado.setEmail(entrada.getEmail());
+            usuarioAtualizado.setDataNascimento(entrada.getDataNascimento());
+            return ResponseEntity.status(200).body(usuarioRepository.save(usuarioAtualizado));
         }
 
         return ResponseEntity.status(404).build();
