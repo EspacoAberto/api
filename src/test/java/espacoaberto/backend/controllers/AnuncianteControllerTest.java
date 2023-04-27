@@ -34,7 +34,7 @@ private AnuncianteRepository repository;
                 new Anunciante()
         ));
 
-        ResponseEntity<List<Anunciante>> listaAnunciantes = controller.listarAnunciantes();
+        ResponseEntity<List<Anunciante>> listaAnunciantes = controller.consultarAnunciantes();
 
         assertEquals(200, listaAnunciantes.getStatusCodeValue());
         assertTrue(listaAnunciantes.getBody().size() > 0);
@@ -46,7 +46,7 @@ private AnuncianteRepository repository;
 
         when(repository.findAll()).thenReturn(new ArrayList<>());
 
-        ResponseEntity<List<Anunciante>> listaAnunciantes = controller.listarAnunciantes();
+        ResponseEntity<List<Anunciante>> listaAnunciantes = controller.consultarAnunciantes();
 
         assertEquals(204, listaAnunciantes.getStatusCodeValue());
         assertNull(listaAnunciantes.getBody());
