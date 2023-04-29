@@ -4,11 +4,8 @@ package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.AvaliacaoDTO;
-import espacoaberto.backend.entidades.Anunciante;
-import espacoaberto.backend.entidades.Anuncio;
+import espacoaberto.backend.entidades.*;
 
-import espacoaberto.backend.entidades.Avaliacao;
-import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
 import espacoaberto.backend.repository.*;
 
@@ -39,6 +36,14 @@ public class AnuncioController {
     private ClienteRepository clienteRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+    @Autowired
+    private AcomodacaoRepository acomodacaoRepository;
+    @Autowired
+    private ImagemRepository imagemRepository;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio) {
@@ -369,5 +374,39 @@ public class AnuncioController {
         }else{
             return ResponseEntity.status(404).build();
         }
+    }
+
+    @DeleteMapping("{idBase64}")
+    public ResponseEntity<Void> deletarAnuncio(@PathVariable String idBase64) {
+        int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+        Optional<Anuncio> anuncio = anuncioRepository.findById(id);
+
+        if (anuncio.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
+
+        for (Agendamento agendamento : agendamentoRepository.findAll()) {
+            if (agendamento.getAnuncio().equals(anuncio.get())) {
+                agendamentoRepository.deleteById(agendamento.getId());
+            }
+        }
+
+        anuncioRepository.deleteById(id);
+        enderecoRepository.deleteById(anuncio.get().getImovel().getEndereco().getId());
+        imovelRepository.deleteById(anuncio.get().getImovel().getId());
+
+        for (Acomodacao acomodacao : acomodacaoRepository.findAll()) {
+            if (acomodacao.equals(anuncio.get().getImovel().getAcomodacoes())) {
+                acomodacaoRepository.deleteById(acomodacao.getId());
+            }
+        }
+
+        for (Imagem imagem : imagemRepository.findAll()) {
+            if (imagem.equals(anuncio.get().getImovel().getFotos())) {
+                imagemRepository.deleteById(imagem.getId());
+            }
+        }
+
+        return ResponseEntity.status(200).build();
     }
 }
