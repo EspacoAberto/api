@@ -1,5 +1,6 @@
 package espacoaberto.backend.controllers;
 
+import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.AgendamentoDTO;
 import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
 import espacoaberto.backend.entidades.Anunciante;
@@ -8,12 +9,14 @@ import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.repository.*;
 import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,6 +124,84 @@ public class PendenciasAgendamentoController {
 
         }
 
+    }
+
+    @GetMapping("/anuncios/{idBase64}")
+    public ResponseEntity<List<PendenciaAgendamentoDTO>> listarPendenciasPorAnuncio(@PathVariable String idBase64) {
+        Integer idDecodificado;
+
+        try {
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+            List<PendenciaAgendamentoDTO> pendencias = pendenciaAgendamentoDTORepository.findByIdAnuncio(idDecodificado);
+            if (pendencias.isEmpty()) {
+                return ResponseEntity.status(204).build();
+            } else {
+                return ResponseEntity.status(200).body(pendencias);
+            }
+        } catch (Exception e) {
+            System.out.println("Não foi possível converter o ID de base 64");
+        }
+        return ResponseEntity.status(400).build();
+    }
+
+    @GetMapping("/usuarios/{idBase64}")
+    public ResponseEntity<PendenciaAgendamentoDTO> listarPendenciasPorUsuario(@PathVariable String idBase64) {
+        Integer idDecodificado;
+
+        try {
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+            Optional<PendenciaAgendamentoDTO> pendencia = pendenciaAgendamentoDTORepository.findByIdUsuario(idDecodificado);
+            if (pendencia.isPresent()) {
+                return ResponseEntity.status(200).body(pendencia.get());
+            } else {
+                return ResponseEntity.status(204).build();
+            }
+        } catch (Exception e) {
+            System.out.println("Não foi possível converter o ID de base 64");
+        }
+        return ResponseEntity.status(400).build();
+    }
+
+    @DeleteMapping("/usuarios/{idBase64}")
+    public ResponseEntity<PendenciaAgendamentoDTO> deletePendenciaPorUsuario(@PathVariable String idBase64) {
+        Integer idDecodificado;
+
+        try {
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+            // Verificando se o usuário existe
+            Optional<PendenciaAgendamentoDTO> pendencia_usuario = pendenciaAgendamentoDTORepository.findByIdUsuario(idDecodificado);
+            if (pendencia_usuario.isPresent()) {
+                pendenciaAgendamentoDTORepository.deleteById(idDecodificado);
+                // Pendencia que foi excluida
+                return ResponseEntity.ok().body(pendencia_usuario.get());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Esse código veio do chatgpt skajdjskadk
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/{idBase64}")
+    public ResponseEntity<PendenciaAgendamentoDTO> deletePendencia(@PathVariable String idBase64) {
+        Integer idDecodificado;
+
+        try {
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+            Optional<PendenciaAgendamentoDTO> pendencia_excluida = pendenciaAgendamentoDTORepository.findById(idDecodificado);
+                pendenciaAgendamentoDTORepository.deleteById(idDecodificado);
+                // Pendencia que foi excluida
+                return ResponseEntity.ok().body(pendencia_excluida.get());
+            // Esse código veio do chatgpt skajdjskadk
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
    /* @DeleteMapping("/excluir/{idBase64}")

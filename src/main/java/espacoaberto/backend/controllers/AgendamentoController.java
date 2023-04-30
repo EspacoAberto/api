@@ -11,6 +11,7 @@ import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
 import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.repository.*;
+import espacoaberto.backend.service.ServiceBase64;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +56,28 @@ public class AgendamentoController {
         List<Agendamento> agendamentos = agendamentoRepository.findAll();
         return agendamentos.isEmpty() ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(agendamentos);
+    }
+
+    // Recebe uma pendencia para efetivar
+    @PostMapping("/efetivar/{idBase64}")
+    public ResponseEntity<Agendamento> efetivarAgendamento(@PathVariable String idBase64) {
+        Integer idDecodificado;
+        try {
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+            Optional<PendenciaAgendamentoDTO> opPendencia = pendenciaAgendamentoDTORepository.findById(idDecodificado);
+
+            PendenciaAgendamentoDTO pendencia = opPendencia.get();
+
+            Agendamento agendamento_efetivado = new Agendamento(pendencia.getCheckinAgendamento(), pendencia.getCheckoutAgendamento(), usuarioRepository.findById(pendencia.getIdUsuario()).get(), anuncioRepository.findById(pendencia.getIdAnuncio()).get());
+
+            //Excluindo pendencia que virou agendamento
+            pendenciaAgendamentoDTORepository.deleteById(pendencia.getId());
+
+            return ResponseEntity.status(201).body(agendamentoRepository.save(agendamento_efetivado));
+        } catch (Exception e) {
+            System.out.println("Não foi possível converter o ID de base 64");
+        }
+        return ResponseEntity.status(400).build();
+
     }
 }

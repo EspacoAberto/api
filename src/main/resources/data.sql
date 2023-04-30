@@ -115,6 +115,3 @@ values
 
 );
 
-insert into agendamento (data_checkin, data_checkout, usuario_id, anuncio_id_anuncio)
-values
-('2023-05-01', '2023-05-06', 1, 1);
