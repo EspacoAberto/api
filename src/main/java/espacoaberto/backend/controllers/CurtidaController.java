@@ -1,5 +1,6 @@
 package espacoaberto.backend.controllers;
 
+import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.CurtidaDTO;
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
@@ -104,10 +105,14 @@ public class CurtidaController {
         curtidaDTO.setMomentoCurtida(LocalDateTime.now());
 
 
-        // Cadastrando a curtida no repository
+        // Aumentando as curtidas  do anuncio
+        Optional<Anuncio> anuncio = anuncioRepository.findById(curtidaDTO.getIdAnuncio());
+
+        anuncio.get().setCurtidas(anuncio.get().getCurtidas() + 1);
 
         // Cadastrando a curtida no repository
         return ResponseEntity.status(200).body(curtidaRepository.save(curtida));
+
 
 
 
@@ -134,6 +139,65 @@ public class CurtidaController {
 
         return ResponseEntity.status(200).body(curtidasDTO);
 
+
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Curtida> dessassociarCurtida(@RequestBody CurtidaDTO curtidaDTO) {
+        // Verificando se a DTO veio vazia
+        if(curtidaDTO.estaVazio()){
+            return ResponseEntity.status(400).build();
+        }
+
+        Curtida curtida = new Curtida();
+
+        // Encontrando a curtida que o usuário enviou
+        // Descobrindo se o anuncio existe
+        Optional<Anuncio> opAnuncio = anuncioRepository.findById(curtidaDTO.getIdAnuncio());
+        Anuncio anuncioEncontrado;
+
+        if(opAnuncio.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            anuncioEncontrado = opAnuncio.get();
+        }
+
+        // Descobrindo se é anunciante ou usuário
+        Optional<Anunciante> opAnunciante = anuncianteRepository.findById(curtidaDTO.getIdUsuario());
+        Optional<Cliente> opCliente = clienteRepository.findById(curtidaDTO.getIdUsuario());
+        Cliente cli;
+        Anunciante an;
+
+        if (opAnunciante.isEmpty()) {
+            // Se cair aqui, ele não é anunciante, mas pode ser cliente
+            if (opCliente.isEmpty()) {
+                // Se cair aqui, o usuário não existe
+                return ResponseEntity.notFound().build();
+            }  else {
+                // Se cair aqui, ele é cliente
+                cli = opCliente.get();
+            }
+
+        }  else {
+            // Se cair aqui, ele é anunciante
+            an = opAnunciante.get();
+        }
+
+        // Listar todas as curtidas para que seja possível encontrar uma curtida que tenha o usuario e anuncio que temos
+        List<Curtida> curtidasCadastradas = curtidaRepository.findAll();
+
+        for (Curtida curtidaCadastrada : curtidasCadastradas) {
+            if (curtidaCadastrada.getUsuario().getId() == curtidaDTO.getIdUsuario() && curtidaCadastrada.getAnuncio().getIdAnuncio() == curtidaDTO.getIdAnuncio()) {
+                // Curtida encontrada!
+                curtidaRepository.deleteById(curtidaCadastrada.getId());
+                // Reduzindo a curtida do anuncio
+                anuncioEncontrado.setCurtidas(anuncioEncontrado.getCurtidas() - 1);
+                anuncioRepository.save(anuncioEncontrado);
+                return ResponseEntity.ok().body(curtidaCadastrada);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
 
     }
 }
