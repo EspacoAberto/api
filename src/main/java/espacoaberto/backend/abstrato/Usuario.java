@@ -1,10 +1,8 @@
 package espacoaberto.backend.abstrato;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import espacoaberto.backend.entidades.Carteira;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -17,14 +15,13 @@ import java.time.LocalDate;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE")
 public abstract class Usuario {
-    @Id // Primary Key
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
     @Past
     private LocalDate dataNascimento;
-
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "fkUsuario")
     @JsonManagedReference
     private Carteira carteira;
@@ -35,12 +32,6 @@ public abstract class Usuario {
     private String email;
     private String senha;
     private String telefone;
-
     private String codigo;
-
-    private Boolean Login = false;
-    private Boolean isAutenticado = false;
-
-
     public abstract void tornarPremium();
 }
