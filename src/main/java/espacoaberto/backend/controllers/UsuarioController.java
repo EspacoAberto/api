@@ -51,7 +51,7 @@ public class UsuarioController {
                 return ResponseEntity.status(200).body(usuario.get());
             }
 
-        return ResponseEntity.status(400).build();
+
     }
 
     @PostMapping("login")

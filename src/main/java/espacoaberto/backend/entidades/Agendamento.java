@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import espacoaberto.backend.abstrato.Usuario;
 import lombok.*;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.*;
 
@@ -19,8 +20,16 @@ public class Agendamento {
     private String dataCheckout;
 
     @ManyToOne
-    private Cliente usuario;
+    private Usuario usuario;
     @ManyToOne
     private Anuncio anuncio;
 
+    public Agendamento(String dataCheckin, String dataCheckout, Usuario usuario, Anuncio anuncio) {
+        this.dataCheckin = dataCheckin;
+        this.dataCheckout = dataCheckout;
+        this.usuario = usuario;
+        this.anuncio = anuncio;
+    }
+
+    public Agendamento(){}
 }
