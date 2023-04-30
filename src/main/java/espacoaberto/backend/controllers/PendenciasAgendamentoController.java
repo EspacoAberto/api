@@ -3,6 +3,7 @@ package espacoaberto.backend.controllers;
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.AgendamentoDTO;
 import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
+import espacoaberto.backend.entidades.Agendamento;
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
 import espacoaberto.backend.entidades.Cliente;
@@ -17,6 +18,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +54,33 @@ public class PendenciasAgendamentoController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<PendenciaAgendamentoDTO> cadastrarAgendamento(@RequestBody AgendamentoDTO novoAgendamentoDTO){
+
+        // Antes de partir para qualquer validação, vamos verificar se há algum agendamento que bata com as datas da pendencia
+        // Obtendo todos os agendamentos daquele anuncio
+        List<Agendamento> agendamentos = agendamentoRepository.findByAnuncio(anuncioRepository.findById(novoAgendamentoDTO.getIdAnuncio()).get());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        // Aqui devemos verificar se os agendamentos presentes batem com a data
+        if (!agendamentos.isEmpty()) {
+            // Formatador para formatar localdatetime em String
+
+
+           for (Agendamento agendamento : agendamentos) {
+               if (LocalDateTime.parse(novoAgendamentoDTO.getDataCheckinAgendamento(), formatter).isAfter(LocalDateTime.parse(agendamento.getDataCheckin(), formatter)) || LocalDateTime.parse(novoAgendamentoDTO.getDataCheckoutAgendamento(), formatter).isBefore(LocalDateTime.parse(agendamento.getDataCheckout(), formatter))) {
+                   // Se isso for verdadeiro, significa que a pendencia a ser criada está com o checkin durante outro agendamento, por isso o agendamento não deve rolar
+                   return ResponseEntity.status(409).build();
+               }
+           }
+        }
+
+        // Validação de data (o checkin não pode ser anterior à data atual)
+        if (LocalDateTime.parse(novoAgendamentoDTO.getDataCheckinAgendamento(), formatter).isBefore(LocalDateTime.now())) {
+            return ResponseEntity.status(409).build();
+        }
+
+        // Validando se o checkin é maior que o checkout
+        if (LocalDateTime.parse(novoAgendamentoDTO.getDataCheckinAgendamento(), formatter).isAfter(LocalDateTime.parse(novoAgendamentoDTO.getDataCheckoutAgendamento(), formatter))) {
+            return ResponseEntity.status(409).build();
+        }
 
         // Antes de cadastrar o agendamento, precisamos verificar se existe uma pendência existente para aquele usuário
         // Buscando o usuário enviado na DTO
@@ -171,7 +200,7 @@ public class PendenciasAgendamentoController {
             // Verificando se o usuário existe
             Optional<PendenciaAgendamentoDTO> pendencia_usuario = pendenciaAgendamentoDTORepository.findByIdUsuario(idDecodificado);
             if (pendencia_usuario.isPresent()) {
-                pendenciaAgendamentoDTORepository.deleteById(idDecodificado);
+                pendenciaAgendamentoDTORepository.deleteById(pendencia_usuario.get().getId());
                 // Pendencia que foi excluida
                 return ResponseEntity.ok().body(pendencia_usuario.get());
             } else {

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +57,38 @@ public class AgendamentoController {
         List<Agendamento> agendamentos = agendamentoRepository.findAll();
         return agendamentos.isEmpty() ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(agendamentos);
+    }
+
+    @GetMapping("/anuncios/{idBase64}")
+    public ResponseEntity<List<Agendamento>> listarAgendamentosPorId(@PathVariable String idBase64){
+        Integer idDecodificado;
+
+        try{
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+
+            // Verificando se o anuncio existe
+            Optional<Anuncio> opAnuncio = anuncioRepository.findById(idDecodificado);
+
+            Anuncio anuncioEncontrado;
+            if (opAnuncio.isPresent()) {
+                anuncioEncontrado = opAnuncio.get();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
+            List<Agendamento> agendamentos = agendamentoRepository.findByAnuncio(anuncioEncontrado);
+            
+            if (agendamentos.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.ok().body(agendamentos);
+            }
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+
     }
 
     // Recebe uma pendencia para efetivar
