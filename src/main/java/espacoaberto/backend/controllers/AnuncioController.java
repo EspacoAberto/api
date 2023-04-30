@@ -4,11 +4,8 @@ package espacoaberto.backend.controllers;
 
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.AvaliacaoDTO;
-import espacoaberto.backend.entidades.Anunciante;
-import espacoaberto.backend.entidades.Anuncio;
+import espacoaberto.backend.entidades.*;
 
-import espacoaberto.backend.entidades.Avaliacao;
-import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
 import espacoaberto.backend.repository.*;
 
@@ -27,8 +24,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/anuncios")
 public class AnuncioController {
-
-
     @Autowired
     private AnuncioRepository anuncioRepository;
     @Autowired
@@ -41,6 +36,14 @@ public class AnuncioController {
     private ClienteRepository clienteRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+    @Autowired
+    private AcomodacaoRepository acomodacaoRepository;
+    @Autowired
+    private ImagemRepository imagemRepository;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio) {
@@ -60,73 +63,35 @@ public class AnuncioController {
         return ResponseEntity.status(200).build();
     }*/
     @GetMapping()
-    public ResponseEntity<List<Anuncio>> listar(
+    public ResponseEntity<List<Anuncio>> consultarAnuncios(
             @RequestParam(required = false) Double precoMin,
             @RequestParam(required = false) Double precoMax,
             @RequestParam(required = false) String disponibilidade
     ) {
+        List<Anuncio> anuncios;
 
-        // Se vier os três parametros
         if (precoMin != null && precoMax != null && disponibilidade != null) {
-            List<Anuncio> anuncios = anuncioRepository.findByDisponibilidadeAndPrecoBetween(disponibilidade, precoMin, precoMax);
-
-            if (anuncios.isEmpty()) {
-                return ResponseEntity.status(204).build();
-            }
-
-            return ResponseEntity.status(200).body(anuncios);
+            // Se vier os três parametros
+            anuncios = anuncioRepository.findByDisponibilidadeAndPrecoBetween(disponibilidade, precoMin, precoMax);
+        } else if (disponibilidade == null && precoMax != null && precoMin != null) {
+            // Se vier apenas os preços
+            anuncios = anuncioRepository.findByPrecoBetween(precoMin, precoMax);
+        } else if (precoMin == null && disponibilidade == null && precoMax != null) {
+            // Se vier apenas o preço maximo
+            anuncios = anuncioRepository.findByPrecoLessThan(precoMin);
+        } else if (precoMax == null && precoMin != null && disponibilidade == null) {
+            // Se vier apenas o preço mínimo
+            anuncios = anuncioRepository.findByPrecoGreaterThan(precoMin);
+        } else if (precoMax == null && precoMin == null && disponibilidade != null) {
+            // Se vier apenas disponibilidade
+            anuncios = anuncioRepository.findByDisponibilidade(disponibilidade);
+        } else {
+            anuncios = anuncioRepository.findAll();
         }
 
-        // Se vier apenas os preços
-        if (disponibilidade == null && precoMax != null && precoMin != null) {
-            List<Anuncio> anuncios = anuncioRepository.findByPrecoBetween(precoMin, precoMax);
-
-            if (anuncios.isEmpty()) {
-                return ResponseEntity.status(204).build();
-            }
-
-            return ResponseEntity.status(200).body(anuncios);
-        }
-        // Se vier apenas o preço maximo
-        if (precoMin == null && disponibilidade == null && precoMax != null) {
-            List<Anuncio> anuncios = anuncioRepository.findByPrecoLessThan(precoMin);
-
-            if (anuncios.isEmpty()) {
-                return ResponseEntity.status(204).build();
-            }
-
-            return ResponseEntity.status(200).body(anuncios);
-        }
-        // Se vier apenas o preço mínimo
-        if (precoMax == null && precoMin != null && disponibilidade == null) {
-            List<Anuncio> anuncios = anuncioRepository.findByPrecoGreaterThan(precoMin);
-
-            if (anuncios.isEmpty()) {
-                return ResponseEntity.status(204).build();
-            }
-
-
-
-            return ResponseEntity.status(200).body(anuncios);
-        }
-
-        // Se vier apenas disponibilidade
-        if (precoMax == null && precoMin == null && disponibilidade != null) {
-            List<Anuncio> anuncios = anuncioRepository.findByDisponibilidade(disponibilidade);
-
-            if (anuncios.isEmpty()) {
-                return ResponseEntity.status(204).build();
-            }
-
-            return ResponseEntity.status(200).body(anuncios);
-        }
-
-        List<Anuncio> anuncios = anuncioRepository.findAll();
-        if (anuncios.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(anuncios);
-
+        return anuncios.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(anuncios);
     }
 
     @GetMapping("/{idBase64}")
@@ -146,7 +111,6 @@ public class AnuncioController {
 
     }
 
-
     @PatchMapping("aumentarCurtidas/{idAnuncio}")
     public ResponseEntity<Anuncio> aumentarCurtidas(@PathVariable Integer idAnuncio) {
 
@@ -161,7 +125,6 @@ public class AnuncioController {
 
         return ResponseEntity.status(204).build();
     }
-
 
     @CrossOrigin("*")
     @PatchMapping(value = "/foto/{id}", consumes = "image/jpeg")
@@ -213,9 +176,6 @@ public class AnuncioController {
 
     }
 
-
-
-
     @PatchMapping("aumentarVisualizacoes/{idBase64}")
     public ResponseEntity<Anuncio> aumentarVisualizacao(@PathVariable String idBase64){
         int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
@@ -232,18 +192,11 @@ public class AnuncioController {
 
             // Criando novo anuncio com mesmas caracteristicas e aumentando 1 de visualização
 
-
-
-
             return ResponseEntity.status(201).body(anuncioEncontrado);
-
 
         }else {
             return ResponseEntity.status(404).build();
         }
-
-
-
     }
 
 
@@ -272,14 +225,10 @@ public class AnuncioController {
         avaliacao.setAnuncio(an);
         avaliacao.setAvaliacao(avDTO.getAvaliacao());
         return ResponseEntity.status(200).body(avaliacaoRepository.save(avaliacao));
-
-
-
     }
 
     @GetMapping("avaliacoes")
     public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoes(){
-
         List<Avaliacao> avaliacoes = avaliacaoRepository.findAll();
         List<AvaliacaoDTO> avaliacoesDTO = new ArrayList<>();
 
@@ -295,7 +244,7 @@ public class AnuncioController {
         }
     }
 
-   @GetMapping("avaliacoes/usuarios/{idBase64}")
+    @GetMapping("avaliacoes/usuarios/{idBase64}")
     public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesPorUsuario(@PathVariable String idBase64){
         String stid = ServiceBase64.descriptografaBase64(idBase64);
 
@@ -315,13 +264,13 @@ public class AnuncioController {
             if (avaliacoes.isEmpty()){
                 return ResponseEntity.noContent().build();
             }else {
-            // Convertendo avaliação para avaliacao DTO
-            // Rodando a lista de avaliações encontradas e adicionando a listas de DTO
-            for (int i = 0; i < avaliacoes.size(); i++) {
-                AvaliacaoDTO avDTO = new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao());
-                avaliacoesDTO.add(avDTO);
-            }
-            return ResponseEntity.status(200).body(avaliacoesDTO);
+                // Convertendo avaliação para avaliacao DTO
+                // Rodando a lista de avaliações encontradas e adicionando a listas de DTO
+                for (int i = 0; i < avaliacoes.size(); i++) {
+                    AvaliacaoDTO avDTO = new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao());
+                    avaliacoesDTO.add(avDTO);
+                }
+                return ResponseEntity.status(200).body(avaliacoesDTO);
             }
         } else {
             return ResponseEntity.notFound().build();
@@ -402,7 +351,6 @@ public class AnuncioController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.status(200).body(sortedList);
-
     }
 
     @GetMapping("/avaliacoes/mediaPorImovel/{idBase64}")
@@ -423,15 +371,42 @@ public class AnuncioController {
                 media = media / avaliacoes.size();
                 return ResponseEntity.status(200).body(media);
             }
-
         }else{
             return ResponseEntity.status(404).build();
         }
-
-
     }
 
+    @DeleteMapping("{idBase64}")
+    public ResponseEntity<Void> deletarAnuncio(@PathVariable String idBase64) {
+        int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+        Optional<Anuncio> anuncio = anuncioRepository.findById(id);
 
+        if (anuncio.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
 
+        for (Agendamento agendamento : agendamentoRepository.findAll()) {
+            if (agendamento.getAnuncio().equals(anuncio.get())) {
+                agendamentoRepository.deleteById(agendamento.getId());
+            }
+        }
 
+        anuncioRepository.deleteById(id);
+        enderecoRepository.deleteById(anuncio.get().getImovel().getEndereco().getId());
+        imovelRepository.deleteById(anuncio.get().getImovel().getId());
+
+        for (Acomodacao acomodacao : acomodacaoRepository.findAll()) {
+            if (acomodacao.equals(anuncio.get().getImovel().getAcomodacoes())) {
+                acomodacaoRepository.deleteById(acomodacao.getId());
+            }
+        }
+
+        for (Imagem imagem : imagemRepository.findAll()) {
+            if (imagem.equals(anuncio.get().getImovel().getFotos())) {
+                imagemRepository.deleteById(imagem.getId());
+            }
+        }
+
+        return ResponseEntity.status(200).build();
+    }
 }

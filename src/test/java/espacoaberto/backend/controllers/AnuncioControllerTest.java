@@ -34,7 +34,7 @@ public class AnuncioControllerTest {
                 new Anuncio()
         ));
 
-        ResponseEntity<List<Anuncio>> listaAnuncios = controller.listar(null, null, null);
+        ResponseEntity<List<Anuncio>> listaAnuncios = controller.consultarAnuncios(null, null, null);
 
         assertEquals(200, listaAnuncios.getStatusCodeValue());
         assertTrue(listaAnuncios.getBody().size() > 0);
@@ -46,7 +46,7 @@ public class AnuncioControllerTest {
 
         when(repository.findAll()).thenReturn(new ArrayList<>());
 
-        ResponseEntity<List<Anuncio>> listaanuncios = controller.listar(null, null, null);
+        ResponseEntity<List<Anuncio>> listaanuncios = controller.consultarAnuncios(null, null, null);
 
         assertEquals(204, listaanuncios.getStatusCodeValue());
         assertNull(listaanuncios.getBody());

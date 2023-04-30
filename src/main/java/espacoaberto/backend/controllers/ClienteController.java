@@ -1,5 +1,7 @@
 package espacoaberto.backend.controllers;
 
+import espacoaberto.backend.entidades.Anunciante;
+import espacoaberto.backend.entidades.Carteira;
 import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.repository.ClienteRepository;
 import espacoaberto.backend.service.RandomString;
@@ -28,6 +30,19 @@ public class ClienteController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Cliente> cadastrar(@RequestBody Cliente novoCliente){
+        // Validando se o e-mail cadastrado já existe
+        String email = novoCliente.getEmail();
+        Optional<Cliente> opCliente = clienteRepository.findByEmail(email);
+
+        if(opCliente.isPresent()){
+            return ResponseEntity.status(409).build();
+        }
+
+
+        Carteira newCarteira = new Carteira( novoCliente, 0.0);
+
+        novoCliente.setCarteira(newCarteira);
+
         return ResponseEntity.status(201).body(this.clienteRepository.save(novoCliente));
     }
 
