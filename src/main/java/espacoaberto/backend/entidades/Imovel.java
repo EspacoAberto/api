@@ -23,7 +23,7 @@ public class Imovel {
     @JsonManagedReference
     private Endereco endereco;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel", orphanRemoval = true)
     @JsonManagedReference
     private List<Acomodacao> acomodacoes;
 

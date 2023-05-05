@@ -409,4 +409,42 @@ public class AnuncioController {
 
         return ResponseEntity.status(200).build();
     }
+
+    @GetMapping("anunciantes/{idAnuncianteBase64}")
+    public ResponseEntity<List<Anuncio>> listarAnunciosPorAnunciante(@PathVariable String idAnuncianteBase64) {
+        Integer idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idAnuncianteBase64));
+
+        Optional<Anunciante> opAnunciante = anuncianteRepository.findById(idDecodificado);
+
+        if (opAnunciante.isPresent()) {
+            // Achei o anunciante
+            List<Anuncio> anunciosEncontrados = anuncioRepository.findByAnuncianteId(idDecodificado);
+
+            if (anunciosEncontrados.isEmpty()) {
+                // Esse anunciante não possui anuncios
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok().body(anunciosEncontrados);
+
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /* @PatchMapping("/{idBase64}")
+    public ResponseEntity<Anuncio> atualizarAnuncio(@RequestBody Anuncio atualizacaoAnuncio) {
+        Optional<Anuncio> opAnuncio = anuncioRepository.findById(atualizacaoAnuncio.getIdAnuncio());
+
+        if (opAnuncio.isPresent()) {
+            Anuncio anEncontrado = opAnuncio.get();
+
+
+
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    } */
+
+
 }
