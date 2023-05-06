@@ -8,6 +8,7 @@ import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
 import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.repository.*;
+import espacoaberto.backend.service.SendEmailService;
 import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -29,7 +30,8 @@ public class PendenciasAgendamentoController {
     private ClienteRepository clienteRepository;
     @Autowired
     private AnuncianteRepository anuncianteRepository;
-
+    @Autowired
+    private SendEmailService sendEmailService;
 
     @Autowired
     private AgendamentoRepository agendamentoRepository;
@@ -127,6 +129,7 @@ public class PendenciasAgendamentoController {
                     // Antes de adicionar a nova pendência, devemos excluir a última pendência dele
                     pendenciaAgendamentoDTORepository.deleteById(pendenciaEncontrada.getId());
                     PendenciaAgendamentoDTO pendenciaCriada = new PendenciaAgendamentoDTO(novoAgendamentoDTO.getIdAnuncio(), novoAgendamentoDTO.getIdUsuario(), novoAgendamentoDTO.getDataAgendamento(),  novoAgendamentoDTO.getDataCheckinAgendamento(), novoAgendamentoDTO.getDataCheckoutAgendamento(), novoAgendamentoDTO.getValorAgendamento());
+                    sendEmailService.enviar("viniciusoliveira201002@Outlook.com");
                     return ResponseEntity.status(201).body(pendenciaAgendamentoDTORepository.save(pendenciaCriada));
 
                 } else {
@@ -145,6 +148,7 @@ public class PendenciasAgendamentoController {
 
             if (anuncio.isPresent()) {
                 PendenciaAgendamentoDTO pendenciaCriada = new PendenciaAgendamentoDTO(novoAgendamentoDTO.getIdAnuncio(), novoAgendamentoDTO.getIdUsuario(), novoAgendamentoDTO.getDataAgendamento(),  novoAgendamentoDTO.getDataCheckinAgendamento(), novoAgendamentoDTO.getDataCheckoutAgendamento(), novoAgendamentoDTO.getValorAgendamento());
+                sendEmailService.enviar("viniciusoliveira201002@Outlook.com");
                 return ResponseEntity.status(201).body(pendenciaAgendamentoDTORepository.save(pendenciaCriada));
 
             } else {

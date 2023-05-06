@@ -21,19 +21,12 @@ public class SendEmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void enviar(String email, String usuario, String codigo) {
+    public void enviar(String email) {
         log.info("Enviando email simples");
 
         String titulo = "Autenticação de email";
 
-        String conteudo = String.format(
-                "Olá %s" +
-                "\n Bem vindo(a) ao Espaço Aberto! " +
-                "\n Suas credencias de acesso estão logo a baixo: " +
-                "\n Email: %s\n Codigo: %s" +
-                "\n clique no link abaixo parar autenticar sua conta:" +
-                "\n http://localhost:9091/usuarios/autenticacao/%s/%s", usuario, email, codigo,email, codigo);
-
+        String conteudo = "Teste";
         var mensagem = new SimpleMailMessage();
         mensagem.setTo(email);
 
