@@ -18,7 +18,7 @@ public class Anuncio implements Serializable {
     private Anunciante anunciante;
     @ManyToOne
     private Imovel imovel;
-    private double preco;
+    private Double preco;
     private String descricao;
     private String titulo;
 
@@ -71,10 +71,10 @@ public class Anuncio implements Serializable {
         this.imovel = imovel;
     }
 
-    public double getPreco() {
+    public Double getPreco() {
         return preco;
     }
-    public void setPreco(double preco) {
+    public void setPreco(Double preco) {
         this.preco = preco;
     }
     public String getDescricao() {

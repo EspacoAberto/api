@@ -432,6 +432,67 @@ public class AnuncioController {
         }
     }
 
+    @PatchMapping
+    public ResponseEntity<Anuncio> editarAnuncio(@RequestBody Anuncio anuncioAtualizado) {
+        if (anuncioAtualizado != null) {
+            // Identificar o ID do anuncio a ser atualizado
+            Integer id = anuncioAtualizado.getIdAnuncio();
+            Optional<Anuncio> opAnuncio = anuncioRepository.findById(id);
+            if (opAnuncio.isPresent()){
+                Anuncio anuncioASerAtualizado = opAnuncio.get();
+
+                // Verificar campo a campo para substituir
+                if (anuncioAtualizado.getAnunciante() != null) {
+                    anuncioASerAtualizado.setAnunciante(anuncioAtualizado.getAnunciante());
+                }
+
+                if (anuncioAtualizado.getImovel() != null) {
+                    anuncioASerAtualizado.setImovel(anuncioAtualizado.getImovel());
+                }
+
+                if (anuncioAtualizado.getPreco() != null) {
+                    anuncioASerAtualizado.setPreco(anuncioAtualizado.getPreco());
+                }
+
+                if (anuncioAtualizado.getDescricao() != null) {
+                    anuncioASerAtualizado.setDescricao(anuncioAtualizado.getDescricao());
+                }
+
+                if (anuncioAtualizado.getTitulo() != null) {
+                    anuncioASerAtualizado.setTitulo(anuncioAtualizado.getTitulo());
+                }
+
+                if (anuncioAtualizado.getDisponibilidade() != null) {
+                    anuncioASerAtualizado.setDisponibilidade(anuncioAtualizado.getDisponibilidade());
+                }
+
+                if (anuncioAtualizado.getCurtidas() != null) {
+                    anuncioASerAtualizado.setCurtidas(anuncioAtualizado.getCurtidas());
+                }
+
+                if (anuncioAtualizado.getVisualizacoes() != null) {
+                    anuncioASerAtualizado.setVisualizacoes(anuncioAtualizado.getVisualizacoes());
+                }
+
+                if (anuncioAtualizado.getAvaliacao() != null) {
+                    anuncioASerAtualizado.setAvaliacao(anuncioAtualizado.getAvaliacao());
+                }
+
+                if (anuncioAtualizado.getFoto() != null) {
+                    anuncioASerAtualizado.setFoto(anuncioAtualizado.getFoto());
+                }
+
+                return ResponseEntity.ok().body(anuncioRepository.save(anuncioASerAtualizado));
+
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     /* @PatchMapping("/{idBase64}")
     public ResponseEntity<Anuncio> atualizarAnuncio(@RequestBody Anuncio atualizacaoAnuncio) {
         Optional<Anuncio> opAnuncio = anuncioRepository.findById(atualizacaoAnuncio.getIdAnuncio());
