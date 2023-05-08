@@ -10,6 +10,7 @@ import espacoaberto.backend.repository.AnuncianteRepository;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ClienteRepository;
 import espacoaberto.backend.repository.CurtidaRepository;
+import espacoaberto.backend.service.ServiceBase64;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -140,6 +141,37 @@ public class CurtidaController {
         return ResponseEntity.status(200).body(curtidasDTO);
 
 
+    }
+
+    @GetMapping("/{idBase64}")
+    public ResponseEntity<List<Anuncio>> listarCurtidasPorUsuario(@PathVariable String idBase64) {
+        Integer idDecodificado;
+
+        try {
+            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+            List<Curtida> curtidas = curtidaRepository.findAll();
+            List<Anuncio> anunciosCurtidos = new ArrayList<>();
+
+            if (!curtidas.isEmpty()) {
+                for (Curtida curtida : curtidas) {
+                    if (curtida.getUsuario().getId() == idDecodificado) {
+                        anunciosCurtidos.add(curtida.getAnuncio());
+                    }
+                }
+
+                if (anunciosCurtidos.isEmpty()) {
+                    return ResponseEntity.noContent().build();
+                }
+                return ResponseEntity.ok().body(anunciosCurtidos);
+
+            } else {
+                return ResponseEntity.noContent().build();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Não foi possível converter o ID de base 64");
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping
