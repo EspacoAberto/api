@@ -5,12 +5,16 @@ import espacoaberto.backend.dto.DocumentoDTO;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
+import espacoaberto.backend.service.ImgurApiClient;
 import espacoaberto.backend.service.ServiceBase64;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import espacoaberto.backend.service.ImgurApiClient;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +26,10 @@ public class ImovelController {
     private ImovelRepository imovelRepository;
     @Autowired
     private AnuncioRepository anuncioRepository;
+    @Autowired
+    private ImgurApiClient imgurApiClient;
+
+
 
     @GetMapping()
     public ResponseEntity<List<Imovel>> listar(
@@ -83,6 +91,16 @@ public class ImovelController {
 
     }
 
+    @PostMapping("/cadastrarImagem/{idImovel}")
+    public ResponseEntity<String> cadastrarImagem(@RequestBody byte[] file) throws IOException {
+        if (file != null) {
+            String link = imgurApiClient.uploadImage(file);
+
+            return ResponseEntity.ok().body(link);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
 
 
 

@@ -2,6 +2,7 @@ package espacoaberto.backend.entidades;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import espacoaberto.backend.dto.ImgurApiResponse;
 import lombok.*;
 
 
@@ -37,9 +38,9 @@ public class Imovel {
     private Integer qtdQuartos;
     private Integer qtdBanheiros;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
-    @JsonManagedReference
-    private List<Imagem> fotos;
+    @ElementCollection
+    @CollectionTable(name = "linkfotos")
+    private List<String> linkFotos;
 
 
     public List<Acomodacao> getAcomodacoes() {
@@ -83,12 +84,6 @@ public class Imovel {
     }
 
 
-    public List<Imagem> getFotos() {
-        return fotos;
-    }
 
-    public void setFotos(List<Imagem> fotos) {
-        this.fotos = fotos;
-    }
 }
 
