@@ -37,9 +37,10 @@ public class Imovel {
     private Integer qtdQuartos;
     private Integer qtdBanheiros;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
+    @ElementCollection
+    @CollectionTable(name = "linkfotos")
     @JsonManagedReference
-    private List<Imagem> fotos;
+    private List<String> linkFotos;
 
 
     public List<Acomodacao> getAcomodacoes() {
@@ -83,12 +84,12 @@ public class Imovel {
     }
 
 
-    public List<Imagem> getFotos() {
-        return fotos;
+    public List<String> getLinkFotos() {
+        return linkFotos;
     }
 
-    public void setFotos(List<Imagem> fotos) {
-        this.fotos = fotos;
+    public void setLinkFotos(List<String> linkFotos) {
+        this.linkFotos = linkFotos;
     }
 }
 

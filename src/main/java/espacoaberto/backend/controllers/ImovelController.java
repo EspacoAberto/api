@@ -5,12 +5,15 @@ import espacoaberto.backend.dto.DocumentoDTO;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
+import espacoaberto.backend.service.ImageUploadExample;
 import espacoaberto.backend.service.ServiceBase64;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,7 +86,32 @@ public class ImovelController {
 
     }
 
+    private static final String CLIENT_ID = "2bf2c8257645521";
 
+    @PostMapping("/upload/{id}")
+    public ResponseEntity<Imovel> uploadImage(@RequestBody byte[] imageData, @PathVariable Integer id) {
+
+            Optional<Imovel> opImovel = imovelRepository.findById(id);
+
+            if (opImovel.isPresent()) {
+                String downloadLink = ImageUploadExample.uploadImage(imageData, CLIENT_ID);
+
+                Imovel imovel = opImovel.get();
+
+                List<String> imagensDoImovel = imovel.getLinkFotos();
+
+                imagensDoImovel.add(downloadLink);
+
+                imovel.setLinkFotos(imagensDoImovel);
+
+                return ResponseEntity.ok(imovelRepository.save(imovel));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
+
+
+    }
 
 
 

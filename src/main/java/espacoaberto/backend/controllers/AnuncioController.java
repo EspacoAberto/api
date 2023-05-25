@@ -401,11 +401,11 @@ public class AnuncioController {
             }
         }
 
-        for (Imagem imagem : imagemRepository.findAll()) {
+        /*for (Imagem imagem : imagemRepository.findAll()) {
             if (imagem.equals(anuncio.get().getImovel().getFotos())) {
                 imagemRepository.deleteById(imagem.getId());
             }
-        }
+        }*/
 
         return ResponseEntity.status(200).build();
     }
