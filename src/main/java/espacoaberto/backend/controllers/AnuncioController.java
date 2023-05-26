@@ -401,8 +401,11 @@ public class AnuncioController {
             }
         }
 
-        /*for (Imagem imagem : imagemRepository.findAll()) {
-            if (imagem.equals(anuncio.get().getImovel().getFotos())) {
+
+
+
+        for (Imagem imagem : imagemRepository.findAll()) {
+            if (imagem.equals(anuncio.get().getImovel().getLinkFotos())) {
                 imagemRepository.deleteById(imagem.getId());
             }
         }*/

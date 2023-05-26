@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import espacoaberto.backend.service.ImgurApiClient;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +27,10 @@ public class ImovelController {
     private ImovelRepository imovelRepository;
     @Autowired
     private AnuncioRepository anuncioRepository;
+    @Autowired
+    private ImgurApiClient imgurApiClient;
+
+
 
     @GetMapping()
     public ResponseEntity<List<Imovel>> listar(
@@ -112,12 +118,14 @@ public class ImovelController {
 
     }
 
+
     @PostMapping("/uploadComprovante/{id}")
     public ResponseEntity<Imovel> uploadImageComprovante(@RequestBody byte[] imageData, @PathVariable Integer id) {
         Optional<Imovel> opImovel = imovelRepository.findById(id);
 
         if (opImovel.isPresent()) {
             String downloadLink = ImageUploadExample.uploadImage(imageData, CLIENT_ID);
+
 
             Imovel imovel = opImovel.get();
 

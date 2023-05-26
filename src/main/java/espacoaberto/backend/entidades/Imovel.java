@@ -2,6 +2,7 @@ package espacoaberto.backend.entidades;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import espacoaberto.backend.dto.ImgurApiResponse;
 import lombok.*;
 
 
@@ -82,5 +83,6 @@ public class Imovel {
     public void setLinkFotos(List<String> linkFotos) {
         this.linkFotos = linkFotos;
     }
+
 }
 
