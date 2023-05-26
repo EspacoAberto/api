@@ -30,16 +30,16 @@ public class Imovel {
 
 
 
-    @Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
-    private byte[] comprovante;
+    //@Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
+    private String comprovante;
 
-    private String tipoArquivoComprovante;
 
     private Integer qtdQuartos;
     private Integer qtdBanheiros;
 
     @ElementCollection
     @CollectionTable(name = "linkfotos")
+    @JsonManagedReference
     private List<String> linkFotos;
 
 
@@ -51,11 +51,11 @@ public class Imovel {
         this.acomodacoes = acomodacoes;
     }
 
-    public byte[] getComprovante() {
+    public String getComprovante() {
         return comprovante;
     }
 
-    public void setComprovante(byte[] comprovante) {
+    public void setComprovante(String comprovante) {
         this.comprovante = comprovante;
     }
 
@@ -75,15 +75,14 @@ public class Imovel {
         this.qtdBanheiros = qtdBanheiros;
     }
 
-    public String getTipoArquivoComprovante() {
-        return tipoArquivoComprovante;
+
+    public List<String> getLinkFotos() {
+        return linkFotos;
     }
 
-    public void setTipoArquivoComprovante(String tipoArquivoComprovante) {
-        this.tipoArquivoComprovante = tipoArquivoComprovante;
+    public void setLinkFotos(List<String> linkFotos) {
+        this.linkFotos = linkFotos;
     }
-
-
 
 }
 
