@@ -59,13 +59,12 @@ public class ImovelController {
         return ResponseEntity.status(404).build();
     }
 
-
     @PostMapping("/cadastrar")
     public ResponseEntity<Imovel> cadastrar(@RequestBody Imovel novoImovel) {
         return ResponseEntity.status(201).body(this.imovelRepository.save(novoImovel));
     }
 
-    @PatchMapping("/cadastrar/{id}")
+    /*@PatchMapping("/cadastrar/{id}")
     public ResponseEntity<Imovel> cadastrarDocumento(
             @PathVariable Integer id,
             @RequestBody DocumentoDTO documento
@@ -84,7 +83,7 @@ public class ImovelController {
 
         return ResponseEntity.status(200).body(imAtualizado.get());
 
-    }
+    }*/
 
     private static final String CLIENT_ID = "2bf2c8257645521";
 
@@ -113,7 +112,46 @@ public class ImovelController {
 
     }
 
+    @PostMapping("/uploadComprovante/{id}")
+    public ResponseEntity<Imovel> uploadImageComprovante(@RequestBody byte[] imageData, @PathVariable Integer id) {
+        Optional<Imovel> opImovel = imovelRepository.findById(id);
 
+        if (opImovel.isPresent()) {
+            String downloadLink = ImageUploadExample.uploadImage(imageData, CLIENT_ID);
+
+            Imovel imovel = opImovel.get();
+
+            // List<String> imagensDoImovel = imovel.getLinkFotos();
+
+            imovel.setComprovante(downloadLink);
+
+            //imovel.setLinkFotos(imagensDoImovel);
+
+            return ResponseEntity.ok(imovelRepository.save(imovel));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/imagens/{id}")
+    public ResponseEntity<List<String>> getImagensPorImovel(@PathVariable Integer id) {
+        Optional<Imovel> opImovel = imovelRepository.findById(id);
+
+        if (opImovel.isPresent()) {
+            Imovel imovelEncontrado = opImovel.get();
+
+            List<String> links = imovelEncontrado.getLinkFotos();
+
+            if (links.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok().body(links);
+        }
+
+            return ResponseEntity.notFound().build();
+
+    }
 
 
 }
