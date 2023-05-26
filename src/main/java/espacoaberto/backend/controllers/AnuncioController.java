@@ -408,7 +408,7 @@ public class AnuncioController {
             if (imagem.equals(anuncio.get().getImovel().getLinkFotos())) {
                 imagemRepository.deleteById(imagem.getId());
             }
-        }*/
+        }
 
         return ResponseEntity.status(200).build();
     }
