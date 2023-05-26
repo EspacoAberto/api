@@ -1,6 +1,7 @@
 package espacoaberto.backend.entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
@@ -15,7 +16,7 @@ public class Endereco {
     private String logradouro;
     private String numero;
     @OneToOne
-    @JsonBackReference
+    @JsonManagedReference
     private Imovel imovel;
 
     public Endereco(String cep, String estado, String cidade, String logradouro, String numero, Imovel imovel) {

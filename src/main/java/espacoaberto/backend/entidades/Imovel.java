@@ -1,5 +1,6 @@
 package espacoaberto.backend.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import espacoaberto.backend.dto.ImgurApiResponse;
@@ -21,11 +22,10 @@ public class Imovel {
     private Integer id;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "imovel")
 
-    @JsonManagedReference
+    @JsonBackReference
     private Endereco endereco;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "imovel")
-    @JsonManagedReference
     private List<Acomodacao> acomodacoes;
 
 
@@ -39,7 +39,6 @@ public class Imovel {
 
     @ElementCollection
     @CollectionTable(name = "linkfotos")
-    @JsonManagedReference
     private List<String> linkFotos;
 
 
