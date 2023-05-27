@@ -1,5 +1,5 @@
 package espacoaberto.backend.dto;
-/*
+
 import java.time.LocalDateTime;
 
 public class CurtidaDTO {
@@ -41,4 +41,4 @@ public class CurtidaDTO {
     public void setMomentoCurtida(LocalDateTime momentoCurtida) {
         this.momentoCurtida = momentoCurtida;
     }
-}*/
+}

@@ -1,6 +1,6 @@
 package espacoaberto.backend.entidades;
-/*
-import espacoaberto.backend.abstrato.Usuario;
+
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -49,4 +49,3 @@ public class Curtida {
         this.momentoCurtida = momentoCurtida;
     }
 }
-*/

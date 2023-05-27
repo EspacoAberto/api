@@ -1,5 +1,5 @@
 package espacoaberto.backend.dto;
-/*
+
 public class AvaliacaoDTO {
     private Integer idAnuncio;
     private Integer idUsuario;
@@ -36,4 +36,3 @@ public class AvaliacaoDTO {
         this.avaliacao = avaliacao;
     }
 }
-*/

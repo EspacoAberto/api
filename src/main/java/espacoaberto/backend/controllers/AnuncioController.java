@@ -3,6 +3,7 @@ package espacoaberto.backend.controllers;
 //import espacoaberto.backend.csv.ExportacaoCsv;
 
 //import espacoaberto.backend.dto.AvaliacaoDTO;
+import espacoaberto.backend.dto.AvaliacaoDTO;
 import espacoaberto.backend.entidades.*;
 
 //import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
@@ -27,12 +28,12 @@ public class AnuncioController {
     private AnuncioRepository anuncioRepository;
     @Autowired
     private ImovelRepository imovelRepository;
-    //@Autowired
-    // private AvaliacaoRepository avaliacaoRepository;
+    @Autowired
+     private AvaliacaoRepository avaliacaoRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
-    // @Autowired
-    // private AgendamentoRepository agendamentoRepository;
+     @Autowired
+     private AgendamentoRepository agendamentoRepository;
     @Autowired
     private AcomodacaoRepository acomodacaoRepository;
 
@@ -149,31 +150,21 @@ public class AnuncioController {
     }
 
 
-   /* @PostMapping("enviarAvaliacao")
+    @PostMapping("enviarAvaliacao")
     public ResponseEntity<Avaliacao> enviarAvaliacao(@RequestBody AvaliacaoDTO avDTO){
         Avaliacao avaliacao = new Avaliacao();
 
         Anuncio an = anuncioRepository.findById(avDTO.getIdAnuncio()).get();
 
-        // Verifica se o usuário é anunciante
-        Optional<Anunciante> ant = anuncianteRepository.findById(avDTO.getIdUsuario());
+        Optional<Usuario> opUsuario = usuarioRepository.findById(avDTO.getIdUsuario());
 
-        // É anunciante
-        if(ant.isPresent()){
-            Anunciante antEncontrado = ant.get();
-            avaliacao.setUsuario(antEncontrado);
-
-        }else{
-            // É cliente
-            Optional<Cliente> cli = clienteRepository.findById(avDTO.getIdUsuario());
-            Cliente cliEncontrado = cli.get();
-            avaliacao.setUsuario(cliEncontrado);
+        if (opUsuario.isPresent()) {
+        avaliacao.setUsuario(opUsuario.get());
+            avaliacao.setAnuncio(an);
+            avaliacao.setAvaliacao(avDTO.getAvaliacao());
+            return ResponseEntity.status(200).body(avaliacaoRepository.save(avaliacao));
         }
-
-
-        avaliacao.setAnuncio(an);
-        avaliacao.setAvaliacao(avDTO.getAvaliacao());
-        return ResponseEntity.status(200).body(avaliacaoRepository.save(avaliacao));
+       return ResponseEntity.notFound().build();
     }
 
     @GetMapping("avaliacoes")
@@ -186,22 +177,15 @@ public class AnuncioController {
         }else {
             // Rodando a lista de avaliações encontradas e adicionando a listas de DTO
             for (int i = 0; i < avaliacoes.size(); i++) {
-                AvaliacaoDTO avDTO = new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao());
+                AvaliacaoDTO avDTO = new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getId(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao());
                 avaliacoesDTO.add(avDTO);
             }
             return ResponseEntity.status(200).body(avaliacoesDTO);
         }
     }
 
-    @GetMapping("avaliacoes/usuarios/{idBase64}")
-    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesPorUsuario(@PathVariable String idBase64){
-        String stid = ServiceBase64.descriptografaBase64(idBase64);
-
-        if (stid == null){
-            return ResponseEntity.status(404).build();
-        }
-
-        int id = Integer.parseInt(stid);
+    @GetMapping("avaliacoes/usuarios/{id}")
+    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacoesPorUsuario(@PathVariable Integer id){
 
         // Verificando se o usuário existe
         Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
@@ -216,7 +200,7 @@ public class AnuncioController {
                 // Convertendo avaliação para avaliacao DTO
                 // Rodando a lista de avaliações encontradas e adicionando a listas de DTO
                 for (int i = 0; i < avaliacoes.size(); i++) {
-                    AvaliacaoDTO avDTO = new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao());
+                    AvaliacaoDTO avDTO = new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getId(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao());
                     avaliacoesDTO.add(avDTO);
                 }
                 return ResponseEntity.status(200).body(avaliacoesDTO);
@@ -226,15 +210,8 @@ public class AnuncioController {
         }
     }
 
-    @GetMapping("avaliacoes/anuncio/{idBase64}")
-    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacaoPorAnuncio(@PathVariable String idBase64){
-        String stid = ServiceBase64.descriptografaBase64(idBase64);
-
-        if (stid == null){
-            return ResponseEntity.status(404).build();
-        }
-
-        int id = Integer.parseInt(stid);
+    @GetMapping("avaliacoes/anuncio/{id}")
+    public ResponseEntity<List<AvaliacaoDTO>> listarAvaliacaoPorAnuncio(@PathVariable Integer id){
 
         // Verificando se o anuncio existe
         Optional<Anuncio> optionalAnuncio = anuncioRepository.findById(id);
@@ -248,7 +225,7 @@ public class AnuncioController {
                 List<AvaliacaoDTO> avaliacaoDTOS = new ArrayList<>();
                 // Convertendo as avaliacoes do anuncio em avaliações DTO
                 for (int i = 0; i < avaliacoes.size(); i++) {
-                    avaliacaoDTOS.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
+                    avaliacaoDTOS.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getId(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
 
                 }
                 return ResponseEntity.status(200).body(avaliacaoDTOS);
@@ -268,7 +245,7 @@ public class AnuncioController {
 
         List<AvaliacaoDTO> avaliacoesDTO = new ArrayList<>();
         for (int i = 0; i < avaliacoes.size(); i++) {
-            avaliacoesDTO.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
+            avaliacoesDTO.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getId(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
         }
 
         // Ordenando as avaliações
@@ -291,7 +268,7 @@ public class AnuncioController {
 
         List<AvaliacaoDTO> avaliacoesDTO = new ArrayList<>();
         for (int i = 0; i < avaliacoes.size(); i++) {
-            avaliacoesDTO.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getIdAnuncio(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
+            avaliacoesDTO.add(new AvaliacaoDTO(avaliacoes.get(i).getAnuncio().getId(), avaliacoes.get(i).getUsuario().getId(), avaliacoes.get(i).getAvaliacao()));
         }
 
         // Ordenando as avaliações
@@ -302,9 +279,8 @@ public class AnuncioController {
         return ResponseEntity.status(200).body(sortedList);
     }
 
-    @GetMapping("/avaliacoes/mediaPorImovel/{idBase64}")
-    public ResponseEntity<Double> retornaMediaPorImovel(@PathVariable String idBase64){
-        int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+    @GetMapping("/avaliacoes/mediaPorAnuncio/{id}")
+    public ResponseEntity<Double> retornaMediaPorImovel(@PathVariable Integer id){
         Optional<Anuncio> OPanuncioEncontrado = anuncioRepository.findById(id);
 
         if (OPanuncioEncontrado.isPresent()){
@@ -324,7 +300,7 @@ public class AnuncioController {
             return ResponseEntity.status(404).build();
         }
     }
-*/
+
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deletarAnuncio(@PathVariable Integer id) {
         Optional<Anuncio> anuncio = anuncioRepository.findById(id);

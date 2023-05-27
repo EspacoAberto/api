@@ -1,8 +1,8 @@
 package espacoaberto.backend.entidades;
-/*
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import espacoaberto.backend.abstrato.Usuario;
+import espacoaberto.backend.entidades.Usuario;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -67,4 +67,4 @@ public class Visualizacao {
     public void setAnuncio(Anuncio anuncio) {
         this.anuncio = anuncio;
     }
-} */
+}

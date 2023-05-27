@@ -1,6 +1,5 @@
 package espacoaberto.backend.entidades;
-/*
-import espacoaberto.backend.abstrato.Usuario;
+
 
 import javax.persistence.*;
 
@@ -48,4 +47,4 @@ public class Avaliacao {
     public void setAvaliacao(Double avaliacao) {
         this.avaliacao = avaliacao;
     }
-} */
+}
