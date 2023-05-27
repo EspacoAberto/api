@@ -1,5 +1,5 @@
 package espacoaberto.backend.service;
-import com.google.gson.Gson;
+/*import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -42,4 +42,4 @@ public class ImageUploadExample {
 
         return null;
     }
-}
+}*/

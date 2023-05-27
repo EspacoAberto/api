@@ -1,5 +1,5 @@
 package espacoaberto.backend.dto;
-
+/*
 
 import java.time.LocalDateTime;
 
@@ -59,3 +59,4 @@ public class AgendamentoDTO {
         this.dataAgendamento = dataAgendamento;
     }
 }
+*/

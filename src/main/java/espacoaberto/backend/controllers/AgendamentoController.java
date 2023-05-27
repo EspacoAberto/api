@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.AgendamentoDTO;
 
@@ -113,4 +113,4 @@ public class AgendamentoController {
         return ResponseEntity.status(400).build();
 
     }
-}
+}*/

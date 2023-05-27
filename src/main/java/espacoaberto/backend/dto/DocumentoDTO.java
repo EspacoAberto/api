@@ -1,5 +1,5 @@
 package espacoaberto.backend.dto;
-
+/*
 public class DocumentoDTO {
     private byte[] comprovante;
     private String tipoArquivo;
@@ -24,4 +24,4 @@ public class DocumentoDTO {
     public void setTipoArquivo(String tipoArquivo) {
         this.tipoArquivo = tipoArquivo;
     }
-}
+} */

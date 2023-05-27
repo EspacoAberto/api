@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.VisualizacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +42,6 @@ public class VisualizacaoController {
     @GetMapping("/mensal")
     public ResponseEntity<List<Visualizacao>> listaPorMes(){
 
-    }*/
+    }
 }
+*/

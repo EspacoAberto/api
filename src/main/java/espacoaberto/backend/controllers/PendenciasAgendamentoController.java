@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.AgendamentoDTO;
 import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
@@ -266,5 +266,6 @@ public class PendenciasAgendamentoController {
         } else{
             return ResponseEntity.status(404).build();
         }
-    } */
+    }
 }
+*/

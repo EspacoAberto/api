@@ -1,5 +1,5 @@
 package espacoaberto.backend.service;
-
+/*
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -42,4 +42,4 @@ public class ServiceBase64 {
             throw new IllegalArgumentException("Id vazio");
         }
     }
-}
+}*/

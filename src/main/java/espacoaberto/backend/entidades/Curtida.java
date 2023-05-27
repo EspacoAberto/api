@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-
+/*
 import espacoaberto.backend.abstrato.Usuario;
 
 import javax.persistence.*;
@@ -49,3 +49,4 @@ public class Curtida {
         this.momentoCurtida = momentoCurtida;
     }
 }
+*/

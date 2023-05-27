@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-
+/*
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -45,5 +45,5 @@ public class Acomodacao {
     public void setImovel(Imovel imovel) {
         this.imovel = imovel;
     }
-}
+} */
 

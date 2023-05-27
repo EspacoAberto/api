@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 //import espacoaberto.backend.csv.ExportacaoCsv;
 
 import espacoaberto.backend.abstrato.Usuario;
@@ -61,7 +61,7 @@ public class AnuncioController {
         }
 
         return ResponseEntity.status(200).build();
-    }*/
+    }
     @GetMapping()
     public ResponseEntity<List<Anuncio>> consultarAnuncios(
             @RequestParam(required = false) Double precoMin,
@@ -413,3 +413,4 @@ public class AnuncioController {
         return ResponseEntity.status(200).build();
     }
 }
+*/

@@ -1,5 +1,5 @@
 package espacoaberto.backend.service;
-
+/*
 import espacoaberto.backend.dto.ImgurApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -48,4 +48,4 @@ public class ImgurApiClient {
 
         return null;
     }
-}
+}*/

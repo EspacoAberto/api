@@ -1,5 +1,5 @@
 package espacoaberto.backend.service;
-
+/*
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +43,4 @@ public class SendEmailService {
         log.info("Email enviado com sucesso!");
     }
 
-}
+}*/

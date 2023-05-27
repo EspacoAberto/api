@@ -1,5 +1,5 @@
 package espacoaberto.backend.repository;
-
+/*
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.entidades.Anuncio;
 import espacoaberto.backend.entidades.Curtida;
@@ -11,4 +11,4 @@ public interface CurtidaRepository extends JpaRepository<Curtida, Integer> {
     List<Curtida> findByUsuario(Usuario usuario);
 
 
-}
+} */

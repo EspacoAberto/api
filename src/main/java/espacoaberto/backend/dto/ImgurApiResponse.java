@@ -1,5 +1,5 @@
 package espacoaberto.backend.dto;
-
+/*
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ImgurApiResponse {
@@ -16,4 +16,4 @@ public class ImgurApiResponse {
     public void setLink(String link) {
         this.link = link;
     }
-}
+} */

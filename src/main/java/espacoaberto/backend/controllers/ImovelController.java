@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 //import espacoaberto.backend.csv.ExportacaoCsv;
 import espacoaberto.backend.dto.DocumentoDTO;
 import espacoaberto.backend.entidades.Imovel;
@@ -89,7 +89,7 @@ public class ImovelController {
 
         return ResponseEntity.status(200).body(imAtualizado.get());
 
-    }*/
+    }
 
     private static final String CLIENT_ID = "2bf2c8257645521";
 
@@ -163,3 +163,4 @@ public class ImovelController {
 
 
 }
+*/

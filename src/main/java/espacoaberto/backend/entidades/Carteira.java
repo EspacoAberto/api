@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-
+/*
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import espacoaberto.backend.abstrato.Usuario;
 import lombok.*;
@@ -26,4 +26,4 @@ public class Carteira {
         this.fkUsuario = fkUsuario;
         this.saldo = saldo;
     }
-}
+} */

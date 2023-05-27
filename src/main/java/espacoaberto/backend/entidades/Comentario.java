@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-
+/*
 import espacoaberto.backend.abstrato.Usuario;
 import org.springframework.core.serializer.Serializer;
 
@@ -26,4 +26,4 @@ public class Comentario implements Serializable {
 
     // get and set
 
-}
+} */

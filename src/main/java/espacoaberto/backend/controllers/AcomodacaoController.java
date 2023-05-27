@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 import espacoaberto.backend.entidades.Acomodacao;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.AcomodacaoRepository;
@@ -8,7 +8,6 @@ import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -46,3 +45,4 @@ public class AcomodacaoController {
 
     }
 }
+*/

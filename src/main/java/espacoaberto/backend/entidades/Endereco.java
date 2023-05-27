@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-
+/*
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
@@ -79,3 +79,4 @@ public class Endereco {
         this.imovel = imovel;
     }
 }
+*/

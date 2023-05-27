@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.dto.CurtidaDTO;
 import espacoaberto.backend.entidades.Anunciante;
@@ -201,3 +201,4 @@ public class CurtidaController {
 
     }
 }
+*/

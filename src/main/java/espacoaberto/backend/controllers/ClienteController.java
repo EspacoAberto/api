@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Carteira;
 import espacoaberto.backend.entidades.Cliente;
@@ -109,3 +109,4 @@ public class ClienteController {
 
 }
 
+*/

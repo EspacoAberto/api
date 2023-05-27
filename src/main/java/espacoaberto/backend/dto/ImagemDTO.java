@@ -1,5 +1,5 @@
 package espacoaberto.backend.dto;
-
+/*
 import espacoaberto.backend.entidades.Imovel;
 
 import javax.persistence.*;
@@ -45,4 +45,4 @@ public class ImagemDTO {
     }
 
 
-}
+} */

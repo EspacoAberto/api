@@ -1,5 +1,5 @@
 package espacoaberto.backend.repository;
-
+/*
 import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.entidades.Anuncio;
 
@@ -45,4 +45,4 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Integer> {
 
 
 
-}
+} */

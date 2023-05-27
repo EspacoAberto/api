@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-
+/*
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -69,4 +69,4 @@ public class Imagem {
     public void setTipoImagem(String tipoImagem) {
         this.tipoImagem = tipoImagem;
     }
-}
+} */

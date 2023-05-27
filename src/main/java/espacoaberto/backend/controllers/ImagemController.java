@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 import espacoaberto.backend.dto.ImagemDTO;
 import espacoaberto.backend.entidades.Imagem;
 import espacoaberto.backend.entidades.Imovel;
@@ -54,3 +54,4 @@ public class ImagemController {
 
     }
 }
+*/

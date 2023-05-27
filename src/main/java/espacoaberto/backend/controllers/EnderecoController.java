@@ -1,5 +1,5 @@
 package espacoaberto.backend.controllers;
-
+/*
 import espacoaberto.backend.entidades.Endereco;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.EnderecoRepository;
@@ -44,3 +44,4 @@ public class EnderecoController {
         return ResponseEntity.status(404).build();
     }
 }
+*/

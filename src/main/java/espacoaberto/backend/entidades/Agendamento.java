@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-
+/*
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,4 +32,4 @@ public class Agendamento {
     }
 
     public Agendamento(){}
-}
+} */

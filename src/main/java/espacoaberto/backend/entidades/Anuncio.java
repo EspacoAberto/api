@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-
+/*
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,4 +109,4 @@ public class Anuncio implements Serializable {
     public void setAvaliacao(Double avaliacao) {
         this.avaliacao = avaliacao;
     }
-}
+} */
