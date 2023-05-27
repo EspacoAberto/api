@@ -39,15 +39,14 @@ public class AnuncioController {
     @Autowired
     private AgendamentoRepository agendamentoRepository;
     @Autowired
-    private EnderecoRepository enderecoRepository;
-    @Autowired
     private AcomodacaoRepository acomodacaoRepository;
-    @Autowired
-    private ImagemRepository imagemRepository;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio) {
-        return ResponseEntity.status(201).body(novoAnuncio);
+        novoAnuncio.setCurtidas(0);
+        novoAnuncio.setVisualizacoes(0);
+        novoAnuncio.setAvaliacao(0.0);
+        return ResponseEntity.status(201).body(anuncioRepository.save(novoAnuncio));
     }
 
     /* @PostMapping("/executarAgendamento/{qtd}")
@@ -126,55 +125,6 @@ public class AnuncioController {
         return ResponseEntity.status(204).build();
     }
 
-    @CrossOrigin("*")
-    @PatchMapping(value = "/foto/{id}", consumes = "image/jpeg")
-    public ResponseEntity<Void> patchFoto(@PathVariable int id, @RequestBody byte[] novaFoto) {
-        if (!anuncioRepository.existsById(id)) {
-            throw new FotoNaoEncontradaException();
-        }
-
-        anuncioRepository.setFoto(id, novaFoto);
-
-        return ResponseEntity.status(200).build();
-    }
-
-    @GetMapping(value = "/foto/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> getFoto(@PathVariable int id) {
-        if (!anuncioRepository.existsById(id)) {
-            throw new FotoNaoEncontradaException();
-        }
-
-        byte[] foto = anuncioRepository.getFoto(id);
-
-        return ResponseEntity.status(200).header("content-disposition",
-                "attachment; filename=\"foto-anuncio.jpg\"").body(foto);
-    }
-
-    @GetMapping("/listarAnunciosPremium")
-    public ResponseEntity<List<Anuncio>> listarAnunciosPremium() {
-        List<Anunciante> usuariosPremium = anuncianteRepository.findByIsPremiumTrue();
-        List<Anunciante> usuariosPremiumFiltro = new ArrayList<>();
-
-        // pegando os seis primeiros anunciantes
-        for (int i = 0; i < 6; i++) {
-            if (usuariosPremium.get(i) != null) {
-                usuariosPremiumFiltro.add(usuariosPremium.get(i));
-            }
-        }
-
-        List<Anuncio> anunciosSelecionados = new ArrayList<>();
-
-        for (Anunciante a : usuariosPremiumFiltro) {
-            List<Anuncio> anuncios = anuncioRepository.findByAnuncianteId(a.getId());
-
-            if (!anuncios.isEmpty()) {
-                anunciosSelecionados.add(anuncios.get(0));
-            }
-        }
-
-        return ResponseEntity.status(200).body(anunciosSelecionados);
-
-    }
 
     @PatchMapping("aumentarVisualizacoes/{idBase64}")
     public ResponseEntity<Anuncio> aumentarVisualizacao(@PathVariable String idBase64){
@@ -392,7 +342,6 @@ public class AnuncioController {
         }
 
         anuncioRepository.deleteById(id);
-        enderecoRepository.deleteById(anuncio.get().getImovel().getEndereco().getId());
         imovelRepository.deleteById(anuncio.get().getImovel().getId());
 
         for (Acomodacao acomodacao : acomodacaoRepository.findAll()) {
@@ -401,14 +350,6 @@ public class AnuncioController {
             }
         }
 
-
-
-
-        for (Imagem imagem : imagemRepository.findAll()) {
-            if (imagem.equals(anuncio.get().getImovel().getLinkFotos())) {
-                imagemRepository.deleteById(imagem.getId());
-            }
-        }
 
         return ResponseEntity.status(200).build();
     }

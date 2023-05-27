@@ -1,8 +1,9 @@
 package espacoaberto.backend.controllers;
 
+import espacoaberto.backend.abstrato.Usuario;
 import espacoaberto.backend.entidades.Anunciante;
-import espacoaberto.backend.entidades.Carteira;
 import espacoaberto.backend.repository.AnuncianteRepository;
+import espacoaberto.backend.repository.UsuarioRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +18,20 @@ import java.util.Optional;
 public class AnuncianteController {
     @Autowired
     private AnuncianteRepository anuncianteRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @PostMapping("cadastrar")
     public ResponseEntity<Anunciante> cadastrarAnunciante(@RequestBody Anunciante novoAnunciante){
         String email = novoAnunciante.getEmail();
-        Optional<Anunciante> opAnunciante = anuncianteRepository.findByEmail(email);
+        Optional<Usuario> opAnunciante = usuarioRepository.findByEmail(email);
 
         if(opAnunciante.isPresent()){
             return ResponseEntity.status(409).build();
         }
-        Carteira newCarteira = new Carteira( novoAnunciante, 0.0);
-
-        novoAnunciante.setCarteira(newCarteira);
 
 
+        novoAnunciante.setSaldo(0.0);
         return ResponseEntity.status(201).body(this.anuncianteRepository.save(novoAnunciante));
     }
 
@@ -54,17 +55,6 @@ public class AnuncianteController {
         }
 
         return ResponseEntity.status(404).build();
-    }
-
-    @GetMapping("/listarPremium")
-    public ResponseEntity<List<Anunciante>> consultarAnunciantesPremium(){
-        List<Anunciante> anunciantesPremium = anuncianteRepository.findByIsPremiumTrue();
-
-        if (anunciantesPremium.isEmpty()){
-            return ResponseEntity.status(204).build();
-        }
-
-        return ResponseEntity.status(200).body(anunciantesPremium);
     }
 
     @GetMapping("listarPorCpf/{cpfBase64}")

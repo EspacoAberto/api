@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import espacoaberto.backend.abstrato.Usuario;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Cliente extends Usuario {
@@ -18,14 +15,18 @@ public class Cliente extends Usuario {
     @JsonProperty
     private Agendamento agendamento;
 
+
+
     //constructor
 
 
     //methods
-    @Override
-    public void tornarPremium() {
+    //@Override
+   /* public void tornarPremium() {
         setIsPremium(true);
-    }
+    } */
+
+
 
     public Boolean autenticar(String email, String senha) {
         return email.equals(this.getEmail()) && senha.equals(this.getSenha());

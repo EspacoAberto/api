@@ -1,21 +1,17 @@
 package espacoaberto.backend.controllers;
 
 //import espacoaberto.backend.csv.ExportacaoCsv;
-import espacoaberto.backend.dto.DocumentoDTO;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.AnuncioRepository;
 import espacoaberto.backend.repository.ImovelRepository;
 import espacoaberto.backend.service.ImageUploadExample;
 import espacoaberto.backend.service.ServiceBase64;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import espacoaberto.backend.service.ImgurApiClient;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +63,8 @@ public class ImovelController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<Imovel> cadastrar(@RequestBody Imovel novoImovel) {
+        novoImovel.setAcomodacoes(new ArrayList<>());
+        novoImovel.setLinkFotos(new ArrayList<>());
         return ResponseEntity.status(201).body(this.imovelRepository.save(novoImovel));
     }
 

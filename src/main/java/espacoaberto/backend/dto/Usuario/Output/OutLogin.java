@@ -12,7 +12,6 @@ public class OutLogin {
                    ,String nome
                    ,String email
                    ,String cpf
-                   ,Boolean isPremium
                    ,String tipoUsuario) {
         this.id = id;
         this.nome = nome;

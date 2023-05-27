@@ -13,7 +13,7 @@ import java.util.Optional;
 public class Anuncio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idAnuncio;
+    private Integer id;
     @ManyToOne
     private Anunciante anunciante;
     @ManyToOne
@@ -24,27 +24,22 @@ public class Anuncio implements Serializable {
 
 
     private String disponibilidade;
-    @Column(columnDefinition = "int default 0")
+
     private Integer curtidas;
-    @Column(columnDefinition = "int default 0")
+
     private Integer visualizacoes;
-    @Column(columnDefinition = "double default 5.0")
+
     private Double avaliacao;
-    @JsonIgnore
-    @Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
-    private byte[] foto;
 
     //Getters and Setters
 
-    public byte[] getFoto() {return foto;}
 
-    public void setFoto(byte[] foto) {this.foto = foto;}
     public Integer getIdAnuncio() {
-        return idAnuncio;
+        return id;
     }
 
     public void setIdAnuncio(Integer idAnuncio) {
-        this.idAnuncio = idAnuncio;
+        this.id = idAnuncio;
     }
 
     public Anunciante getAnunciante() {

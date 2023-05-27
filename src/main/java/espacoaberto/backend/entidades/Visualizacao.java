@@ -8,10 +8,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "dataVisualizacao"
-)
 public class Visualizacao {
     @Id
     private LocalDateTime dataVisualizacao;

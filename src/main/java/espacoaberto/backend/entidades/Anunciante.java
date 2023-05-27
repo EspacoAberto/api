@@ -17,10 +17,10 @@ public class Anunciante extends Usuario {
 
 
     //methods
-    @Override
+   /* @Override
     public void tornarPremium() { // -> abstratic
         setIsPremium(true);
-    }
+    } */
 
 //    @Override
 //    public Boolean autenticar(String email, String senha) {
