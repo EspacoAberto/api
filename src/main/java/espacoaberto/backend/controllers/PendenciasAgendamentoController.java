@@ -1,14 +1,11 @@
 package espacoaberto.backend.controllers;
-/*
-import espacoaberto.backend.abstrato.Usuario;
+
+
 import espacoaberto.backend.dto.AgendamentoDTO;
 import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
 import espacoaberto.backend.entidades.Agendamento;
-import espacoaberto.backend.entidades.Anunciante;
 import espacoaberto.backend.entidades.Anuncio;
-import espacoaberto.backend.entidades.Cliente;
 import espacoaberto.backend.repository.*;
-import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +22,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/pendencias")
 public class PendenciasAgendamentoController {
-    @Autowired
-    private ClienteRepository clienteRepository;
-    @Autowired
-    private AnuncianteRepository anuncianteRepository;
-
 
     @Autowired
     private AgendamentoRepository agendamentoRepository;
@@ -52,7 +44,7 @@ public class PendenciasAgendamentoController {
 
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping()
     public ResponseEntity<PendenciaAgendamentoDTO> cadastrarAgendamento(@RequestBody AgendamentoDTO novoAgendamentoDTO){
 
         // Antes de partir para qualquer validação, vamos verificar se há algum agendamento que bata com as datas da pendencia
@@ -61,47 +53,29 @@ public class PendenciasAgendamentoController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
         // Aqui devemos verificar se os agendamentos presentes batem com a data
         if (!agendamentos.isEmpty()) {
-            // Formatador para formatar localdatetime em String
-
-
            for (Agendamento agendamento : agendamentos) {
                if (LocalDateTime.parse(novoAgendamentoDTO.getDataCheckinAgendamento(), formatter).isAfter(LocalDateTime.parse(agendamento.getDataCheckin(), formatter)) || LocalDateTime.parse(novoAgendamentoDTO.getDataCheckoutAgendamento(), formatter).isBefore(LocalDateTime.parse(agendamento.getDataCheckout(), formatter))) {
                    // Se isso for verdadeiro, significa que a pendencia a ser criada está com o checkin durante outro agendamento, por isso o agendamento não deve rolar
-                   return ResponseEntity.status(409).build();
+                   return ResponseEntity.status(411).build();
                }
            }
         }
 
         // Validação de data (o checkin não pode ser anterior à data atual)
         if (LocalDateTime.parse(novoAgendamentoDTO.getDataCheckinAgendamento(), formatter).isBefore(LocalDateTime.now())) {
-            return ResponseEntity.status(409).build();
+            return ResponseEntity.status(412).build();
         }
 
         // Validando se o checkin é maior que o checkout
         if (LocalDateTime.parse(novoAgendamentoDTO.getDataCheckinAgendamento(), formatter).isAfter(LocalDateTime.parse(novoAgendamentoDTO.getDataCheckoutAgendamento(), formatter))) {
-            return ResponseEntity.status(409).build();
+            return ResponseEntity.status(413).build();
         }
 
         // Antes de cadastrar o agendamento, precisamos verificar se existe uma pendência existente para aquele usuário
         // Buscando o usuário enviado na DTO
         // Verificando se é cliente ou anunciante
-        Optional<PendenciaAgendamentoDTO> optionalPendenciaAgendamentoDTO;
-        Optional<Anunciante> ant = anuncianteRepository.findById(novoAgendamentoDTO.getIdUsuario());
+        Optional<PendenciaAgendamentoDTO> optionalPendenciaAgendamentoDTO = pendenciaAgendamentoDTORepository.findByIdUsuario(novoAgendamentoDTO.getIdUsuario());
 
-        // É anunciante
-        if(ant.isPresent()){
-            Anunciante antEncontrado = ant.get();
-            optionalPendenciaAgendamentoDTO = pendenciaAgendamentoDTORepository.findByIdUsuario(antEncontrado.getId());
-
-
-        }else if (clienteRepository.findById(novoAgendamentoDTO.getIdUsuario()).isPresent()){
-            // É cliente
-            Cliente cliEncontrado = clienteRepository.findById(novoAgendamentoDTO.getIdUsuario()).get();
-            optionalPendenciaAgendamentoDTO = pendenciaAgendamentoDTORepository.findByIdUsuario(cliEncontrado.getId());
-
-        } else{
-            return ResponseEntity.status(404).build();
-        }
 
         // Agora, devemos verificar se existe ou não pendência para esse usuário
         if (optionalPendenciaAgendamentoDTO.isPresent()){
@@ -155,117 +129,39 @@ public class PendenciasAgendamentoController {
 
     }
 
-    @GetMapping("/anuncios/{idBase64}")
-    public ResponseEntity<List<PendenciaAgendamentoDTO>> listarPendenciasPorAnuncio(@PathVariable String idBase64) {
-        Integer idDecodificado;
+    @GetMapping("/anuncios/{id}")
+    public ResponseEntity<List<PendenciaAgendamentoDTO>> listarPendenciasPorAnuncio(@PathVariable Integer id) {
 
-        try {
-            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
-            List<PendenciaAgendamentoDTO> pendencias = pendenciaAgendamentoDTORepository.findByIdAnuncio(idDecodificado);
+            List<PendenciaAgendamentoDTO> pendencias = pendenciaAgendamentoDTORepository.findByIdAnuncio(id);
             if (pendencias.isEmpty()) {
                 return ResponseEntity.status(204).build();
             } else {
                 return ResponseEntity.status(200).body(pendencias);
             }
-        } catch (Exception e) {
-            System.out.println("Não foi possível converter o ID de base 64");
-        }
-        return ResponseEntity.status(400).build();
+
     }
 
-    @GetMapping("/usuarios/{idBase64}")
-    public ResponseEntity<PendenciaAgendamentoDTO> listarPendenciasPorUsuario(@PathVariable String idBase64) {
-        Integer idDecodificado;
+    @GetMapping("/usuarios/{id}")
+    public ResponseEntity<PendenciaAgendamentoDTO> listarPendenciasPorUsuario(@PathVariable Integer id) {
 
-        try {
-            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
-            Optional<PendenciaAgendamentoDTO> pendencia = pendenciaAgendamentoDTORepository.findByIdUsuario(idDecodificado);
+
+
+            Optional<PendenciaAgendamentoDTO> pendencia = pendenciaAgendamentoDTORepository.findByIdUsuario(id);
             if (pendencia.isPresent()) {
                 return ResponseEntity.status(200).body(pendencia.get());
             } else {
                 return ResponseEntity.status(204).build();
             }
-        } catch (Exception e) {
-            System.out.println("Não foi possível converter o ID de base 64");
-        }
-        return ResponseEntity.status(400).build();
+
     }
 
-    @DeleteMapping("/usuarios/{idBase64}")
-    public ResponseEntity<PendenciaAgendamentoDTO> deletePendenciaPorUsuario(@PathVariable String idBase64) {
-        Integer idDecodificado;
 
-        try {
-            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
-            // Verificando se o usuário existe
-            Optional<PendenciaAgendamentoDTO> pendencia_usuario = pendenciaAgendamentoDTORepository.findByIdUsuario(idDecodificado);
-            if (pendencia_usuario.isPresent()) {
-                pendenciaAgendamentoDTORepository.deleteById(pendencia_usuario.get().getId());
-                // Pendencia que foi excluida
-                return ResponseEntity.ok().body(pendencia_usuario.get());
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-
-            // Esse código veio do chatgpt skajdjskadk
-        } catch (EmptyResultDataAccessException e) {
-            return ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @DeleteMapping("/{idBase64}")
-    public ResponseEntity<PendenciaAgendamentoDTO> deletePendencia(@PathVariable String idBase64) {
-        Integer idDecodificado;
-
-        try {
-            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
-            Optional<PendenciaAgendamentoDTO> pendencia_excluida = pendenciaAgendamentoDTORepository.findById(idDecodificado);
-                pendenciaAgendamentoDTORepository.deleteById(idDecodificado);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PendenciaAgendamentoDTO> deletePendencia(@PathVariable Integer id) {
+            Optional<PendenciaAgendamentoDTO> pendencia_excluida = pendenciaAgendamentoDTORepository.findById(id);
+                pendenciaAgendamentoDTORepository.deleteById(id);
                 // Pendencia que foi excluida
                 return ResponseEntity.ok().body(pendencia_excluida.get());
-            // Esse código veio do chatgpt skajdjskadk
-        } catch (EmptyResultDataAccessException e) {
-            return ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
-   /* @DeleteMapping("/excluir/{idBase64}")
-    public ResponseEntity<PendenciaAgendamentoDTO> excluirAgendamento(@PathVariable String idBase64) {
-        Integer idDecodificado;
-
-        try {
-            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
-            // Antes de excluir, precisamos verificar se ele ja existe ou não
-
-
-            pendenciaAgendamentoDTORepository.deleteById(idDecodificado);
-
-
-        } catch (Exception e) {
-            System.out.println("Não foi possível converter o ID de base 64");
-            return ResponseEntity.status(400).build();
-        }
-
-        Optional<Anunciante> ant = anuncianteRepository.findById(novoAgendamentoDTO.getIdUsuario());
-
-        // É anunciante
-        if(ant.isPresent()){
-            Anunciante antEncontrado = ant.get();
-            optionalPendenciaAgendamentoDTO = pendenciaAgendamentoDTORepository.findByIdUsuario(antEncontrado.getId());
-
-
-        }else if (clienteRepository.findById(novoAgendamentoDTO.getIdUsuario()).isPresent()){
-            // É cliente
-            Cliente cliEncontrado = clienteRepository.findById(novoAgendamentoDTO.getIdUsuario()).get();
-            optionalPendenciaAgendamentoDTO = pendenciaAgendamentoDTORepository.findByIdUsuario(cliEncontrado.getId());
-
-        } else{
-            return ResponseEntity.status(404).build();
-        }
-    }
 }
-*/

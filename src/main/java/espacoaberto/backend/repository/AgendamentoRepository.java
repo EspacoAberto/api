@@ -1,6 +1,5 @@
 package espacoaberto.backend.repository;
-/*
-import espacoaberto.backend.abstrato.Usuario;
+
 import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
 import espacoaberto.backend.entidades.Agendamento;
 import espacoaberto.backend.entidades.Anuncio;
@@ -16,4 +15,3 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Intege
 
     List<Agendamento> findByAnuncio(Anuncio anuncio);
 }
-*/

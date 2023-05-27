@@ -1,5 +1,5 @@
 package espacoaberto.backend.dto;
-/*
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -86,4 +86,3 @@ public class PendenciaAgendamentoDTO {
         this.checkoutAgendamento = checkoutAgendamento;
     }
 }
-*/

@@ -1,17 +1,15 @@
 package espacoaberto.backend.controllers;
-/*
-import espacoaberto.backend.abstrato.Usuario;
-import espacoaberto.backend.dto.AgendamentoDTO;
+
 
 import java.time.*;
 
 import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
 import espacoaberto.backend.entidades.Agendamento;
-import espacoaberto.backend.entidades.Anunciante;
+
 import espacoaberto.backend.entidades.Anuncio;
-import espacoaberto.backend.entidades.Cliente;
+
 import espacoaberto.backend.repository.*;
-import espacoaberto.backend.service.ServiceBase64;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +27,6 @@ import java.util.Optional;
 @Slf4j
 @RequestMapping("/agendamentos")
 public class AgendamentoController {
-    @Autowired
-    private ClienteRepository clienteRepository;
-    @Autowired
-    private AnuncianteRepository anuncianteRepository;
 
 
     @Autowired
@@ -46,12 +40,6 @@ public class AgendamentoController {
 
 
 
-
-
-
-
-
-
     @GetMapping()
     public ResponseEntity<List<Agendamento>> listarAgendamentos(){
         List<Agendamento> agendamentos = agendamentoRepository.findAll();
@@ -59,15 +47,12 @@ public class AgendamentoController {
                 : ResponseEntity.status(200).body(agendamentos);
     }
 
-    @GetMapping("/anuncios/{idBase64}")
-    public ResponseEntity<List<Agendamento>> listarAgendamentosPorId(@PathVariable String idBase64){
-        Integer idDecodificado;
+    @GetMapping("/anuncios/{id}")
+    public ResponseEntity<List<Agendamento>> listarAgendamentosPorId(@PathVariable Integer id){
 
-        try{
-            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
 
             // Verificando se o anuncio existe
-            Optional<Anuncio> opAnuncio = anuncioRepository.findById(idDecodificado);
+            Optional<Anuncio> opAnuncio = anuncioRepository.findById(id);
 
             Anuncio anuncioEncontrado;
             if (opAnuncio.isPresent()) {
@@ -84,20 +69,19 @@ public class AgendamentoController {
                 return ResponseEntity.ok().body(agendamentos);
             }
 
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
 
 
     }
 
     // Recebe uma pendencia para efetivar
-    @PostMapping("/efetivar/{idBase64}")
-    public ResponseEntity<Agendamento> efetivarAgendamento(@PathVariable String idBase64) {
-        Integer idDecodificado;
-        try {
-            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
-            Optional<PendenciaAgendamentoDTO> opPendencia = pendenciaAgendamentoDTORepository.findById(idDecodificado);
+    @PostMapping("/efetivar/{id}")
+    public ResponseEntity<Agendamento> efetivarAgendamento(@PathVariable Integer id) {
+
+            Optional<PendenciaAgendamentoDTO> opPendencia = pendenciaAgendamentoDTORepository.findById(id);
+
+            if (opPendencia.isEmpty()) {
+                return ResponseEntity.status(404).build();
+            }
 
             PendenciaAgendamentoDTO pendencia = opPendencia.get();
 
@@ -107,10 +91,6 @@ public class AgendamentoController {
             pendenciaAgendamentoDTORepository.deleteById(pendencia.getId());
 
             return ResponseEntity.status(201).body(agendamentoRepository.save(agendamento_efetivado));
-        } catch (Exception e) {
-            System.out.println("Não foi possível converter o ID de base 64");
-        }
-        return ResponseEntity.status(400).build();
 
     }
-}*/
+}

@@ -1,6 +1,6 @@
 package espacoaberto.backend.repository;
-/*
-import espacoaberto.backend.abstrato.Usuario;
+
+
 import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +14,4 @@ public interface PendenciaAgendamentoDTORepository extends JpaRepository<Pendenc
 
 
 
-} */
+}

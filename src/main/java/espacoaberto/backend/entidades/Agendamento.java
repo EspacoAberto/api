@@ -1,9 +1,7 @@
 package espacoaberto.backend.entidades;
-/*
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import espacoaberto.backend.abstrato.Usuario;
 import lombok.*;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -20,8 +18,10 @@ public class Agendamento {
     private String dataCheckout;
 
     @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
     @ManyToOne
+    @JoinColumn(name = "anuncio_id")
     private Anuncio anuncio;
 
     public Agendamento(String dataCheckin, String dataCheckout, Usuario usuario, Anuncio anuncio) {
@@ -32,4 +32,4 @@ public class Agendamento {
     }
 
     public Agendamento(){}
-} */
+}
