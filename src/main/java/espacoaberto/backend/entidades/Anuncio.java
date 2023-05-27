@@ -1,5 +1,5 @@
 package espacoaberto.backend.entidades;
-/*
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,42 +13,58 @@ import java.util.Optional;
 public class Anuncio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idAnuncio;
-    @ManyToOne
-    private Anunciante anunciante;
-    @ManyToOne
-    private Imovel imovel;
+    private Integer id;
+
     private double preco;
     private String descricao;
     private String titulo;
 
 
     private String disponibilidade;
-    @Column(columnDefinition = "int default 0")
     private Integer curtidas;
-    @Column(columnDefinition = "int default 0")
     private Integer visualizacoes;
-    @Column(columnDefinition = "double default 5.0")
-    private Double avaliacao;
-    @JsonIgnore
-    @Column(length = 50 * 1024 * 1024) // 50 Mega Bytes
-    private byte[] foto;
+
+    // Relacionamentos
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "imovel_id")
+    private Imovel imovel;
 
     //Getters and Setters
 
-    public byte[] getFoto() {return foto;}
 
-    public void setFoto(byte[] foto) {this.foto = foto;}
-    public Integer getIdAnuncio() {
-        return idAnuncio;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdAnuncio(Integer idAnuncio) {
-        this.idAnuncio = idAnuncio;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Anunciante getAnunciante() {
-        return anunciante;
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getDisponibilidade() {
@@ -59,8 +75,28 @@ public class Anuncio implements Serializable {
         this.disponibilidade = disponibilidade;
     }
 
-    public void setAnunciante(Anunciante anunciante) {
-        this.anunciante = anunciante;
+    public Integer getCurtidas() {
+        return curtidas;
+    }
+
+    public void setCurtidas(Integer curtidas) {
+        this.curtidas = curtidas;
+    }
+
+    public Integer getVisualizacoes() {
+        return visualizacoes;
+    }
+
+    public void setVisualizacoes(Integer visualizacoes) {
+        this.visualizacoes = visualizacoes;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Imovel getImovel() {
@@ -70,43 +106,4 @@ public class Anuncio implements Serializable {
     public void setImovel(Imovel imovel) {
         this.imovel = imovel;
     }
-
-    public double getPreco() {
-        return preco;
-    }
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-    public String getDescricao() {
-        return descricao;
-    }
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-    public String getTitulo() {
-        return titulo;
-    }
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-    public Integer getCurtidas() {
-        return curtidas;
-    }
-    public void setCurtidas(Integer curtidas) {
-        this.curtidas = curtidas;
-    }
-    public Integer getVisualizacoes() {
-        return visualizacoes;
-    }
-    public void setVisualizacoes(Integer visualizacoes) {
-        this.visualizacoes = visualizacoes;
-    }
-
-    public Double getAvaliacao() {
-        return avaliacao;
-    }
-
-    public void setAvaliacao(Double avaliacao) {
-        this.avaliacao = avaliacao;
-    }
-} */
+}

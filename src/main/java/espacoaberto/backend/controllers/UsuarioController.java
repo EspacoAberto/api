@@ -39,6 +39,15 @@ public class UsuarioController {
                 : ResponseEntity.status(200).body(usuarios);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> consultarUsuariosPorID(@PathVariable Integer id) {
+       Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+        return usuario.isEmpty()
+                ? ResponseEntity.status(404).build()
+                : ResponseEntity.status(200).body(usuario.get());
+    }
+
     @PostMapping()
     public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody InCadastro usuarioDTO) {
         String email = usuarioDTO.getEmail();

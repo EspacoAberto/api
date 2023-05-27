@@ -1,15 +1,14 @@
 package espacoaberto.backend.controllers;
-/*
+
 //import espacoaberto.backend.csv.ExportacaoCsv;
 
-import espacoaberto.backend.abstrato.Usuario;
-import espacoaberto.backend.dto.AvaliacaoDTO;
+//import espacoaberto.backend.dto.AvaliacaoDTO;
 import espacoaberto.backend.entidades.*;
 
-import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
+//import espacoaberto.backend.exceptions.FotoNaoEncontradaException;
 import espacoaberto.backend.repository.*;
 
-import espacoaberto.backend.service.ServiceBase64;
+//import espacoaberto.backend.service.ServiceBase64;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,40 +27,28 @@ public class AnuncioController {
     private AnuncioRepository anuncioRepository;
     @Autowired
     private ImovelRepository imovelRepository;
-    @Autowired
-    private AvaliacaoRepository avaliacaoRepository;
-    @Autowired
-    private AnuncianteRepository anuncianteRepository;
-    @Autowired
-    private ClienteRepository clienteRepository;
+    //@Autowired
+    // private AvaliacaoRepository avaliacaoRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
-    @Autowired
-    private AgendamentoRepository agendamentoRepository;
-    @Autowired
-    private EnderecoRepository enderecoRepository;
+    // @Autowired
+    // private AgendamentoRepository agendamentoRepository;
     @Autowired
     private AcomodacaoRepository acomodacaoRepository;
-    @Autowired
-    private ImagemRepository imagemRepository;
 
-    @PostMapping("/cadastrar")
+
+    @PostMapping()
     public ResponseEntity<Anuncio> cadastrar(@RequestBody Anuncio novoAnuncio) {
-        return ResponseEntity.status(201).body(novoAnuncio);
+        novoAnuncio.setVisualizacoes(0);
+        novoAnuncio.setCurtidas(0);
+        return ResponseEntity.status(201).body(anuncioRepository.save(novoAnuncio));
     }
 
-    /* @PostMapping("/executarAgendamento/{qtd}")
-    public ResponseEntity<Void> executar(@PathVariable Integer qtd){
-        if (qtd < 1 || qtd > fila.getTamanho()){
-            throw new IllegalArgumentException();
-        }
-        for (int i = 0; i < qtd; i++){
-            Anuncio anuncio = fila.poll();
-            this.anuncioRepository.save(anuncio);
-        }
+   /* @GetMapping()
+    public ResponseEntity<List<Anuncio>> listar() {
+        return ResponseEntity.ok().body(anuncioRepository.findAll());
+    } */
 
-        return ResponseEntity.status(200).build();
-    }
     @GetMapping()
     public ResponseEntity<List<Anuncio>> consultarAnuncios(
             @RequestParam(required = false) Double precoMin,
@@ -94,69 +81,33 @@ public class AnuncioController {
                 : ResponseEntity.status(200).body(anuncios);
     }
 
-    @GetMapping("/{idBase64}")
-    public ResponseEntity<Anuncio> listarPorId(@PathVariable String idBase64) {
-        String idDecodificado;
-
-        try {
-            idDecodificado = ServiceBase64.descriptografaBase64(idBase64);
-            Optional<Anuncio> a = anuncioRepository.findById(Integer.parseInt(idDecodificado));
-            return (a.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(a.get()));
-
-        } catch (Exception e) {
-            System.out.println("Não foi possível converter o ID de base 64");
-        }
-
-        return ResponseEntity.status(404).build();
-
-    }
-
-    @PatchMapping("aumentarCurtidas/{idAnuncio}")
+   /* @PatchMapping("aumentarCurtidas/{idAnuncio}")
     public ResponseEntity<Anuncio> aumentarCurtidas(@PathVariable Integer idAnuncio) {
 
         List<Anuncio> anuncios = anuncioRepository.findAll();
 
         for (int i = 0; i < anuncios.size(); i++) {
-            if (anuncios.get(i).getIdAnuncio() == idAnuncio) {
+            if (anuncios.get(i).getId() == idAnuncio) {
                 anuncios.get(i).setCurtidas(anuncios.get(i).getCurtidas() + 1);
-                return ResponseEntity.status(200).body(anuncios.get(i));
+                return ResponseEntity.status(200).body();
             }
         }
 
         return ResponseEntity.status(204).build();
-    }
+    } */
 
-    @CrossOrigin("*")
-    @PatchMapping(value = "/foto/{id}", consumes = "image/jpeg")
-    public ResponseEntity<Void> patchFoto(@PathVariable int id, @RequestBody byte[] novaFoto) {
-        if (!anuncioRepository.existsById(id)) {
-            throw new FotoNaoEncontradaException();
-        }
-
-        anuncioRepository.setFoto(id, novaFoto);
-
-        return ResponseEntity.status(200).build();
-    }
-
-    @GetMapping(value = "/foto/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> getFoto(@PathVariable int id) {
-        if (!anuncioRepository.existsById(id)) {
-            throw new FotoNaoEncontradaException();
-        }
-
-        byte[] foto = anuncioRepository.getFoto(id);
-
-        return ResponseEntity.status(200).header("content-disposition",
-                "attachment; filename=\"foto-anuncio.jpg\"").body(foto);
-    }
 
     @GetMapping("/listarAnunciosPremium")
     public ResponseEntity<List<Anuncio>> listarAnunciosPremium() {
-        List<Anunciante> usuariosPremium = anuncianteRepository.findByIsPremiumTrue();
-        List<Anunciante> usuariosPremiumFiltro = new ArrayList<>();
+        List<Usuario> usuariosPremium = usuarioRepository.findByIsPremiumTrue();
+        List<Usuario> usuariosPremiumFiltro = new ArrayList<>();
+
+        if(usuariosPremium.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
         // pegando os seis primeiros anunciantes
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < usuariosPremium.size(); i++) {
             if (usuariosPremium.get(i) != null) {
                 usuariosPremiumFiltro.add(usuariosPremium.get(i));
             }
@@ -164,8 +115,8 @@ public class AnuncioController {
 
         List<Anuncio> anunciosSelecionados = new ArrayList<>();
 
-        for (Anunciante a : usuariosPremiumFiltro) {
-            List<Anuncio> anuncios = anuncioRepository.findByAnuncianteId(a.getId());
+        for (Usuario a : usuariosPremiumFiltro) {
+            List<Anuncio> anuncios = anuncioRepository.findByUsuario(a);
 
             if (!anuncios.isEmpty()) {
                 anunciosSelecionados.add(anuncios.get(0));
@@ -176,10 +127,8 @@ public class AnuncioController {
 
     }
 
-    @PatchMapping("aumentarVisualizacoes/{idBase64}")
-    public ResponseEntity<Anuncio> aumentarVisualizacao(@PathVariable String idBase64){
-        int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
-
+    @PatchMapping("aumentarVisualizacoes/{id}")
+    public ResponseEntity<Anuncio> aumentarVisualizacao(@PathVariable Integer id){
         Optional<Anuncio> OPanuncioEncontrado = anuncioRepository.findById(id);
 
         if (OPanuncioEncontrado.isPresent()){
@@ -200,7 +149,7 @@ public class AnuncioController {
     }
 
 
-    @PostMapping("enviarAvaliacao")
+   /* @PostMapping("enviarAvaliacao")
     public ResponseEntity<Avaliacao> enviarAvaliacao(@RequestBody AvaliacaoDTO avDTO){
         Avaliacao avaliacao = new Avaliacao();
 
@@ -375,24 +324,18 @@ public class AnuncioController {
             return ResponseEntity.status(404).build();
         }
     }
-
-    @DeleteMapping("{idBase64}")
-    public ResponseEntity<Void> deletarAnuncio(@PathVariable String idBase64) {
-        int id = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
+*/
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deletarAnuncio(@PathVariable Integer id) {
         Optional<Anuncio> anuncio = anuncioRepository.findById(id);
 
         if (anuncio.isEmpty()) {
             return ResponseEntity.status(404).build();
         }
 
-        for (Agendamento agendamento : agendamentoRepository.findAll()) {
-            if (agendamento.getAnuncio().equals(anuncio.get())) {
-                agendamentoRepository.deleteById(agendamento.getId());
-            }
-        }
+
 
         anuncioRepository.deleteById(id);
-        enderecoRepository.deleteById(anuncio.get().getImovel().getEndereco().getId());
         imovelRepository.deleteById(anuncio.get().getImovel().getId());
 
         for (Acomodacao acomodacao : acomodacaoRepository.findAll()) {
@@ -404,13 +347,6 @@ public class AnuncioController {
 
 
 
-        for (Imagem imagem : imagemRepository.findAll()) {
-            if (imagem.equals(anuncio.get().getImovel().getLinkFotos())) {
-                imagemRepository.deleteById(imagem.getId());
-            }
-        }
-
         return ResponseEntity.status(200).build();
     }
 }
-*/

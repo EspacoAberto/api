@@ -1,10 +1,8 @@
 package espacoaberto.backend.entidades;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 
@@ -21,6 +19,10 @@ public class Usuario {
     private String tipoUsuario;
     private Double saldo;
     private Boolean isPremium;
+
+    // Relacionamentos
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Anuncio> anuncios;
 
     public Usuario(String nome, String cpf, String email, String senha, String telefone) {
         this.nome = nome;

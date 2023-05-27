@@ -34,6 +34,9 @@ public class Imovel {
     @OneToMany(mappedBy = "imovel")
     private List<Acomodacao> acomodacoes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "imovel", cascade = CascadeType.ALL)
+    private List<Anuncio> anuncios;
+
 
     public Integer getId() {
         return id;
