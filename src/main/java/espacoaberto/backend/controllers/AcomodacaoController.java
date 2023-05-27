@@ -1,10 +1,10 @@
 package espacoaberto.backend.controllers;
-/*
+
 import espacoaberto.backend.entidades.Acomodacao;
 import espacoaberto.backend.entidades.Imovel;
 import espacoaberto.backend.repository.AcomodacaoRepository;
 import espacoaberto.backend.repository.ImovelRepository;
-import espacoaberto.backend.service.ServiceBase64;
+//import espacoaberto.backend.service.ServiceBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +19,11 @@ public class AcomodacaoController {
     @Autowired
     private ImovelRepository imovelRepository;
 
-    @PostMapping("/cadastrar/{idBase64}")
-    public ResponseEntity<Acomodacao> cadastrarAcomodacao(@PathVariable String idBase64, @RequestBody Acomodacao acomodacao){
-        Integer idDecodificado;
+    @PostMapping("/{id}")
+    public ResponseEntity<Acomodacao> cadastrarAcomodacao(@PathVariable Integer id, @RequestBody Acomodacao acomodacao){
 
-        try{
-            idDecodificado = Integer.parseInt(ServiceBase64.descriptografaBase64(idBase64));
-            Optional<Imovel> im = imovelRepository.findById(idDecodificado);
+
+            Optional<Imovel> im = imovelRepository.findById(id);
 
             if(im.isEmpty()){
                 return ResponseEntity.status(404).build();
@@ -36,13 +34,7 @@ public class AcomodacaoController {
 
             return ResponseEntity.status(200).body( this.acomodacaoRepository.save(a));
 
-        }catch (Exception e) {
-            System.out.println("Não foi possível converter o ID de base 64");
-        }
-
-
-        return ResponseEntity.status(404).build();
 
     }
 }
-*/
+

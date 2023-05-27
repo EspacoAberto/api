@@ -1,27 +1,30 @@
 package espacoaberto.backend.entidades;
-/*
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "acomodacoes")
 public class Acomodacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String descricao;
 
+    @ManyToOne
+    @JoinColumn(name = "imovel_id")
+    private Imovel imovel;
+
     public Acomodacao() {
     }
 
     public Acomodacao(Imovel imovel, String descricao) {
-        this.descricao = descricao;
         this.imovel = imovel;
+        this.descricao = descricao;
     }
 
-    @ManyToOne
-    @JsonBackReference
-    private Imovel imovel;
+
     public Integer getId() {
         return id;
     }
@@ -38,12 +41,6 @@ public class Acomodacao {
         this.descricao = descricao;
     }
 
-    public Imovel getImovel() {
-        return imovel;
-    }
 
-    public void setImovel(Imovel imovel) {
-        this.imovel = imovel;
-    }
-} */
+}
 
