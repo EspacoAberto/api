@@ -82,6 +82,16 @@ public class AnuncioController {
                 : ResponseEntity.status(200).body(anuncios);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Anuncio> consultarAnunciosPorId(@PathVariable Integer id) {
+        Optional<Anuncio> opAn = anuncioRepository.findById(id);
+
+        if (opAn.isPresent()) {
+            return ResponseEntity.ok().body(opAn.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
    /* @PatchMapping("aumentarCurtidas/{idAnuncio}")
     public ResponseEntity<Anuncio> aumentarCurtidas(@PathVariable Integer idAnuncio) {
 
