@@ -49,8 +49,8 @@ public class UsuarioController {
     }
 
     @PostMapping()
-    public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody InCadastro usuarioDTO) {
-        String email = usuarioDTO.getEmail();
+    public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario usuario) {
+        String email = usuario.getEmail();
         Optional<Usuario> opUsuario = usuarioRepository.findByEmail(email);
 
         if (opUsuario.isPresent()) {
@@ -58,7 +58,7 @@ public class UsuarioController {
         }
 
         // Converter DTO para Objeto Usuario
-        Usuario usuario = new Usuario(usuarioDTO.getNome(), usuarioDTO.getCpf(), email, usuarioDTO.getSenha(), usuarioDTO.getTelefone());
+        //Usuario usuario = new Usuario(usuarioDTO.getNome(), usuarioDTO.getCpf(), email, usuarioDTO.getSenha(), usuarioDTO.getTelefone());
 
 
         return ResponseEntity.status(201).body(this.usuarioRepository.save(usuario));
