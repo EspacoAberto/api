@@ -217,7 +217,18 @@ public class PendenciasAgendamentoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<PendenciaAgendamentoDTO> deletePendencia(@PathVariable Integer id) {
             Optional<PendenciaAgendamentoDTO> pendencia_excluida = pendenciaAgendamentoDTORepository.findById(id);
+
+        // Estornando o valor do usuário
+        Double valor = pendencia_excluida.get().getValorAgendamento();
+        Usuario usuario = usuarioRepository.findById(pendencia_excluida.get().getIdUsuario()).get();
+        usuario.setSaldo(valor + usuario.getSaldo());
+        usuarioRepository.save(usuario);
+        
                 pendenciaAgendamentoDTORepository.deleteById(id);
+
+
+
+
                 // Pendencia que foi excluida
                 return ResponseEntity.ok().body(pendencia_excluida.get());
     }
