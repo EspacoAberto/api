@@ -5,6 +5,7 @@ import espacoaberto.backend.dto.AgendamentoDTO;
 import espacoaberto.backend.dto.PendenciaAgendamentoDTO;
 import espacoaberto.backend.entidades.Agendamento;
 import espacoaberto.backend.entidades.Anuncio;
+import espacoaberto.backend.entidades.Usuario;
 import espacoaberto.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -47,6 +48,25 @@ public class PendenciasAgendamentoController {
 
     @PostMapping()
     public ResponseEntity<PendenciaAgendamentoDTO> cadastrarAgendamento(@RequestBody AgendamentoDTO novoAgendamentoDTO){
+        Anuncio anuncioEncontrado;
+
+        // Verificação se o usuário está agendando no próprio imóvel
+        // Pegando Usuário dono do anuncio que será agendado
+        Optional<Anuncio> opAnuncio = anuncioRepository.findById(novoAgendamentoDTO.getIdAnuncio());
+
+        if (opAnuncio.isPresent()) {
+            // Verificando se o ID do dono do anuncio é igual ao id do usuário que está solicitando o agendamento
+            if (opAnuncio.get().getUsuario().getId() == novoAgendamentoDTO.getIdUsuario()) {
+                // Se for, devolverá 422
+                return ResponseEntity.status(422).build();
+            }
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+
+
+
+
 
         // Antes de partir para qualquer validação, vamos verificar se há algum agendamento que bata com as datas da pendencia
         // Obtendo todos os agendamentos daquele anuncio
@@ -74,7 +94,6 @@ public class PendenciasAgendamentoController {
 
         // Antes de cadastrar o agendamento, precisamos verificar se existe uma pendência existente para aquele usuário
         // Buscando o usuário enviado na DTO
-        // Verificando se é cliente ou anunciante
         Optional<PendenciaAgendamentoDTO> optionalPendenciaAgendamentoDTO = pendenciaAgendamentoDTORepository.findByIdUsuario(novoAgendamentoDTO.getIdUsuario());
 
 
@@ -102,6 +121,25 @@ public class PendenciasAgendamentoController {
                     // Antes de adicionar a nova pendência, devemos excluir a última pendência dele
                     pendenciaAgendamentoDTORepository.deleteById(pendenciaEncontrada.getId());
                     PendenciaAgendamentoDTO pendenciaCriada = new PendenciaAgendamentoDTO(novoAgendamentoDTO.getIdAnuncio(), novoAgendamentoDTO.getIdUsuario(), novoAgendamentoDTO.getDataAgendamento(),  novoAgendamentoDTO.getDataCheckinAgendamento(), novoAgendamentoDTO.getDataCheckoutAgendamento(), novoAgendamentoDTO.getValorAgendamento());
+                    // Verificando se o usuário tem créditos o suficientre para a  pendência
+                    Optional<Usuario>  optionalUsuario = usuarioRepository.findById(novoAgendamentoDTO.getIdUsuario());
+
+                    if (optionalUsuario.isPresent()) {
+                        Usuario usuarioEncontrado = optionalUsuario.get();
+                        Double saldo = usuarioEncontrado.getSaldo();
+                        anuncioEncontrado = opAnuncio.get();
+
+                        if (novoAgendamentoDTO.getValorAgendamento() > saldo) {
+                            return ResponseEntity.status(423).build();
+                        } else {
+                            saldo = saldo - novoAgendamentoDTO.getValorAgendamento();
+                            usuarioEncontrado.setSaldo(saldo);
+                            usuarioRepository.save(usuarioEncontrado);
+                        }
+
+                    } else {
+                        return ResponseEntity.status(404).build();
+                    }
                     return ResponseEntity.status(201).body(pendenciaAgendamentoDTORepository.save(pendenciaCriada));
 
                 } else {
@@ -120,6 +158,25 @@ public class PendenciasAgendamentoController {
 
             if (anuncio.isPresent()) {
                 PendenciaAgendamentoDTO pendenciaCriada = new PendenciaAgendamentoDTO(novoAgendamentoDTO.getIdAnuncio(), novoAgendamentoDTO.getIdUsuario(), novoAgendamentoDTO.getDataAgendamento(),  novoAgendamentoDTO.getDataCheckinAgendamento(), novoAgendamentoDTO.getDataCheckoutAgendamento(), novoAgendamentoDTO.getValorAgendamento());
+                // Verificando se o usuário tem créditos o suficientre para a  pendência
+                Optional<Usuario>  optionalUsuario = usuarioRepository.findById(novoAgendamentoDTO.getIdUsuario());
+
+                if (optionalUsuario.isPresent()) {
+                    Usuario usuarioEncontrado = optionalUsuario.get();
+                    Double saldo = usuarioEncontrado.getSaldo();
+                    anuncioEncontrado = opAnuncio.get();
+
+                    if (novoAgendamentoDTO.getValorAgendamento() > saldo) {
+                        return ResponseEntity.status(423).build();
+                    } else {
+                        saldo = saldo - novoAgendamentoDTO.getValorAgendamento();
+                        usuarioEncontrado.setSaldo(saldo);
+                        usuarioRepository.save(usuarioEncontrado);
+                    }
+
+                } else {
+                    return ResponseEntity.status(404).build();
+                }
                 return ResponseEntity.status(201).body(pendenciaAgendamentoDTORepository.save(pendenciaCriada));
 
             } else {

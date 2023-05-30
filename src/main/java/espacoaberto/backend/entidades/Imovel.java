@@ -30,6 +30,7 @@ public class Imovel {
     private String cidade;
     private String bairro;
     private String logradouro;
+    private Integer numero;
 
     @OneToMany(mappedBy = "imovel")
     private List<Acomodacao> acomodacoes = new ArrayList<>();
@@ -124,6 +125,22 @@ public class Imovel {
 
     public void setAcomodacoes(List<Acomodacao> acomodacoes) {
         this.acomodacoes = acomodacoes;
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public List<Anuncio> getAnuncios() {
+        return anuncios;
+    }
+
+    public void setAnuncios(List<Anuncio> anuncios) {
+        this.anuncios = anuncios;
     }
 }
 

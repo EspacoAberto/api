@@ -109,7 +109,7 @@ public class Usuario {
         this.saldo = saldo;
     }
 
-    public Boolean getIsPremium() {
+    public Boolean getPremium() {
         return isPremium;
     }
 
