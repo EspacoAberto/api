@@ -201,16 +201,12 @@ public class PendenciasAgendamentoController {
 
     @GetMapping("/usuarios/{id}")
     public ResponseEntity<PendenciaAgendamentoDTO> listarPendenciasPorUsuario(@PathVariable Integer id) {
-
-
-
             Optional<PendenciaAgendamentoDTO> pendencia = pendenciaAgendamentoDTORepository.findByIdUsuario(id);
             if (pendencia.isPresent()) {
                 return ResponseEntity.status(200).body(pendencia.get());
             } else {
                 return ResponseEntity.status(204).build();
             }
-
     }
 
 
@@ -225,10 +221,6 @@ public class PendenciasAgendamentoController {
         usuarioRepository.save(usuario);
         
                 pendenciaAgendamentoDTORepository.deleteById(id);
-
-
-
-
                 // Pendencia que foi excluida
                 return ResponseEntity.ok().body(pendencia_excluida.get());
     }

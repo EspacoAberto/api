@@ -35,6 +35,7 @@ public class Imovel {
     @OneToMany(mappedBy = "imovel")
     private List<Acomodacao> acomodacoes = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "imovel", cascade = CascadeType.ALL)
     private List<Anuncio> anuncios;
 

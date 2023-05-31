@@ -11,6 +11,9 @@ import espacoaberto.backend.repository.*;
 
 //import espacoaberto.backend.service.ServiceBase64;
 import org.apache.coyote.Response;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -311,7 +314,7 @@ public class AnuncioController {
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarAnuncio(@PathVariable Integer id) {
         Optional<Anuncio> anuncio = anuncioRepository.findById(id);
 
@@ -334,5 +337,32 @@ public class AnuncioController {
 
 
         return ResponseEntity.status(200).build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Anuncio> atualizarAnuncio(@RequestBody Anuncio entrada, @PathVariable Integer id){
+        Optional<Anuncio> anuncioExistente = anuncioRepository.findById(id);
+
+        if (anuncioExistente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Ignora propriedades nulas durante a cópia dos atributos
+        String[] ignoredProperties = getNullPropertyNames(entrada);
+        BeanUtils.copyProperties(entrada, anuncioExistente.get(), ignoredProperties);
+
+            return ResponseEntity.status(200).body(anuncioRepository.save(anuncioExistente.get()));
+
+    }
+
+    // Método auxiliar para obter os nomes das propriedades nulas de um objeto
+    private String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        Set<String> emptyNames = new HashSet<>();
+        for (java.beans.PropertyDescriptor pd : src.getPropertyDescriptors()) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+        return emptyNames.toArray(new String[0]);
     }
 }
