@@ -6,12 +6,14 @@ public class OutLogin {
     private String email;
     private String cpf;
     private Boolean isPremium;
+    private String telefone;
     private String tipoUsuario;
 
     public OutLogin(Integer id
                    ,String nome
                    ,String email
                    ,String cpf
+                   , String telefone
                    ,Boolean isPremium
                    ,String tipoUsuario) {
         this.id = id;
@@ -20,6 +22,7 @@ public class OutLogin {
         this.cpf = cpf;
         this.isPremium = isPremium;
         this.tipoUsuario = tipoUsuario;
+        this.telefone = telefone;
     }
 
     public Integer getId() {
@@ -68,5 +71,13 @@ public class OutLogin {
 
     public void setTipoUsuario(String tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 }

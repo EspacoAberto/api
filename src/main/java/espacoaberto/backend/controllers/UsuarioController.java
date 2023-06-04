@@ -84,8 +84,10 @@ public class UsuarioController {
                     , usuario.get().getNome()
                     , usuario.get().getEmail()
                     , usuario.get().getCpf()
+                    , usuario.get().getTelefone()
                     , usuario.get().getPremium()
                     , ""
+
             );
 
 

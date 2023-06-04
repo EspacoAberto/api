@@ -22,10 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 //import espacoaberto.backend.service.ImgurApiClient;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -71,49 +69,83 @@ public class ImovelController {
 
 
 
-    private static final String CLIENT_ID = "2bf2c8257645521";
+
+
+    @PostMapping("/uploadBase64/{idImovel}")
+    public ResponseEntity<Imovel> uploadImageBase64(@RequestBody String base64Image, @PathVariable Integer idImovel) throws IOException {
+        String CLIENT_ID = "2bf2c8257645521";
+        Optional<Imovel> opImovel = imovelRepository.findById(idImovel);
+
+        if (opImovel.isPresent()) {
+            String downloadLink = ImageUploadExample.uploadImageBase64(base64Image, CLIENT_ID);
+
+            Imovel imovel = opImovel.get();
+
+            List<String> imagensDoImovel = imovel.getLinkFotos();
+
+            imagensDoImovel.add(downloadLink);
+
+            imovel.setLinkFotos(imagensDoImovel);
+
+            return ResponseEntity.ok(imovelRepository.save(imovel));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/upload/{idImovel}")
     public ResponseEntity<Imovel> uploadImage(@RequestBody byte[] imageData, @PathVariable Integer idImovel) {
-
-            Optional<Imovel> opImovel = imovelRepository.findById(idImovel);
-
-            if (opImovel.isPresent()) {
-                String downloadLink = ImageUploadExample.uploadImage(imageData, CLIENT_ID);
-
-                Imovel imovel = opImovel.get();
-
-                List<String> imagensDoImovel = imovel.getLinkFotos();
-
-                imagensDoImovel.add(downloadLink);
-
-                imovel.setLinkFotos(imagensDoImovel);
-
-                return ResponseEntity.ok(imovelRepository.save(imovel));
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-
-
-
+        String CLIENT_ID = "2bf2c8257645521";
+        Optional<Imovel> opImovel = imovelRepository.findById(idImovel);
+        if (opImovel.isPresent()) {
+            String downloadLink = ImageUploadExample.uploadImage(imageData, CLIENT_ID);
+            Imovel imovel = opImovel.get();
+            List<String> imagensDoImovel = imovel.getLinkFotos();
+            imagensDoImovel.add(downloadLink);
+            imovel.setLinkFotos(imagensDoImovel);
+            return ResponseEntity.ok(imovelRepository.save(imovel));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
-    @PostMapping("/uploadComprovante/{id}")
-    public ResponseEntity<Imovel> uploadImageComprovante(@RequestBody byte[] imageData, @PathVariable Integer id) {
-        Optional<Imovel> opImovel = imovelRepository.findById(id);
+
+    @PostMapping("/uploadComprovanteBase64/{idImovel}")
+    public ResponseEntity<Imovel> uploadImageComprovanteBase64(@RequestBody String base64Image, @PathVariable Integer idImovel) throws IOException {
+        Optional<Imovel> opImovel = imovelRepository.findById(idImovel);
+        String CLIENT_ID = "2bf2c8257645521";
+
+        if (opImovel.isPresent()) {
+            String downloadLink = ImageUploadExample.uploadImageBase64(base64Image, CLIENT_ID);
+
+            Imovel imovel = opImovel.get();
+
+            String imagensDoImovel = imovel.getComprovante();
+
+            imovel.setComprovante(downloadLink);
+
+           // imovel.setLinkFotos(imagensDoImovel);
+
+            return ResponseEntity.ok(imovelRepository.save(imovel));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/uploadComprovante/{idImovel}")
+    public ResponseEntity<Imovel> uploadImageComprovante(@RequestBody byte[] imageData, @PathVariable Integer idImovel) throws IOException {
+        Optional<Imovel> opImovel = imovelRepository.findById(idImovel);
+        String CLIENT_ID = "2bf2c8257645521";
 
         if (opImovel.isPresent()) {
             String downloadLink = ImageUploadExample.uploadImage(imageData, CLIENT_ID);
 
-
             Imovel imovel = opImovel.get();
-
-            // List<String> imagensDoImovel = imovel.getLinkFotos();
 
             imovel.setComprovante(downloadLink);
 
-            //imovel.setLinkFotos(imagensDoImovel);
+            // imovel.setLinkFotos(imagensDoImovel);
 
             return ResponseEntity.ok(imovelRepository.save(imovel));
         } else {
