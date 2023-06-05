@@ -112,13 +112,15 @@ public class PendenciasAgendamentoController {
                 saldo = saldo - novoAgendamentoDTO.getValorAgendamento();
                 usuarioEncontrado.setSaldo(saldo);
                 usuarioRepository.save(usuarioEncontrado);
+                PendenciaAgendamentoDTO pendenciaCriada = new PendenciaAgendamentoDTO(novoAgendamentoDTO.getIdAnuncio(), novoAgendamentoDTO.getIdUsuario(), novoAgendamentoDTO.getDataAgendamento(),  novoAgendamentoDTO.getDataCheckinAgendamento(), novoAgendamentoDTO.getDataCheckoutAgendamento(), novoAgendamentoDTO.getValorAgendamento());
+                // Verificando se o usuário tem créditos o suficientre para a  pendência
+                return ResponseEntity.status(201).body(pendenciaAgendamentoDTORepository.save(pendenciaCriada));
             }
 
         } else {
             return ResponseEntity.status(404).build();
         }
-        return ResponseEntity.status(501).build();
-    }
+        }
 
 
     @GetMapping("/anuncios/{id}")
