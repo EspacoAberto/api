@@ -65,9 +65,7 @@ public class PendenciasAgendamentoController {
         }
 
 
-
-
-
+        
         // Antes de partir para qualquer validação, vamos verificar se há algum agendamento que bata com as datas da pendencia
         // Obtendo todos os agendamentos daquele anuncio
         List<Agendamento> agendamentos = agendamentoRepository.findByAnuncio(anuncioRepository.findById(novoAgendamentoDTO.getIdAnuncio()).get());
@@ -98,60 +96,7 @@ public class PendenciasAgendamentoController {
 
 
         // Agora, devemos verificar se existe ou não pendência para esse usuário
-        if (optionalPendenciaAgendamentoDTO.isPresent()){
-            // Entrará nesse bloco caso tenha pendência
-            // Precisamos verificar a quantidade de dias da última pendência
-            PendenciaAgendamentoDTO pendenciaEncontrada = optionalPendenciaAgendamentoDTO.get();
 
-            // Convertendo a data que o usuário fez a pendencia de agendamento para LocalDateTime
-            LocalDateTime dataPendencia = LocalDateTime.parse(pendenciaEncontrada.getDataAgendamento(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            // Pegando a data atual
-            LocalDateTime agora = LocalDateTime.now();
-
-            // Calculando a diferença
-            Duration duracao = Duration.between(dataPendencia, LocalDateTime.parse(novoAgendamentoDTO.getDataAgendamento(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-
-            long diferencaEmDia = duracao.toDays();
-
-            if (diferencaEmDia >= 7){
-                // Verificando se o anúncio a ser agendado existe
-                Optional<Anuncio> anuncio = anuncioRepository.findById(novoAgendamentoDTO.getIdAnuncio());
-
-                if (anuncio.isPresent()) {
-                    // Antes de adicionar a nova pendência, devemos excluir a última pendência dele
-                    pendenciaAgendamentoDTORepository.deleteById(pendenciaEncontrada.getId());
-                    PendenciaAgendamentoDTO pendenciaCriada = new PendenciaAgendamentoDTO(novoAgendamentoDTO.getIdAnuncio(), novoAgendamentoDTO.getIdUsuario(), novoAgendamentoDTO.getDataAgendamento(),  novoAgendamentoDTO.getDataCheckinAgendamento(), novoAgendamentoDTO.getDataCheckoutAgendamento(), novoAgendamentoDTO.getValorAgendamento());
-                    // Verificando se o usuário tem créditos o suficientre para a  pendência
-                    Optional<Usuario>  optionalUsuario = usuarioRepository.findById(novoAgendamentoDTO.getIdUsuario());
-
-                    if (optionalUsuario.isPresent()) {
-                        Usuario usuarioEncontrado = optionalUsuario.get();
-                        Double saldo = usuarioEncontrado.getSaldo();
-                        anuncioEncontrado = opAnuncio.get();
-
-                        if (novoAgendamentoDTO.getValorAgendamento() > saldo) {
-                            return ResponseEntity.status(423).build();
-                        } else {
-                            saldo = saldo - novoAgendamentoDTO.getValorAgendamento();
-                            usuarioEncontrado.setSaldo(saldo);
-                            usuarioRepository.save(usuarioEncontrado);
-                        }
-
-                    } else {
-                        return ResponseEntity.status(404).build();
-                    }
-                    return ResponseEntity.status(201).body(pendenciaAgendamentoDTORepository.save(pendenciaCriada));
-
-                } else {
-                    return ResponseEntity.status(404).build();
-                }
-            } else{
-                return ResponseEntity.status(401).build();
-            }
-
-
-
-        } else {
             // Caso não tenha, deverá prosseguir por aqui. Como não tem pendência, o agendamento deve seguir livre
             // Verificando se o anúncio a ser agendado existe
             Optional<Anuncio> anuncio = anuncioRepository.findById(novoAgendamentoDTO.getIdAnuncio());
@@ -185,7 +130,7 @@ public class PendenciasAgendamentoController {
 
         }
 
-    }
+
 
     @GetMapping("/anuncios/{id}")
     public ResponseEntity<List<PendenciaAgendamentoDTO>> listarPendenciasPorAnuncio(@PathVariable Integer id) {
