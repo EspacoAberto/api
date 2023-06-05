@@ -209,6 +209,19 @@ public class PendenciasAgendamentoController {
             }
     }
 
+    @GetMapping("/anuncios/qtd/{idAnuncio}")
+    public ResponseEntity<Integer> listarQuantidadePendenciaPorAnuncio(@PathVariable Integer idAnuncio) {
+        List<PendenciaAgendamentoDTO> pendencias = pendenciaAgendamentoDTORepository.findByIdAnuncio(idAnuncio);
+        if (pendencias.isEmpty()) {
+            return ResponseEntity.status(200).body(0);
+        } else {
+            return ResponseEntity.status(200).body(pendencias.size());
+        }
+    }
+
+
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<PendenciaAgendamentoDTO> deletePendencia(@PathVariable Integer id) {

@@ -95,6 +95,26 @@ public class AnuncioController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/usuarios/{idUsuario}")
+    public ResponseEntity<List<Anuncio>> consultarAnunciosPorIdUsuario(@PathVariable Integer idUsuario) {
+        Optional<Usuario> opUs = usuarioRepository.findById(idUsuario);
+
+        if (opUs.isPresent()){
+            Usuario usuario = opUs.get();
+            List<Anuncio> anuncios = anuncioRepository.findByUsuario(usuario);
+
+            if (anuncios.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok().body(anuncios);
+
+        }
+
+            return ResponseEntity.notFound().build();
+
+    }
+
    /* @PatchMapping("aumentarCurtidas/{idAnuncio}")
     public ResponseEntity<Anuncio> aumentarCurtidas(@PathVariable Integer idAnuncio) {
 
