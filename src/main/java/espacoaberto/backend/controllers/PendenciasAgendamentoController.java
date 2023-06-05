@@ -65,7 +65,7 @@ public class PendenciasAgendamentoController {
         }
 
 
-        
+
         // Antes de partir para qualquer validação, vamos verificar se há algum agendamento que bata com as datas da pendencia
         // Obtendo todos os agendamentos daquele anuncio
         List<Agendamento> agendamentos = agendamentoRepository.findByAnuncio(anuncioRepository.findById(novoAgendamentoDTO.getIdAnuncio()).get());
@@ -99,37 +99,26 @@ public class PendenciasAgendamentoController {
 
             // Caso não tenha, deverá prosseguir por aqui. Como não tem pendência, o agendamento deve seguir livre
             // Verificando se o anúncio a ser agendado existe
-            Optional<Anuncio> anuncio = anuncioRepository.findById(novoAgendamentoDTO.getIdAnuncio());
+            //Optional<Anuncio> anuncio = anuncioRepository.findById(novoAgendamentoDTO.getIdAnuncio());
+        Optional<Usuario>  optionalUsuario = usuarioRepository.findById(novoAgendamentoDTO.getIdUsuario());
+        if (optionalUsuario.isPresent()) {
+            Usuario usuarioEncontrado = optionalUsuario.get();
+            Double saldo = usuarioEncontrado.getSaldo();
+            anuncioEncontrado = opAnuncio.get();
 
-            if (anuncio.isPresent()) {
-                PendenciaAgendamentoDTO pendenciaCriada = new PendenciaAgendamentoDTO(novoAgendamentoDTO.getIdAnuncio(), novoAgendamentoDTO.getIdUsuario(), novoAgendamentoDTO.getDataAgendamento(),  novoAgendamentoDTO.getDataCheckinAgendamento(), novoAgendamentoDTO.getDataCheckoutAgendamento(), novoAgendamentoDTO.getValorAgendamento());
-                // Verificando se o usuário tem créditos o suficientre para a  pendência
-                Optional<Usuario>  optionalUsuario = usuarioRepository.findById(novoAgendamentoDTO.getIdUsuario());
-
-                if (optionalUsuario.isPresent()) {
-                    Usuario usuarioEncontrado = optionalUsuario.get();
-                    Double saldo = usuarioEncontrado.getSaldo();
-                    anuncioEncontrado = opAnuncio.get();
-
-                    if (novoAgendamentoDTO.getValorAgendamento() > saldo) {
-                        return ResponseEntity.status(423).build();
-                    } else {
-                        saldo = saldo - novoAgendamentoDTO.getValorAgendamento();
-                        usuarioEncontrado.setSaldo(saldo);
-                        usuarioRepository.save(usuarioEncontrado);
-                    }
-
-                } else {
-                    return ResponseEntity.status(404).build();
-                }
-                return ResponseEntity.status(201).body(pendenciaAgendamentoDTORepository.save(pendenciaCriada));
-
+            if (novoAgendamentoDTO.getValorAgendamento() > saldo) {
+                return ResponseEntity.status(423).build();
             } else {
-                return ResponseEntity.status(404).build();
+                saldo = saldo - novoAgendamentoDTO.getValorAgendamento();
+                usuarioEncontrado.setSaldo(saldo);
+                usuarioRepository.save(usuarioEncontrado);
             }
 
+        } else {
+            return ResponseEntity.status(404).build();
         }
-
+        return ResponseEntity.status(501).build();
+    }
 
 
     @GetMapping("/anuncios/{id}")
